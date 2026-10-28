@@ -154,6 +154,7 @@ def fig_flights_en():
         ax.text(1.5, 37.5, "A booster only flies many times\nif it almost always lands", fontsize=9, fontweight="bold", color="#222222", ha="left", va="top")
         ax.text(1.5, 30.0, r"$E=\sum_{k=0}^{N-1}p^{k}$", fontsize=9, color="#222222", ha="left", va="top")
         ax.text(1.5, 22.0, "p = landing success rate\nN = flight limit", fontsize=8, color="#555555", ha="left", va="top")
+        ax.text(1.5, 11.6, "Labelled points: limit N = 25 flights", fontsize=8, color="#555555", ha="left", va="top")
         ax.set_xlim(0, 100)
         ax.set_ylim(0, 42)
         ax.set_xticks(range(0, 101, 20))

@@ -147,7 +147,8 @@ def fig6():
     print(f"fig6: level 1 seed 122, rt1_final: success={bool(m['success'])} end={m['end']} first-contact speed {speed_td:.3f} m/s (vertical {vd_td:.3f}), tilt {m['tilt_rad']:.4f} rad, "
           f"pad offset {m['dist_m']:.3f} m, {len(log)} steps; engine first fires at {h_on:.1f} m height (falling speed {log[i_on, 2]:.1f} m/s)")
     brake_max, env_a, env_v0 = C.BRAKE_MAX_MPS2, R.ENVELOPE_DECEL, R.ENVELOPE_FLOOR
-    fig, axs = plt.subplots(1, 2, figsize=(W_IN, 3.7), gridspec_kw=dict(width_ratios=[1.75, 1]))
+    LEG_IN = 0.52                                  # room under the two panels for the legend; the panels keep the size they had at 3.7 in
+    fig, axs = plt.subplots(1, 2, figsize=(W_IN, 3.7 + LEG_IN), gridspec_kw=dict(width_ratios=[1.75, 1]))
     keep_traj = np.arange(len(log)) <= i_td
     for k, ax in enumerate(axs):
         hmax = 3300 if k == 0 else 30
@@ -168,13 +169,15 @@ def fig6():
     axs[0].set_ylim(0, 360)
     axs[1].set_ylim(0, 34)
     axs[0].plot([h_on], [log[i_on, 2]], marker="^", color=SKY, mec=BLACK, mew=0.7, ms=8, ls="none", zorder=6)
-    fig.tight_layout(rect=(0, 0, 1, 1), w_pad=1.2)
-    # direct curve labels (after the layout is final), each following its curve
-    hh = np.linspace(0, 3300, 1500)
-    along_curve_label(axs[0], hh, np.sqrt(2 * brake_max * hh), 1450, "Maximum braking (brake limit)", +1, BLACK, 5)
-    along_curve_label(axs[0], log[:, 1], log[:, 5], 2350, "Expert's braking profile", +1, "#2b7fb0", 5)
-    along_curve_label(axs[0], hh, np.sqrt(2 * env_a * hh) + env_v0, 2350, "Speed envelope", -1, "#555555", 5)
-    along_curve_label(axs[0], log[keep_traj, 1], log[keep_traj, 2], 2000, "Final controller", -1, BLUE, 6, fs=8.5, weight="bold")
+    fig.tight_layout(rect=(0, LEG_IN / (3.7 + LEG_IN), 1, 1), w_pad=1.2)
+    # legend under the panels (same line styles and colours as the curves); it replaces the rotated curve labels
+    handles = [Line2D([], [], color=BLUE, lw=2.2, ls="-", label="Final controller"),
+               Line2D([], [], color=SKY, lw=1.3, ls="-.", label="Expert's braking profile"),
+               Line2D([], [], color=BLACK, lw=1.0, ls="--", label="Maximum braking (brake limit)"),
+               Line2D([], [], color=GREY, lw=1.4, ls=":", label="Speed envelope"),
+               Patch(fc=GREEN, ec="none", alpha=0.20, label="Safe speed (3 m/s or less)")]
+    fig.legend(handles=handles, loc="lower center", ncol=3, frameon=True, fancybox=False, edgecolor="#cccccc", framealpha=1.0, fontsize=8, handlelength=2.8, handletextpad=0.6,
+               columnspacing=1.6, borderpad=0.5, labelspacing=0.45, bbox_to_anchor=(0.5, 0.012))
     axs[0].annotate(f"Engine fires at\nabout {int(round(h_on, -1))} m", (h_on, log[i_on, 2]), xytext=(1550, 85), textcoords="data", fontsize=8, color="#222222", ha="center", va="center",
                     arrowprops=dict(arrowstyle="-|>", color="#222222", lw=0.8, shrinkA=2, shrinkB=4), zorder=7)
     axs[0].text(3270, 12, "The controller brakes just late\nenough to arrive below 3 m/s", ha="left", va="bottom", fontsize=9, fontweight="bold", color="#222222", linespacing=1.25, zorder=7)
@@ -242,7 +245,7 @@ def fig7():
     ax.text(0.255, pts[3][1] - 105, "L3, 15 m/s wind: 0.30", fontsize=8, ha="left", va="center", color="#222222", zorder=7)
     ax.text(pts[2][0], pts[2][1] + 98, "L2, 10 m/s: 0.54", fontsize=8, ha="center", va="center", color="#222222", zorder=7)
     ax.text(pts[1][0] - 0.065, pts[1][1] + 112, "L1, 5 m/s wind: 0.86", fontsize=8, ha="center", va="center", color="#222222", zorder=7)
-    ax.text(0.985, y0 - 62, "L0, no wind:\nat least 0.99", fontsize=8, ha="right", va="center", color="#222222", zorder=7, linespacing=1.15)
+    ax.text(0.985, y0 - 95, "L0: 300 of 300 landed,\nso p is at least 0.99", fontsize=8, ha="right", va="center", color="#222222", zorder=7, linespacing=1.15)
     ax.text(0.9935, 1040, "Falcon 9 record (0.9963)", fontsize=8, ha="right", va="center", color="#444444", zorder=7)
     ax.text(0.255, 25, "bars = 95 % confidence interval", fontsize=8, color=GREY, ha="left", va="bottom")
     # the reduction at the real record

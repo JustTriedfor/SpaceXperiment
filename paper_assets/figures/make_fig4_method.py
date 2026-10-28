@@ -148,8 +148,8 @@ def seg(p0, p1):
 
 
 # ---- content (symbols as in Section 3.2: p, N, E, P1, P2, F, T, r); each box = (title, plain-English line, symbols / details)
-ROW1 = [("Simulator", "a virtual Falcon 9 landing in four wind levels", r"$\bar{w}=0,\,5,\,10,\,15\,\mathrm{m\,s^{-1}}$"),
-        ("Scaling and noise", "puts all readings on a similar scale", "noise " + r"$\sigma=0.05\,\%$" + EN + r"$5\,\%$" + " of range"),
+ROW1 = [("Simulator", "a virtual Falcon 9 landing in four wind levels", "wind scale 0, 5, 10, 15" + TS + "m/s"),
+        ("Scaling", "puts all readings on a similar scale", "sensor-error test only: " + r"$\sigma=0.05\,\%$" + EN + r"$5\,\%$" + " of range"),
         ("Neural network", "the AI that flies the landing", "2" + TS + "×" + TS + "256 tanh, 18 inputs, 5 outputs"),
         ("Landing success", "how often it lands safely", r"$\hat{p}=k/n,\ n=300$" + "\nper level, 95" + TS + "% Wilson interval")]
 ROW2 = [("Expected flights", "how many times a booster flies", r"$E=\sum_{k=0}^{N-1}p^{k}$" + "\n" + r"reuse limit $N\in[15,\,40]$"),
@@ -160,7 +160,7 @@ PB = [("Scripted expert", "hand-written landing rules", ""), ("Behaviour cloning
       ("DAgger loop", "the network flies, the expert corrects it", ""), ("Trained controller", "tested on 300 landings per wind level", "")]
 LEGEND = (r"$p$ landing success probability; $N$ reuse limit; $E$ expected flights (closed form $(1-p^{N})/(1-p)$); $P_1$, $P_2$ production emissions of stage 1 and 2; "
           r"$F$ propellant; $T$ transport; $r$ refurbishment share; $k$ successes in $n$ episodes. "
-          r"Monte Carlo: $2\times10^{5}$ draws, inputs ~ triangular; $m_{\mathrm{BC}}$ at the warming factor $1.6\times10^{6}$ kg CO$_2$e per kg.")
+          r"Monte Carlo: $2\times10^{5}$ draws, inputs triangular, $N$ uniform; $m_{\mathrm{BC}}$ at the warming factor $1.6\times10^{6}$ kg CO$_2$e per kg.")
 H_A = box_height(ROW1 + ROW2)
 H_B = box_height(PB)
 leg_lines = wrap(LEGEND, FS, W_IN - 0.03 - 0.06)
