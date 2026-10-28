@@ -149,7 +149,7 @@ def test_showcase_leaves_through_the_switch_without_changing_the_saved_mode():
 
 def test_showcase_slides_cover_the_questions_a_reviewer_asks():
     names = re.search(r"names: \[(.*?)\]", PAGE).group(1)
-    for n in ("Results", "Touchdown", "Failures", "Training", "Task", "Method", "Limits"):
+    for n in ("Results", "Touchdown", "Failures", "Training", "Task", "Vehicle", "Network", "Method", "Limits"):
         assert f"'{n}'" in names and re.search(rf"^  {n}\(\) \{{", PAGE, re.M), n
     for must in ("95 % interval", "Reliability is not proven", "Simulation only", "SHA-256", "validation", "seeds 0"):
         assert must in PAGE, must
@@ -212,6 +212,9 @@ def test_every_recorded_landing_carries_its_measured_numbers():
         assert abs(st["fuel"]["left_kg"] - float(row["fuel_remaining_kg"])) <= 1
         assert st["wind"]["scale_mps"] == float(row["wind_scale_mps"]) and 0 <= st["rank"]["slower_than_pct"] <= 100 and st["rank"]["n"] == 300
         assert st["start"]["height_m"] > 2000 and st["peak_load_g"] > 1 and st["max_q_kpa"] > 1
+        c, x = st["control"], st["extremes"]
+        assert 40 <= c["throttle_mean_pct"] <= c["throttle_peak_pct"] <= 100 and 0 < c["gimbal_max_deg"] <= 5.01 and 0 <= c["fin_max_deg"] <= 25.01       # inside the vehicle's own limits
+        assert c["rcs_a_pulses"] >= 0 and 0 <= c["rcs_gas_left_pct"] <= 100 and 100 < x["fall_speed_mps"] < 400 and x["tilt_deg"] > 0 and x["spin_dps"] > 0
         if st["burn"]:
             assert 0 < st["burn"]["start_s"] < st["flight_time_s"] and st["burn"]["start_alt_m"] < st["start"]["height_m"]
 
@@ -334,3 +337,17 @@ def test_showcase_does_not_draw_while_scrolled_away_and_the_switch_below_leaves_
     assert "SHOW && (b.dataset.mode === 'simple' || b.dataset.mode === 'advanced')" in seg and "location.href = '/'" in seg
     assert ".screen.idle .jhead .seg" not in PAGE                                                               # the switch in the data column no longer fades away
     assert "scroll down for the usual tabs" in PAGE
+
+
+def test_showcase_slides_are_filled_and_the_landing_card_keeps_its_height():
+    fn = PAGE[PAGE.index("function judgeSlide(k)"):PAGE.index("function judgeTick(now)")]
+    assert "getBoundingClientRect().height" in fn and "lo = 0.7, hi = 1.18" in fn and "fits(hi)" in fn           # short slides grow to fill the column, long ones shrink to fit it
+    assert "if (!fits(lo)) lo *= 0.96" in fn                                                                    # a table that wraps suddenly never leaves a slide clipped
+    now = PAGE[PAGE.index("function judgeNow(phase)"):PAGE.index("// ---- the slides")]
+    assert "visibility:hidden" in now and now.count("visibility:hidden") >= 2                                    # rank and rule ticks are reserved before touchdown, so the card does not jump
+    for row in ("'Control'", "'Extremes'", "'Rank'"):
+        assert row in now, row
+    vehicle = PAGE[PAGE.index("  Vehicle() {"):PAGE.index("  Network() {")]
+    assert "derived" in vehicle and "Not validated against flight data" in vehicle                                # computed numbers are labelled as such
+    network = PAGE[PAGE.index("  Network() {"):PAGE.index("  Method() {")]
+    assert "IN_NAMES.slice(0, C.inputs)" in network and "signed square roots" in network

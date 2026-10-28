@@ -184,7 +184,7 @@
   body.showcase #mini, body.showcase #cam2Box, body.showcase .hudbar { display:none; }                /* (the partner cam is for pairs only) */
   /* the Showcase interface: the picture on the left, the data a reader asks for on the right (a column of text and two small charts, rebuilt only when a landing or a slide changes) */
   .judge { display:none; }
-  body.showcase .screen { display:grid; grid-template-columns:minmax(0, 1fr) clamp(340px, 28vw, 480px); }
+  body.showcase .screen { display:grid; grid-template-columns:minmax(0, 1fr) clamp(340px, 28vw, 520px); }
   body.showcase .stage { justify-self:center; align-self:center; }
   body.showcase .judge { display:flex; flex-direction:column; gap:7px; height:100vh; padding:9px 11px; background:#0a0e1c; border-left:1px solid var(--line); overflow:hidden; font-size:clamp(11px, 1.5vh, 14.5px); line-height:1.4; color:var(--ink); }
   @media (max-width:900px) { body.showcase .screen { display:flex; } body.showcase .judge { display:none; } }
@@ -194,7 +194,7 @@
   .jcard { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:.55em .75em; }
   .jnow-h { display:flex; justify-content:space-between; align-items:baseline; gap:8px; font-weight:700; font-size:1.08em; } .jnow-h .badge { padding:1px 9px; border-radius:20px; font-size:.85em; font-weight:700; }
   .badge.ok { background:#123524; color:var(--good); } .badge.no { background:#3a1620; color:var(--bad); } .badge.fly { background:#182042; color:var(--mute); }
-  .jkv { display:grid; grid-template-columns:auto 1fr; gap:1px .7em; margin-top:.35em; } .jkv .k { color:var(--mute); white-space:nowrap; } .jkv .v { font-variant-numeric:tabular-nums; } .jkv .v small, .jsub { color:var(--mute); font-size:.9em; }
+  .jcard#jNow { font-size:.94em; } .jkv { display:grid; grid-template-columns:auto 1fr; gap:1px .7em; margin-top:.35em; } .jkv .k { color:var(--mute); white-space:nowrap; } .jkv .v { font-variant-numeric:tabular-nums; } .jkv .v small, .jsub { color:var(--mute); font-size:.9em; }
   .jrules { display:flex; flex-wrap:wrap; gap:3px 5px; margin-top:.45em; } .jrules span { padding:0 7px; border-radius:6px; background:#0d1428; border:1px solid var(--line); font-size:.88em; } .jrules .ok { color:var(--good); border-color:#1f5a3f; } .jrules .no { color:var(--bad); border-color:#6a2a35; }
   .jslides { flex:1 1 auto; min-height:0; display:flex; flex-direction:column; gap:.4em; overflow:hidden; }
   .jtabs { display:flex; flex-wrap:wrap; gap:3px; } .jtabs button { flex:1 1 auto; padding:2px 4px; font-size:.88em; background:transparent; border:1px solid var(--line); color:var(--mute); border-radius:7px; cursor:pointer; } .jtabs button.on { background:#182042; color:var(--ink); border-color:#33407a; }
@@ -3447,7 +3447,7 @@ function showcaseWatch(now) {                                            // a vi
 
 // ---- The Showcase data column: "this landing" (numbers measured on the recorded landing) and rotating slides built from replays/facts.json (results, touchdown, failures,
 // training curve, task and rules, method, limits). Everything is text and two small charts, redrawn only when a landing or a slide changes.
-const JC = { facts: null, slide: 0, pinUntil: 0, nextRot: 0, ROT_MS: 18000, PIN_MS: 60000, names: ['Results', 'Touchdown', 'Failures', 'Training', 'Task', 'Method', 'Limits'] };
+const JC = { facts: null, compact: false, slide: 0, pinUntil: 0, nextRot: 0, ROT_MS: 18000, PIN_MS: 60000, names: ['Results', 'Touchdown', 'Failures', 'Training', 'Task', 'Vehicle', 'Network', 'Method', 'Limits'] };
 const JCOL = { sx_retrained: '#5b9bff', expert_tuned: '#9aa3c7', sx_imitation_quiet: '#f2c46b', pair_safe_final: '#c78bff' };
 const jf = (x, d = 1) => (x == null || !isFinite(x)) ? '–' : (+x).toLocaleString(undefined, { minimumFractionDigits: d, maximumFractionDigits: d });
 const jp = (x, d = 1) => x == null ? '–' : jf(100 * x, d);
@@ -3462,24 +3462,24 @@ function judgeNow(phase) {                                                // pha
   const badge = done ? (m.success ? ['ok', 'landed ✓'] : ['no', 'failed']) : phase === 'next' ? ['fly', 'up next'] : ['fly', 'in flight'];
   let h = `<div class="jnow-h"><span>Landing ${i + 1} / ${n} · level ${m.level} · seed ${m.seed}${m.featured ? ' · <span style="color:var(--warn)">featured</span>' : ''}</span><span class="badge ${badge[0]}">${badge[1]}</span></div>`;
   if (!st) { $('jNow').innerHTML = h; return; }
-  const td = st.touchdown, b = st.burn, f = st.fuel, q = st.quality, w = st.wind, s0 = st.start;
+  const td = st.touchdown, b = st.burn, f = st.fuel, q = st.quality, w = st.wind, s0 = st.start, c = st.control, x = st.extremes, r = st.rank;
   const rows = [
-    ['Wind', `${jf(w.scale_mps, 0)} m/s scale · mean ${jsg(w.mean_mps)} m/s · gusts ±${jf(w.gust_amp_mps)} m/s`],
-    ['Start', `${jf(s0.height_m / 1000, 2)} km up · ${jf(s0.speed_mps, 0)} m/s at ${jf(s0.angle_deg, 0)}° below horizontal · ${jf(s0.x_offset_m, 0)} m off the pad`],
-    ['Burn', b ? `ignites T+${jf(b.start_s)} s at ${jf(b.start_alt_m, 0)} m · burns ${jf(b.duration_s)} s · ${b.ignitions} ignition${b.ignitions === 1 ? '' : 's'}` : 'engine never fired'],
-    ['Loads', `max-Q ${jf(st.max_q_kpa)} kPa at ${jf(st.max_q_alt_m, 0)} m · peak load ${jf(st.peak_load_g)} g`],
-    ['Touchdown', `T+${jf(td.t_s)} s · ${jf(td.speed_mps, 2)} m/s <small>(vertical ${jf(td.vertical_mps, 2)}, sideways ${jf(td.horizontal_mps, 2)})</small>`],
-    ['At rest', `tilt ${jf(td.tilt_deg, 2)}° · ${jf(td.offset_m, 2)} m from the pad centre · settled in ${jf(td.settle_s, 2)} s`],
-    ['Propellant', `${jf(f.used_kg, 0)} kg used · ${jf(f.left_kg, 0)} kg left <small>(${jf(f.left_pct, 0)} % of ${jf(((JC.facts || {}).rules || {}).fuel_kg || 4500, 0)} kg)</small>`],
-    ['Quality', `merit ${jf(q.merit)} / 100 · ${jf(q.in_envelope_pct, 0)} % of the descent inside the safe-speed envelope · peak braking ${jf(q.brake_peak_pct, 0)} % of capability`],
+    ['Wind', `${jf(w.scale_mps, 0)} m/s scale · mean ${jsg(w.mean_mps)} · gusts ±${jf(w.gust_amp_mps)} m/s`],
+    ['Start', `${jf(s0.height_m / 1000, 2)} km · ${jf(s0.speed_mps, 0)} m/s at ${jf(s0.angle_deg, 0)}° · ${jf(s0.x_offset_m, 0)} m off the pad`],
+    ['Burn', b ? `T+${jf(b.start_s)} s at ${jf(b.start_alt_m, 0)} m · ${jf(b.duration_s)} s · ${b.ignitions} ignition${b.ignitions === 1 ? '' : 's'}` : 'engine never fired'],
+    ['Loads', `max-Q ${jf(st.max_q_kpa)} kPa · peak load ${jf(st.peak_load_g)} g`],
+    ...(c ? [['Control', `throttle ${jf(c.throttle_mean_pct, 0)} % (peak ${jf(c.throttle_peak_pct, 0)}) · gimbal ≤ ${jf(c.gimbal_max_deg)}° · fins ≤ ${jf(c.fin_max_deg, 0)}° · pulses ${c.rcs_a_pulses}/${c.rcs_b_pulses} · gas ${jf(c.rcs_gas_left_pct, 0)} %`]] : []),
+    ...(x ? [['Extremes', `fall ${jf(x.fall_speed_mps, 0)} m/s · sideways ${jf(x.sideways_speed_mps, 0)} m/s · tilt ${jf(x.tilt_deg)}° · spin ${jf(x.spin_dps)}°/s`]] : []),
+    ['Touchdown', `T+${jf(td.t_s)} s · ${jf(td.speed_mps, 2)} m/s <small>(down ${jf(td.vertical_mps, 2)}, side ${jf(td.horizontal_mps, 2)})</small>`],
+    ['At rest', `tilt ${jf(td.tilt_deg, 2)}° · ${jf(td.offset_m, 2)} m off centre · settled ${jf(td.settle_s, 2)} s`],
+    ['Propellant', `${jf(f.used_kg, 0)} kg used · ${jf(f.left_kg, 0)} kg left <small>(${jf(f.left_pct, 0)} %)</small>`],
+    ['Quality', `merit ${jf(q.merit)} · ${jf(q.in_envelope_pct, 0)} % in the safe-speed envelope · peak braking ${jf(q.brake_peak_pct, 0)} %`],
+    ['Rank', `gentler than ${jf(r.slower_than_pct, 0)} % of ${r.n} seeds <small>(median ${jf(r.level_median_speed_mps, 2)} m/s; level success ${jf(r.level_success_pct)} %)</small>`, true],
   ];
-  if (done) { const r = st.rank; rows.push(['Rank', `gentler than ${jf(r.slower_than_pct, 0)} % of the ${r.n} evaluated landings at this level <small>(median ${jf(r.level_median_speed_mps, 2)} m/s, level success ${jf(r.level_success_pct)} %)</small>`]); }
-  h += '<div class="jkv">' + rows.map(r => `<span class="k">${r[0]}</span><span class="v">${r[1]}</span>`).join('') + '</div>';
-  if (done) {
-    const chip = (ok, t) => `<span class="${ok ? 'ok' : 'no'}">${ok ? '✓' : '✗'} ${t}</span>`;
-    h += '<div class="jrules">' + chip(td.speed_mps != null && td.speed_mps <= R.speed_mps, `speed ${jf(td.speed_mps, 2)} ≤ ${R.speed_mps} m/s`) + chip(td.tilt_rad != null && td.tilt_rad <= R.tilt_rad, `tilt ${jf(td.tilt_rad, 3)} ≤ ${R.tilt_rad} rad`) +
-      chip(td.offset_m != null && td.offset_m <= R.offset_m, `offset ${jf(td.offset_m, 2)} ≤ ${R.offset_m} m`) + chip(f.left_kg > 0, 'propellant left') + chip(m.end === 'rest', m.end === 'rest' ? 'ended at rest' : 'ended: ' + esc(m.end)) + '</div>';
-  }
+  h += '<div class="jkv">' + rows.map(row => { const hide = row[2] && !done ? ' style="visibility:hidden"' : ''; return `<span class="k"${hide}>${row[0]}</span><span class="v"${hide}>${row[1]}</span>`; }).join('') + '</div>';
+  const chip = (ok, t) => `<span class="${ok ? 'ok' : 'no'}">${ok ? '✓' : '✗'} ${t}</span>`;
+  h += `<div class="jrules"${done ? '' : ' style="visibility:hidden"'}>` + chip(td.speed_mps != null && td.speed_mps <= R.speed_mps, `speed ${jf(td.speed_mps, 2)} ≤ ${R.speed_mps} m/s`) + chip(td.tilt_rad != null && td.tilt_rad <= R.tilt_rad, `tilt ${jf(td.tilt_rad, 3)} ≤ ${R.tilt_rad} rad`) +
+    chip(td.offset_m != null && td.offset_m <= R.offset_m, `offset ${jf(td.offset_m, 2)} ≤ ${R.offset_m} m`) + chip(f.left_kg > 0, 'propellant left') + chip(m.end === 'rest', m.end === 'rest' ? 'ended at rest' : 'ended: ' + esc(m.end)) + '</div>';
   $('jNow').innerHTML = h;
 }
 
@@ -3492,7 +3492,7 @@ const JS_ = {
     const ks = ['sx_retrained', 'expert_tuned', 'sx_imitation_quiet', 'pair_safe_final'].filter(jRes); if (!jRes('sx_retrained')) return jNeedFacts();
     return `<h3>Success rate on unseen test seeds</h3><canvas id="jc" width="840" height="300"></canvas>` +
       jTable(['95 % interval', 'L0', 'L1', 'L2', 'L3'], ks.map(k => ({ cells: [jSw(k) + jRes(k).label, ...jRes(k).levels.map(jCell)] }))) +
-      `<p class="jsub">300 seeds per level (the pair: 600 landers that share wind). Success needs all four rules: speed ≤ 3 m/s, tilt ≤ 0.15 rad, within 10 m of the pad centre, propellant left and ended at rest. The deterministic network, no noise. Highlighted column = the landing now.</p>`;
+      `<p class="jsub">300 seeds per level (the pair: 600 landers that share wind). Success needs all four rules: speed ≤ 3 m/s, tilt ≤ 0.15 rad, within 10 m of the pad centre, propellant left and ended at rest. The deterministic network, no noise. Highlighted column = the landing now.</p>` + jResultsMore();
   },
   Touchdown() {
     const r = jRes('sx_retrained'); if (!r) return jNeedFacts();
@@ -3520,7 +3520,7 @@ const JS_ = {
     const c = JC.facts && JC.facts.training_curve; if (!c || !c.length) return jNeedFacts();
     const r = JC.facts.recipe || {}, ev = JC.facts.expert_validation || [], evm = ev.length ? ev.reduce((a, b) => a + b, 0) / ev.length : null, ch = c.find(x => x.chosen), d1 = c.find(x => x.name === 'rt1_dagger_1'), cl = c[0];
     return `<h3>Validation success while training (200 unseen seeds per level)</h3><canvas id="jc" width="840" height="300"></canvas>` +
-      `<ul><li>Cloning alone: <b>${jp(cl.mean, 0)} %</b> mean success. After one DAgger round: <b>${d1 ? jp(d1.mean, 0) : '–'} %</b>. Chosen round ${r.chosen_round}: <b>${ch ? jp(ch.mean, 1) : '–'} %</b>${evm ? `, the scripted expert scores ${jp(evm, 1)} %` : ''}.</li>` +
+      jRounds() + `<ul><li>Cloning alone: <b>${jp(cl.mean, 0)} %</b> mean success. After one DAgger round: <b>${d1 ? jp(d1.mean, 0) : '–'} %</b>. Chosen round ${r.chosen_round}: <b>${ch ? jp(ch.mean, 1) : '–'} %</b>${evm ? `, the scripted expert scores ${jp(evm, 1)} %` : ''}.</li>` +
       `<li>Behaviour cloning of ${r.demonstrations} expert landings (${r.demonstrations_kept} kept), ${r.clone_epochs} epochs; then ${r.dagger_rounds} DAgger rounds: the network flies, the expert labels the states it reached, ${r.dagger_episodes} landings per round on levels ${r.dagger_levels}.</li>` +
       `<li>Rounds 4–8 differ by less than the validation noise (about 3 points); the best validation round was kept, the test seeds were not looked at. Training took ${jf(r.train_seconds, 0)} s.</li></ul>`;
   },
@@ -3533,6 +3533,30 @@ const JS_ = {
       `<li>The wind is a scale: each episode draws a signed mean within ±0.6 × scale plus a gust of 0.4 × scale, stronger with height. Higher levels also start farther off, faster and flatter, so level 3 is harder for more reasons than wind.</li>` +
       `<li><b>Success</b> = touchdown speed ≤ ${R.speed_mps} m/s, tilt ≤ ${R.tilt_rad} rad (8.6°), within ${R.offset_m} m of the pad centre, propellant left, and the stage ends upright at rest.</li>` +
       `<li>At most ${R.max_ignitions} engine ignitions; the episode ends if the tilt passes ${R.tilt_limit_deg}°. Propellant: ${jf(R.fuel_kg, 0)} kg.</li></ul>`;
+  },
+  Vehicle() {
+    const v = JC.facts && JC.facts.vehicle, R = JC.facts && JC.facts.rules; if (!v) return jNeedFacts();
+    const g0 = 9.81, m0 = v.dry + v.budget + 90, isp = v.thrust_vac / (v.mdot * g0), tw = v.thrust_sl / (m0 * g0), burn = v.budget / v.mdot;
+    const row = (k, val) => ({ cells: [k, val] });
+    return `<h3>The stage the network flies</h3>` + jTable(['', ''], [
+      row('Dry mass / landing propellant', `${jf(v.dry, 0)} kg / ${jf(v.budget, 0)} kg`), row('Length \u00b7 diameter \u00b7 leg span', `${jf(v.length)} m \u00b7 ${jf(v.diameter, 2)} m \u00b7 ${jf(v.span, 0)} m`),
+      row('Centre of gravity above the engines', `${jf(v.cg, 1)} m (feet ${jf(v.leg_down, 0)} m below it)`), row('Main engine thrust', `${jf(v.thrust_sl / 1000, 0)} kN at sea level \u00b7 ${jf(v.thrust_vac / 1000, 0)} kN in vacuum`),
+      row('Throttle', `off or ${jf(100 * v.throttle_min, 0)}\u2013100 %, up to ${R ? R.max_ignitions : 3} ignitions`), row('Propellant flow at full thrust', `${jf(v.mdot, 1)} kg/s <small>(derived: ${jf(isp, 0)} s specific impulse, ${jf(burn, 0)} s of burn on a full load)</small>`),
+      row('Thrust-to-weight at the start', `${jf(tw, 2)} at full throttle, ${jf(tw * v.throttle_min, 2)} at the throttle floor <small>(derived)</small>`), row('Gimbal \u00b7 grid fins', `\u00b1${jf(v.gimbal_max * 180 / Math.PI, 0)}\u00b0 \u00b7 \u00b1${jf(v.fin_max * 180 / Math.PI, 0)}\u00b0`),
+      row('Cold-gas thruster rings', `2 rings, ${jf(v.rcs_force / 1000, 0)} kN each, at ${jf(v.rcs_a, 0)} m and ${jf(v.rcs_b, 0)} m from the centre of gravity`), row('Braking limit drawn in the phase portrait', `${jf(v.brake_max, 0)} m/s\u00b2`),
+      row('Safe-speed envelope', `v \u2264 \u221a(2 \u00b7 ${jf(v.env_decel, 0)} \u00b7 height) + ${jf(v.env_floor, 0)} m/s`), row('Gravity \u00b7 tilt limit', `${jf(v.g, 2)} m/s\u00b2 \u00b7 ${jf(v.tilt_limit_deg, 0)}\u00b0`),
+      row('Pad (drone-ship deck)', `${jf(2 * R.pad_half_width_m, 0)} m wide, success within ${jf(R.offset_m, 0)} m of its centre`)]) +
+      `<p class="jsub">Public approximations of a Falcon-9-class first stage; some values are estimates (the engine table and propellant load were calibrated on expert flights). Not validated against flight data.</p>`;
+  },
+  Network() {
+    const C = JC.facts && JC.facts.controller; if (!C) return jNeedFacts();
+    const ins = IN_NAMES.slice(0, C.inputs), half = Math.ceil(ins.length / 2), fr = SHC.list.map(m => m.frames).filter(Boolean), pad = (n, w) => String(n).padStart(w, '0');
+    const outs = [['main engine', 'off, or 40\u2013100 % throttle'], ['gimbal', '\u00b15\u00b0'], ['grid fins', '\u00b125\u00b0'], ['thruster ring A (upper)', 'left, off or right'], ['thruster ring B (lower)', 'left, off or right']];
+    return `<h3>What goes in, what comes out</h3>` + jTable(['inputs (' + C.inputs + ')', ''], Array.from({ length: half }, (_, i) => ({ cells: [`${pad(i + 1, 2)} ${ins[i]}`, ins[half + i] ? `${pad(half + i + 1, 2)} ${ins[half + i]}` : ''] }))) +
+      `<p class="jsub">Position and speeds are divided by fixed scales so every input is about \u00b11. The last four inputs are the signed square roots of position and the speeds, which spreads out small values near the pad.</p>` +
+      jTable(['outputs (' + C.outputs + ')', 'range'], outs.map(o => ({ cells: o }))) +
+      `<ul><li>Network: ${C.inputs} \u2192 ${C.hidden.join(' \u2192 ')} \u2192 ${C.outputs}, ${jf(C.parameters, 0)} parameters (actor and critic), the same two hidden layers for both.</li>` +
+      `<li>One decision every ${jf(1000 / C.decisions_hz, 0)} ms: a landing of ${fr.length ? Math.min(...fr) + '\u2013' + Math.max(...fr) : 'about 400\u2013540'} decisions. The physics runs ${jf(1 / (C.physics_dt_s * C.decisions_hz), 0)} steps inside each. The network sees no wind: it senses its own motion and the air pressure.</li></ul>`;
   },
   Method() {
     const C = JC.facts && JC.facts.controller, v = JC.facts && JC.facts.vehicle; if (!C) return jNeedFacts();
@@ -3556,9 +3580,28 @@ const JS_ = {
       `<li><b>Simulation only</b>: 2-D, flat ground, no Earth rotation, no sensor noise or delay, no engine or fin failures, approximate vehicle constants. No claim about a real landing.</li>` +
       `<li><b>Reliability is not proven</b>: a 99 % claim at 95 % confidence needs 299 clean trials in a row; only level 0 comes close (${r.levels[0].successes} of ${r.levels[0].n}, lower bound ${jp(r.levels[0].lo)} %).</li>` +
       `<li><b>These ${SHC.list.length} landings are picked</b>: typical successes at each level plus ${SHC.list.length - shown} typical failures, so ${shown} of ${SHC.list.length} succeed here against ${jp(mean, 0)} % averaged over the four levels of the test.</li>` +
+      `<li><b>How sure the numbers are</b>: with 300 seeds per level the 95 % intervals are \u00b1${r.levels.map(L => jf(50 * (L.hi - L.lo), 1)).join(', \u00b1')} points wide (levels 0\u20133), so a difference under about 5 points between two networks at levels 1\u20133 is not resolved.</li>` +
+      `<li><b>Rule of three</b>: showing at least 99 % with 95 % confidence takes ${Math.ceil(Math.log(0.05) / Math.log(0.99))} clean trials in a row, at least 99.63 % takes ${Math.ceil(Math.log(0.05) / Math.log(0.9963))}.</li>` +
+      `<li><b>Not tested</b>: other wind shapes (one mean plus one sine gust per episode), other vehicles or masses, sensor noise or delay, an engine that fails. Training used levels 0\u20133 only.</li>` +
       `<li><b>Associations, not proofs</b>: the expert's failures grow with the start offset; no controlled experiment was run on the cause.</li></ul>`;
   },
 };
+function jResultsMore() {
+  const rt = jRes('sx_retrained'), ex = jRes('expert_tuned'), old = jRes('sx_imitation_quiet'); if (!rt) return '';
+  const dp = (a, b) => (a >= b ? '+' : '\u2212') + jf(Math.abs(100 * (a - b)), 1), avg = r => r.levels.reduce((a, L) => a + L.rate, 0) / r.levels.length;
+  const rows = [];
+  if (ex) rows.push({ cells: ['vs the scripted expert', ...rt.levels.map((L, i) => dp(L.rate, ex.levels[i].rate))] });
+  if (old) rows.push({ cells: ['vs the earlier network', ...rt.levels.map((L, i) => dp(L.rate, old.levels[i].rate))] });
+  rows.push({ cells: ['interval half-width', ...rt.levels.map(L => '\u00b1' + jf(50 * (L.hi - L.lo), 1))] });
+  return (JC.compact ? '' : `<h3 style="margin-top:.5em">Retrained network, in percentage points</h3>` + jTable(['', 'L0', 'L1', 'L2', 'L3'], rows)) +
+    `<p class="jsub">Average of the four levels: retrained ${jp(avg(rt))} %${ex ? `, expert ${jp(avg(ex))} %` : ''}${old ? `, earlier network ${jp(avg(old))} %` : ''}. A difference smaller than the interval half-width is not resolved by 300 seeds.</p>`;
+}
+function jRounds() {
+  const c = JC.facts && JC.facts.training_curve, ev = (JC.facts && JC.facts.expert_validation) || []; if (!c || !c.length || JC.compact) return '';
+  const rows = c.map(p => ({ cur: p.chosen, cells: [p.name === 'rt1_clone' ? 'cloning only' : 'DAgger round ' + p.name.slice(-1) + (p.chosen ? ' \u2605' : ''), ...p.levels.map(v => jp(v, 1)), jp(p.mean, 1)] }));
+  if (ev.length) rows.push({ cells: ['scripted expert', ...ev.map(v => jp(v, 1)), jp(ev.reduce((a, b) => a + b, 0) / ev.length, 1)] });
+  return jTable(['success, %', 'L0', 'L1', 'L2', 'L3', 'mean'], rows);
+}
 function jDrawResults() {
   const c = $('jc'), F = JC.facts && JC.facts.results; if (!c || !F) return;
   const x = c.getContext('2d'), WD = 420, HT = 150, L = 28, B = 132, T = 10, gw = (WD - L - 6) / 4, ks = ['sx_retrained', 'expert_tuned', 'sx_imitation_quiet'].filter(k => F[k]), bw = gw * 0.25, Y = r => B - (B - T) * r, cur = jLevel();
@@ -3591,9 +3634,16 @@ function jDrawTraining() {
 }
 function judgeSlide(k) {
   JC.slide = (k + JC.names.length) % JC.names.length;
-  const nm = JC.names[JC.slide], slide = $('jSlide'); slide.innerHTML = '<div id="jIn">' + JS_[nm]() + '</div>';
-  const inn = $('jIn'), over = inn.scrollHeight - slide.clientHeight;
-  if (over > 0 && slide.clientHeight > 60) inn.style.zoom = Math.max(0.7, slide.clientHeight / inn.scrollHeight).toFixed(3);              // a long slide shrinks to fit the column
+  const nm = JC.names[JC.slide], slide = $('jSlide');
+  JC.compact = slide.getBoundingClientRect().height < 400;                  // a short screen: the slides leave out their second table
+  slide.innerHTML = '<div id="jIn">' + JS_[nm]() + '</div>';
+  const inn = $('jIn'), box = slide.getBoundingClientRect().height, fits = z => { inn.style.zoom = z; return inn.getBoundingClientRect().height <= box; };
+  if (box > 60) {                                                           // a short slide grows (up to 18 %) and a long one shrinks (down to 70 %) until it just fills the column
+    let lo = 0.7, hi = 1.18;
+    if (fits(hi)) lo = hi; else for (let k = 0; k < 7; k++) { const mid = (lo + hi) / 2; if (fits(mid)) lo = mid; else hi = mid; }
+    if (!fits(lo)) lo *= 0.96;                                              // a table can wrap suddenly at one zoom: stay safely below it
+    inn.style.zoom = lo;
+  }
   document.querySelectorAll('#jTabs button').forEach((b, i) => b.classList.toggle('on', i === JC.slide));
   if (nm === 'Results') jDrawResults(); else if (nm === 'Training') jDrawTraining();
 }

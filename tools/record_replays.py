@@ -119,6 +119,8 @@ def episode_stats(traj: dict, info: dict, row: dict, level_rows: list[dict]) -> 
     on = [i for i, f in enumerate(fr) if f.get("on", 0) > 0]
     qi = max(range(len(fr)), key=lambda i: fr[i]["q"])
     load = max(math.hypot(f["ax"], f["ay"]) for f in fr) / G0                   # the largest specific force (what the engine adds to gravity)
+    burn_m = [f["m"] for f in fr if f.get("on", 0) > 0]
+    pulses = lambda key: sum(abs(b.get(key, 0)) > 0.1 and not abs(a.get(key, 0)) > 0.1 for a, b in zip(fr, fr[1:]))      # thruster pulses = the times a ring switches on
     speeds = sorted(float(r["touchdown_speed_mps"]) for r in level_rows)
     offs = sorted(float(r["pad_offset_m"]) for r in level_rows)
     v = float(row["touchdown_speed_mps"])
@@ -131,6 +133,11 @@ def episode_stats(traj: dict, info: dict, row: dict, level_rows: list[dict]) -> 
         touchdown=dict(t_s=r1(td.get("step", len(fr)) * dt), speed_mps=r1(td.get("speed_mps"), 2), vertical_mps=r1(td.get("vspeed_mps"), 2), horizontal_mps=r1(td.get("hspeed_mps"), 2),
                        tilt_deg=r1(math.degrees(td["tilt_rad"]), 2) if td.get("tilt_rad") is not None else None, tilt_rad=r1(td.get("tilt_rad"), 4), offset_m=r1(td.get("dist_m"), 2),
                        settle_s=r1(td.get("settle_s"), 2)),
+        control=dict(throttle_mean_pct=r1(100 * statistics.mean(burn_m), 0) if burn_m else None, throttle_peak_pct=r1(100 * max(burn_m), 0) if burn_m else None,
+                     gimbal_max_deg=r1(math.degrees(max(abs(f.get("g", 0)) for f in fr))), fin_max_deg=r1(math.degrees(max(abs(f.get("f", 0)) for f in fr)), 0),
+                     rcs_a_pulses=int(pulses("r1")), rcs_b_pulses=int(pulses("r2")), rcs_gas_left_pct=r1(100 * fr[-1].get("gas", 0), 0)),
+        extremes=dict(fall_speed_mps=r1(max(-f["vy"] for f in fr), 0), sideways_speed_mps=r1(max(abs(f["vx"]) for f in fr), 0), tilt_deg=r1(math.degrees(max(abs(f["a"]) for f in fr))),
+                      spin_dps=r1(math.degrees(max(abs(f["om"]) for f in fr)))),
         flight_time_s=r1(info.get("time_s")),
         fuel=dict(used_kg=r1(info.get("fuel_used"), 0), left_kg=r1(float(row["fuel_remaining_kg"]), 0), left_pct=r1(100 * info.get("fuel_remaining", 0), 0)),
         quality=dict(merit=r1(em.get("merit")), in_envelope_pct=r1(100 * em["env_ok"], 0) if em.get("env_ok") is not None else None, brake_peak_pct=r1(100 * em["brake_peak"], 0) if em.get("brake_peak") is not None else None),

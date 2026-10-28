@@ -2,7 +2,7 @@
  "version": 2,
  "checkpoint": "rt1_final",
  "rules_stage": 2,
- "recorded": "2026-10-28 17:53",
+ "recorded": "2026-10-28 18:17",
  "episodes": [
   {
    "file": "ep_01_L1_s122.json",
@@ -45,6 +45,21 @@
      "tilt_rad": 0.0054,
      "offset_m": 0.74,
      "settle_s": 0.95
+    },
+    "control": {
+     "throttle_mean_pct": 72.0,
+     "throttle_peak_pct": 79.0,
+     "gimbal_max_deg": 3.8,
+     "fin_max_deg": 25.0,
+     "rcs_a_pulses": 2,
+     "rcs_b_pulses": 0,
+     "rcs_gas_left_pct": 99.0
+    },
+    "extremes": {
+     "fall_speed_mps": 187.0,
+     "sideways_speed_mps": 32.0,
+     "tilt_deg": 15.9,
+     "spin_dps": 8.6
     },
     "flight_time_s": 23.6,
     "fuel": {
@@ -113,6 +128,21 @@
      "offset_m": 0.97,
      "settle_s": 0.8
     },
+    "control": {
+     "throttle_mean_pct": 72.0,
+     "throttle_peak_pct": 77.0,
+     "gimbal_max_deg": 2.2,
+     "fin_max_deg": 25.0,
+     "rcs_a_pulses": 0,
+     "rcs_b_pulses": 0,
+     "rcs_gas_left_pct": 100.0
+    },
+    "extremes": {
+     "fall_speed_mps": 172.0,
+     "sideways_speed_mps": 17.0,
+     "tilt_deg": 12.3,
+     "spin_dps": 3.6
+    },
     "flight_time_s": 26.4,
     "fuel": {
      "used_kg": 2242.0,
@@ -179,6 +209,21 @@
      "tilt_rad": 0.0101,
      "offset_m": 41.13,
      "settle_s": 2.5
+    },
+    "control": {
+     "throttle_mean_pct": 73.0,
+     "throttle_peak_pct": 83.0,
+     "gimbal_max_deg": 4.6,
+     "fin_max_deg": 25.0,
+     "rcs_a_pulses": 3,
+     "rcs_b_pulses": 0,
+     "rcs_gas_left_pct": 80.0
+    },
+    "extremes": {
+     "fall_speed_mps": 188.0,
+     "sideways_speed_mps": 126.0,
+     "tilt_deg": 40.7,
+     "spin_dps": 10.7
     },
     "flight_time_s": 25.2,
     "fuel": {
@@ -247,6 +292,21 @@
      "offset_m": 2.57,
      "settle_s": 1.15
     },
+    "control": {
+     "throttle_mean_pct": 74.0,
+     "throttle_peak_pct": 86.0,
+     "gimbal_max_deg": 4.2,
+     "fin_max_deg": 25.0,
+     "rcs_a_pulses": 2,
+     "rcs_b_pulses": 0,
+     "rcs_gas_left_pct": 97.0
+    },
+    "extremes": {
+     "fall_speed_mps": 187.0,
+     "sideways_speed_mps": 121.0,
+     "tilt_deg": 29.5,
+     "spin_dps": 9.4
+    },
     "flight_time_s": 23.4,
     "fuel": {
      "used_kg": 2463.0,
@@ -313,6 +373,21 @@
      "tilt_rad": 0.0075,
      "offset_m": 4.47,
      "settle_s": 1.5
+    },
+    "control": {
+     "throttle_mean_pct": 73.0,
+     "throttle_peak_pct": 80.0,
+     "gimbal_max_deg": 4.1,
+     "fin_max_deg": 25.0,
+     "rcs_a_pulses": 2,
+     "rcs_b_pulses": 0,
+     "rcs_gas_left_pct": 94.0
+    },
+    "extremes": {
+     "fall_speed_mps": 270.0,
+     "sideways_speed_mps": 101.0,
+     "tilt_deg": 30.9,
+     "spin_dps": 12.4
     },
     "flight_time_s": 20.8,
     "fuel": {
@@ -381,6 +456,21 @@
      "offset_m": 78.64,
      "settle_s": null
     },
+    "control": {
+     "throttle_mean_pct": 72.0,
+     "throttle_peak_pct": 85.0,
+     "gimbal_max_deg": 4.5,
+     "fin_max_deg": 25.0,
+     "rcs_a_pulses": 2,
+     "rcs_b_pulses": 0,
+     "rcs_gas_left_pct": 97.0
+    },
+    "extremes": {
+     "fall_speed_mps": 238.0,
+     "sideways_speed_mps": 106.0,
+     "tilt_deg": 20.9,
+     "spin_dps": 11.5
+    },
     "flight_time_s": 19.9,
     "fuel": {
      "used_kg": 2581.0,
@@ -447,6 +537,21 @@
      "tilt_rad": 0.0004,
      "offset_m": 1.0,
      "settle_s": 0.85
+    },
+    "control": {
+     "throttle_mean_pct": 72.0,
+     "throttle_peak_pct": 77.0,
+     "gimbal_max_deg": 2.6,
+     "fin_max_deg": 25.0,
+     "rcs_a_pulses": 1,
+     "rcs_b_pulses": 0,
+     "rcs_gas_left_pct": 100.0
+    },
+    "extremes": {
+     "fall_speed_mps": 171.0,
+     "sideways_speed_mps": 17.0,
+     "tilt_deg": 10.2,
+     "spin_dps": 3.8
     },
     "flight_time_s": 26.9,
     "fuel": {
@@ -515,6 +620,21 @@
      "offset_m": 2.68,
      "settle_s": 0.95
     },
+    "control": {
+     "throttle_mean_pct": 73.0,
+     "throttle_peak_pct": 81.0,
+     "gimbal_max_deg": 3.8,
+     "fin_max_deg": 25.0,
+     "rcs_a_pulses": 1,
+     "rcs_b_pulses": 0,
+     "rcs_gas_left_pct": 99.0
+    },
+    "extremes": {
+     "fall_speed_mps": 202.0,
+     "sideways_speed_mps": 84.0,
+     "tilt_deg": 30.1,
+     "spin_dps": 8.1
+    },
     "flight_time_s": 22.1,
     "fuel": {
      "used_kg": 2545.0,
@@ -581,6 +701,21 @@
      "tilt_rad": 0.01,
      "offset_m": 20.24,
      "settle_s": 1.55
+    },
+    "control": {
+     "throttle_mean_pct": 71.0,
+     "throttle_peak_pct": 76.0,
+     "gimbal_max_deg": 5.0,
+     "fin_max_deg": 25.0,
+     "rcs_a_pulses": 3,
+     "rcs_b_pulses": 0,
+     "rcs_gas_left_pct": 90.0
+    },
+    "extremes": {
+     "fall_speed_mps": 192.0,
+     "sideways_speed_mps": 49.0,
+     "tilt_deg": 16.0,
+     "spin_dps": 11.0
     },
     "flight_time_s": 23.8,
     "fuel": {
@@ -649,6 +784,21 @@
      "offset_m": 1.78,
      "settle_s": 1.15
     },
+    "control": {
+     "throttle_mean_pct": 73.0,
+     "throttle_peak_pct": 78.0,
+     "gimbal_max_deg": 3.7,
+     "fin_max_deg": 25.0,
+     "rcs_a_pulses": 1,
+     "rcs_b_pulses": 0,
+     "rcs_gas_left_pct": 98.0
+    },
+    "extremes": {
+     "fall_speed_mps": 190.0,
+     "sideways_speed_mps": 56.0,
+     "tilt_deg": 19.2,
+     "spin_dps": 9.5
+    },
     "flight_time_s": 23.4,
     "fuel": {
      "used_kg": 2430.0,
@@ -715,6 +865,21 @@
      "tilt_rad": 0.0078,
      "offset_m": 4.3,
      "settle_s": 1.4
+    },
+    "control": {
+     "throttle_mean_pct": 72.0,
+     "throttle_peak_pct": 79.0,
+     "gimbal_max_deg": 4.0,
+     "fin_max_deg": 25.0,
+     "rcs_a_pulses": 2,
+     "rcs_b_pulses": 0,
+     "rcs_gas_left_pct": 96.0
+    },
+    "extremes": {
+     "fall_speed_mps": 233.0,
+     "sideways_speed_mps": 113.0,
+     "tilt_deg": 31.2,
+     "spin_dps": 9.9
     },
     "flight_time_s": 21.7,
     "fuel": {
