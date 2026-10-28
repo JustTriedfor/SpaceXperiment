@@ -162,7 +162,7 @@ def test_showcase_starts_no_polling_and_no_training_calls():
     live, other = boot.split("else {")
     assert "setInterval" not in live and "refreshInfo" not in live and "pollTrain" not in live       # the showcase branch polls nothing
     for line in PAGE.splitlines():                                                                    # every other timer that talks to the server is switched off in showcase and recorder
-        if re.search(r"setInterval\(.*(live_ids|refreshRunNames|updateBrainText)", line):
+        if re.search(r"setInterval\(.*(live_ids|refreshRunNames|updateBrainText)", line) and "SHB.timers" not in line:
             assert "!LITE" in line, line
 
 
@@ -308,8 +308,29 @@ def test_recorder_screen_is_a_plain_page_that_polls_only_while_recording():
     assert "if (RECP) recorderInit();" in PAGE and "if (!RECP) requestAnimationFrame(loop);" in PAGE
     assert "const LITE = SHOW || RECP;" in PAGE
     for line in PAGE.splitlines():
-        if re.search(r"setInterval\(.*(live_ids|refreshRunNames|updateBrainText)", line):
+        if re.search(r"setInterval\(.*(live_ids|refreshRunNames|updateBrainText)", line) and "SHB.timers" not in line:
             assert "!LITE" in line, line
     poll = PAGE[PAGE.index("async function recorderPoll()"):PAGE.index("function recorderInit()")]
     assert poll.count("setTimeout(recorderPoll") == 2 and "if (run) RC.timer = setTimeout(recorderPoll, 700);" in poll       # one retry when the server is busy, one while a recording runs
     assert "setInterval" not in PAGE[PAGE.index("const RC = {"):PAGE.index("let camT = 0")]
+
+
+def test_showcase_keeps_the_usual_page_below_the_picture_and_wakes_it_only_when_scrolled_to():
+    css = PAGE[:PAGE.index("</style>")]
+    assert not re.search(r"body\.showcase\s+\.below[^{]*\{[^}]*display:\s*none", css)                 # the usual tabs are not removed
+    fn = PAGE[PAGE.index("function showcaseBelow(on)"):PAGE.index("function showcaseWatch(now)")]
+    assert "window.scrollY > window.innerHeight * 0.4" in fn and "buildForm()" in fn and "refreshInfo()" in fn and "SHB.timers.forEach(clearInterval)" in fn
+    assert "if (SHOW) window.addEventListener('scroll'" in fn
+    boot = PAGE[PAGE.index("else if (SHOW) { mkSlots(1)"):PAGE.index("if (!RECP) requestAnimationFrame(loop);")]
+    assert "buildForm" not in boot.split("else {")[0] and "refreshInfo" not in boot.split("else {")[0]        # nothing of it runs at the start of the showcase
+    assert "if (!SHOW) resetView(info.n_envs)" in PAGE and "&& !SHOW) resetView(info.n_envs)" in PAGE         # the live run's size never rebuilds the replay's slot
+
+
+def test_showcase_does_not_draw_while_scrolled_away_and_the_switch_below_leaves_it():
+    loop = next(l for l in PAGE.splitlines() if l.startswith("function loop(now)"))
+    assert "window.scrollY >= window.innerHeight" in loop and loop.index("window.scrollY") < loop.index("update(dt)")
+    seg = PAGE[PAGE.index("document.querySelectorAll('#modeseg button').forEach(b => {"):]
+    seg = seg[:seg.index("setMode(b.dataset.mode);")]
+    assert "SHOW && (b.dataset.mode === 'simple' || b.dataset.mode === 'advanced')" in seg and "location.href = '/'" in seg
+    assert ".screen.idle .jhead .seg" not in PAGE                                                               # the switch in the data column no longer fades away
+    assert "scroll down for the usual tabs" in PAGE

@@ -181,7 +181,7 @@
   .rectable td, .rectable th { padding:2px 6px; text-align:right; } .rectable th { color:var(--mute); font-weight:500; } .rectable td:first-child, .rectable th:first-child { text-align:left; } .rectable td { border-top:1px solid #151c36; }
   .rectable .ok { color:var(--good); } .rectable .no { color:var(--bad); } .recopts { display:grid; grid-template-columns:auto 1fr; gap:6px 12px; align-items:center; max-width:560px; margin:8px 0; } .recopts label { color:var(--mute); }
   pre.reclog { margin:8px 0 0; max-height:220px; overflow:auto; font:11.5px ui-monospace,Consolas,monospace; background:#080b16; border:1px solid var(--line); border-radius:6px; padding:8px; white-space:pre-wrap; }
-  body.showcase .below, body.showcase #mini, body.showcase #cam2Box, body.showcase .hudbar { display:none; }                /* (the partner cam is for pairs only) */
+  body.showcase #mini, body.showcase #cam2Box, body.showcase .hudbar { display:none; }                /* (the partner cam is for pairs only) */
   /* the Showcase interface: the picture on the left, the data a reader asks for on the right (a column of text and two small charts, rebuilt only when a landing or a slide changes) */
   .judge { display:none; }
   body.showcase .screen { display:grid; grid-template-columns:minmax(0, 1fr) clamp(340px, 28vw, 480px); }
@@ -190,7 +190,7 @@
   @media (max-width:900px) { body.showcase .screen { display:flex; } body.showcase .judge { display:none; } }
   .jhead { display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:space-between; } .jhead .seg button { padding:3px 10px; font-size:.95em; }
   .jhead .seg { width:100%; } .jhead .seg button { flex:1 1 auto; padding:3px 6px; font-size:.88em; white-space:nowrap; }
-  .screen.idle .jhead .seg { opacity:.0; } .jhead .seg { transition:opacity .4s; }
+  .jhint { flex:none; text-align:center; color:var(--mute); font-size:.9em; }
   .jcard { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:.55em .75em; }
   .jnow-h { display:flex; justify-content:space-between; align-items:baseline; gap:8px; font-weight:700; font-size:1.08em; } .jnow-h .badge { padding:1px 9px; border-radius:20px; font-size:.85em; font-weight:700; }
   .badge.ok { background:#123524; color:var(--good); } .badge.no { background:#3a1620; color:var(--bad); } .badge.fly { background:#182042; color:var(--mute); }
@@ -320,6 +320,7 @@
         <div class="seg" id="judgeSeg" title="Interface"><button data-mode="simple">Simple</button><button data-mode="advanced">Advanced</button><button data-mode="showcase" class="on">Showcase</button><button data-mode="recorder">Showcase Recorder</button></div></div>
       <div class="jcard" id="jNow"></div>
       <div class="jcard jslides"><div class="jtabs" id="jTabs"></div><div class="jslide" id="jSlide"></div></div>
+      <div class="jhint">↓ scroll down for the usual tabs and the interface switch</div>
     </aside>
 </div>
 <div class="below">
@@ -1243,8 +1244,8 @@ function resetView(n) {
 async function refreshInfo() {
   try {
     const info = await (await fetch('/api/info')).json();
-    if (info.run !== currentRun) { currentRun = info.run; resetView(info.n_envs); await refreshRuns(); }
-    else if (info.n_envs && info.n_envs !== slots.length) resetView(info.n_envs);
+    if (info.run !== currentRun) { currentRun = info.run; if (!SHOW) resetView(info.n_envs); await refreshRuns(); }
+    else if (info.n_envs && info.n_envs !== slots.length && !SHOW) resetView(info.n_envs);
     agentInfo = info.agents || null;
     rulesStage = info.stage;
     $('groupcard').style.display = agentInfo ? 'block' : 'none';
@@ -2496,7 +2497,15 @@ function setMode(m) {
   }
   updateRunName && updateRunName(); suPlan && suPlan();
 }
-document.querySelectorAll('#modeseg button').forEach(b => { b.onclick = () => setMode(b.dataset.mode); });
+document.querySelectorAll('#modeseg button').forEach(b => {
+  b.onclick = () => {
+    if (SHOW && (b.dataset.mode === 'simple' || b.dataset.mode === 'advanced')) {                                // from the showcase, the normal page is another page
+      try { localStorage.setItem('spacexperiment.mode', b.dataset.mode); } catch (e) { /* storage may be blocked */ }
+      location.href = '/'; return;
+    }
+    setMode(b.dataset.mode);
+  };
+});
 
 // ---- Startup tab
 let suTimer = null, suState = null, suModels = [], suKinds = {};
@@ -2680,6 +2689,7 @@ document.addEventListener('keydown', e => { if (e.ctrlKey || e.metaKey || e.altK
 
 // ---- start in the remembered mode (simple unless you chose advanced before)
 (function () { let m = 'simple'; try { m = localStorage.getItem('spacexperiment.mode') || 'simple'; } catch (e) { /* ignore */ } buildSimple(); setMode(m); })();
+if (SHOW || RECP) document.querySelectorAll('#modeseg button').forEach(b => b.classList.toggle('on', b.dataset.mode === (SHOW ? 'showcase' : 'recorder')));
 
 // ---- movable panels: drag any panel by its header; positions are remembered per layout as fractions of the stage
 (function () {
@@ -3419,6 +3429,16 @@ function showcaseCaption(phase) {                                        // phas
   el.style.display = 'block';
   judgeNow(phase); if (phase !== 'done') judgeSlide(JC.slide);                  // the slides mark the level of the landing on screen
 }
+const SHB = { on: false, built: false, timers: [] };
+function showcaseBelow(on) {                                              // the usual page under the picture: its updates run only while you are scrolled down to it
+  if (on === SHB.on) return; SHB.on = on;
+  if (on) {
+    if (!SHB.built) { SHB.built = true; buildForm(); pollTests(); }
+    refreshInfo(); pollTrain(); refreshRunNames();
+    SHB.timers = [setInterval(refreshInfo, 4000), setInterval(pollTrain, 3000), setInterval(refreshTable, 250), setInterval(refreshRunNames, 5000)];
+  } else { SHB.timers.forEach(clearInterval); SHB.timers = []; }
+}
+if (SHOW) window.addEventListener('scroll', () => showcaseBelow(window.scrollY > window.innerHeight * 0.4), { passive: true });
 function showcaseWatch(now) {                                            // a visitor who pauses the picture does not leave the showcase frozen
   judgeTick(now);
   if (!paused) { SHC.pausedAt = 0; return; }
@@ -3643,7 +3663,7 @@ function recorderInit() {
 
 let camT = 0, cam2T = 0;
 const CAM_FPS = 12;                                                               // the landing cam is ray-traced: this many pictures a second (lower = lighter on the page)
-function loop(now) { if (SHOW) { if (document.hidden || now - SHC.lastDraw < 1000 / SHC.FPS - 2) { requestAnimationFrame(loop); return; } SHC.lastDraw = now; } const dt = Math.min(.05, (now - lastT) / 1000); lastT = now; update(dt); draw(); if (ADM.on) adminFrame(now); else { if (brainOn) drawBrain(); if (miniOpen) drawMini(); try { if (now - camT >= 1000 / CAM_FPS - 4) { camT = now; drawCam(); } if (now - cam2T >= 1000 / CAM2_FPS - 4) { cam2T = now; drawCamPartner(); } drawPhase(); drawGraphs(now); } catch (e) { /* never stop the animation loop */ } } requestAnimationFrame(loop); }
+function loop(now) { if (SHOW) { if (document.hidden || window.scrollY >= window.innerHeight || now - SHC.lastDraw < 1000 / SHC.FPS - 2) { requestAnimationFrame(loop); return; } SHC.lastDraw = now; } const dt = Math.min(.05, (now - lastT) / 1000); lastT = now; update(dt); draw(); if (ADM.on) adminFrame(now); else { if (brainOn) drawBrain(); if (miniOpen) drawMini(); try { if (now - camT >= 1000 / CAM_FPS - 4) { camT = now; drawCam(); } if (now - cam2T >= 1000 / CAM2_FPS - 4) { cam2T = now; drawCamPartner(); } drawPhase(); drawGraphs(now); } catch (e) { /* never stop the animation loop */ } } requestAnimationFrame(loop); }
 if (RECP) recorderInit();                                                       // the recorder screen draws no landing: the stage loop below is not started
 else if (SHOW) { mkSlots(1); miniOpen = false; showcaseInit(); }                       // showcase: one lander, no polling of the server, no training controls
 else {
