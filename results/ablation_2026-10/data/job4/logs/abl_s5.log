@@ -1,0 +1,49 @@
+[18:01:09 +    0s] attempt abl_s5: {"start": "sx_imitation_quiet", "expert_episodes": 800, "expert_levels": "0,1,1,2,2,3", "expert_noise": 0.12, "clone_epochs": 40, "clone_lr": 0.001, "rounds": 8, "dagger_episodes": 180, "dagger_levels": "0,1,1,2,2,3,3", "dagger_noise": 0.1, "dagger_epochs": 20, "dagger_lr": 0.0005, "final_lr": 0.0001, "final_rounds": 2, "batch": 1024, "low_weight": 5.0, "log_std": -1.6, "val_episodes": 200, "workers": 12, "device": "cuda", "net_arch": null, "seed": 5}
+[18:01:09 +    0s] seeds: test 0-299 (not used), validation 100000-100199, expert training 51000000-51000895, DAgger round r 52000000+r*100000+i
+[18:01:35 +   26s] expert: 749 landings kept of 896 flown (586 of them strict successes)
+[18:06:04 +  295s] [clone] [data] 749 episodes, 348443 steps (filters: none)
+[18:06:04 +  295s] [clone] [epoch 40/40] {"bc": 0.00286, "value": 0.02881}
+[18:06:04 +  295s] [clone] [done] saved abl_s5_clone.zip in 249.3 s
+[18:06:38 +  329s] validation abl_s5_clone: {"levels": {"0": 0.275, "1": 0.265, "2": 0.125, "3": 0.06}, "mean": 0.18125000000000002}
+[18:06:58 +  349s] round 1: abl_s5_clone flew 180 DAgger episodes, 93 strict successes (with noise 0.1)
+[18:09:31 +  502s] [fit] [data] 929 episodes, 429221 steps (filters: none)
+[18:09:31 +  502s] [fit] [epoch 20/20] {"bc": 0.00305, "value": 0.03833}
+[18:09:31 +  502s] [fit] [done] saved abl_s5_dagger_1.zip in 133.3 s
+[18:10:04 +  535s] validation abl_s5_dagger_1: {"levels": {"0": 1.0, "1": 0.785, "2": 0.405, "3": 0.18}, "mean": 0.5925000000000001}
+[18:10:23 +  554s] round 2: abl_s5_dagger_1 flew 180 DAgger episodes, 112 strict successes (with noise 0.1)
+[18:13:01 +  712s] [fit] [data] 1109 episodes, 510969 steps (filters: none)
+[18:13:01 +  712s] [fit] [epoch 20/20] {"bc": 0.00299, "value": 0.04116}
+[18:13:01 +  712s] [fit] [done] saved abl_s5_dagger_2.zip in 139.6 s
+[18:13:34 +  745s] validation abl_s5_dagger_2: {"levels": {"0": 1.0, "1": 0.84, "2": 0.48, "3": 0.215}, "mean": 0.6337499999999999}
+[18:13:53 +  764s] round 3: abl_s5_dagger_2 flew 180 DAgger episodes, 91 strict successes (with noise 0.1)
+[18:16:38 +  929s] [fit] [data] 1289 episodes, 592737 steps (filters: none)
+[18:16:38 +  929s] [fit] [epoch 20/20] {"bc": 0.00312, "value": 0.04289}
+[18:16:38 +  929s] [fit] [done] saved abl_s5_dagger_3.zip in 145.4 s
+[18:17:09 +  960s] validation abl_s5_dagger_3: {"levels": {"0": 1.0, "1": 0.84, "2": 0.48, "3": 0.23}, "mean": 0.6375}
+[18:17:27 +  979s] round 4: abl_s5_dagger_3 flew 180 DAgger episodes, 91 strict successes (with noise 0.1)
+[18:20:38 + 1169s] [fit] [data] 1469 episodes, 673549 steps (filters: none)
+[18:20:38 + 1169s] [fit] [epoch 20/20] {"bc": 0.00288, "value": 0.04547}
+[18:20:38 + 1169s] [fit] [done] saved abl_s5_dagger_4.zip in 173.4 s
+[18:21:10 + 1201s] validation abl_s5_dagger_4: {"levels": {"0": 1.0, "1": 0.845, "2": 0.475, "3": 0.235}, "mean": 0.6387499999999999}
+[18:21:29 + 1220s] round 5: abl_s5_dagger_4 flew 180 DAgger episodes, 95 strict successes (with noise 0.1)
+[18:25:45 + 1476s] [fit] [data] 1649 episodes, 754574 steps (filters: none)
+[18:25:45 + 1476s] [fit] [epoch 20/20] {"bc": 0.00279, "value": 0.044}
+[18:25:45 + 1476s] [fit] [done] saved abl_s5_dagger_5.zip in 232.5 s
+[18:26:21 + 1512s] validation abl_s5_dagger_5: {"levels": {"0": 1.0, "1": 0.855, "2": 0.495, "3": 0.235}, "mean": 0.64625}
+[18:26:42 + 1533s] round 6: abl_s5_dagger_5 flew 180 DAgger episodes, 96 strict successes (with noise 0.1)
+[18:31:29 + 1820s] [fit] [data] 1829 episodes, 835199 steps (filters: none)
+[18:31:29 + 1820s] [fit] [epoch 20/20] {"bc": 0.00264, "value": 0.04321}
+[18:31:29 + 1820s] [fit] [done] saved abl_s5_dagger_6.zip in 259.1 s
+[18:31:56 + 1847s] validation abl_s5_dagger_6: {"levels": {"0": 1.0, "1": 0.84, "2": 0.49, "3": 0.225}, "mean": 0.63875}
+[18:32:08 + 1859s] round 7: abl_s5_dagger_6 flew 180 DAgger episodes, 104 strict successes (with noise 0.1)
+[18:33:49 + 1961s] [fit] [data] 2009 episodes, 917081 steps (filters: none)
+[18:33:49 + 1961s] [fit] [epoch 20/20] {"bc": 0.00242, "value": 0.0436}
+[18:33:49 + 1961s] [fit] [done] saved abl_s5_dagger_7.zip in 89.1 s
+[18:34:14 + 1985s] validation abl_s5_dagger_7: {"levels": {"0": 1.0, "1": 0.85, "2": 0.485, "3": 0.225}, "mean": 0.64}
+[18:34:30 + 2001s] round 8: abl_s5_dagger_7 flew 180 DAgger episodes, 105 strict successes (with noise 0.1)
+[18:36:02 + 2093s] [fit] [data] 2189 episodes, 997675 steps (filters: none)
+[18:36:02 + 2093s] [fit] [epoch 20/20] {"bc": 0.00239, "value": 0.04221}
+[18:36:02 + 2093s] [fit] [done] saved abl_s5_dagger_8.zip in 79.4 s
+[18:36:29 + 2120s] validation abl_s5_dagger_8: {"levels": {"0": 1.0, "1": 0.85, "2": 0.495, "3": 0.23}, "mean": 0.64375}
+[18:36:29 + 2120s] abl_s5_final = abl_s5_dagger_5 (validation mean 0.6462)
+[18:36:29 + 2120s] done in 2120 s

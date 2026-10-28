@@ -1,0 +1,154 @@
+"""Evaluation for the paper: one CSV row per episode for each controller and level.
+
+    python paper_assets/scripts/run_eval.py [--episodes 300] [--levels 0,1,2,3] [--workers 10] [--out paper_assets/episodes.csv]
+
+Controllers
+  sx_imitation_quiet  the best single-lander checkpoint (behaviour cloning + DAgger), flown deterministically (the policy's mean action, NO exploration noise)
+  pair_safe_final     the pair of two networks (one per lander) on Dual land, flown deterministically; every lander is one row (two rows per seed, column `lander` = A / B)
+  expert_tuned        the scripted expert (src/sim/expert.py as it is now) flying SpaceXEnv, no noise
+
+Seeds are 0 .. episodes-1 for every level and controller (env.reset(seed=seed)). The environment is the real one (src/sim), rules stage 2, nothing is changed.
+Nothing in src/ is modified by this script.
+"""
+from __future__ import annotations
+
+import argparse
+import csv
+import math
+import sys
+import time
+from multiprocessing import Pool
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+
+import numpy as np
+
+from src.utils import config as C
+
+CONTROLLERS = ("sx_imitation_quiet", "pair_safe_final", "expert_tuned")
+FIELDS = ["controller", "level", "wind_mean_mps", "seed", "touchdown_speed_mps", "tilt_rad", "pad_offset_m", "fuel_remaining_kg", "success", "failure_reason",
+          "lander", "joint_success", "wind_scale_mps", "wind_gust_amp_mps", "end", "failure_flags", "out_of_fuel", "ignitions", "final_x_m"]
+_CACHE: dict = {}
+
+
+def failure_flags(m: dict) -> list:
+    """Every success rule an episode broke (the rules of src/sim/env.py::_metrics: within SUCCESS_MAX_DIST_M, at most SUCCESS_MAX_SPEED_MPS at the first touch, tilt at
+    most SUCCESS_MAX_TILT_RAD, never out of propellant, and the episode must end at rest)."""
+    flags = []
+    if m["out_of_fuel"]:
+        flags.append("out_of_fuel")
+    if not m["touchdown"]:
+        flags.append("no_touchdown")
+        return flags
+    if m["speed_mps"] > C.SUCCESS_MAX_SPEED_MPS:
+        flags.append("too_fast")
+    if m["tilt_rad"] > C.SUCCESS_MAX_TILT_RAD:
+        flags.append("tilted")
+    if m["dist_m"] > C.SUCCESS_MAX_DIST_M:
+        flags.append("off_pad")
+    if m["end"] != "rest":
+        flags.append("not_at_rest")
+    return flags
+
+
+def failure_reason(m: dict) -> str:
+    """One label per failed episode, in this priority: out_of_fuel, too_fast, tilted, off_pad; anything else (no touchdown at all, a fall over, a time out) = crashed_other."""
+    if m["success"]:
+        return "none"
+    fl = failure_flags(m)
+    for k in ("out_of_fuel", "too_fast", "tilted", "off_pad"):
+        if k in fl:
+            return k
+    return "crashed_other"
+
+
+def _row(controller, level, seed, m, wind, lander="", joint="", final_x=None):
+    nan = lambda v: "" if v is None or (isinstance(v, float) and math.isnan(v)) else repr(float(v))
+    return dict(controller=controller, level=level, wind_mean_mps=repr(float(wind.mean) + 0.0), seed=seed, touchdown_speed_mps=nan(m["speed_mps"]) if m["touchdown"] else "",
+                tilt_rad=nan(m["tilt_rad"]) if m["touchdown"] else "", pad_offset_m=nan(m["dist_m"]) if m["touchdown"] else "",
+                fuel_remaining_kg=repr(float(C.FUEL_BUDGET - m["fuel_used"])), success=int(bool(m["success"])), failure_reason=failure_reason(m), lander=lander,
+                joint_success=joint, wind_scale_mps=C.LEVELS[level]["wind_power"], wind_gust_amp_mps=repr(float(wind.amp)), end=m["end"], failure_flags="|".join(failure_flags(m)),
+                out_of_fuel=int(bool(m["out_of_fuel"])), ignitions=m["ignitions"], final_x_m="" if final_x is None else repr(float(final_x) + 0.0))
+
+
+def _init():
+    import torch
+    torch.set_num_threads(1)
+
+
+def run_one(args):
+    controller, level, seed = args
+    if controller == "sx_imitation_quiet":
+        from stable_baselines3 import PPO
+        from src.sim.env import SpaceXEnv
+        from src.training.weights_io import resolve_checkpoint
+        model = _CACHE.get("single") or _CACHE.setdefault("single", PPO.load(str(resolve_checkpoint("sx_imitation_quiet")), device="cpu"))
+        env = SpaceXEnv(level=level)
+        env.set_rules_stage(2)
+        obs, _ = env.reset(seed=seed)
+        done = False
+        while not done:
+            obs, _, te, tr, info = env.step(model.predict(obs, deterministic=True)[0])
+            done = te or tr
+        return [_row(controller, level, seed, info["episode_metrics"], env.wind, final_x=env.s.x)]
+    if controller == "expert_tuned":
+        from src.sim.env import SpaceXEnv
+        from src.sim.expert import Expert
+        from src.sim.expert_data import _label
+        env = SpaceXEnv(level=level)
+        env.set_rules_stage(2)
+        obs, _ = env.reset(seed=seed)
+        ex = Expert()
+        ex.reset()
+        done = False
+        while not done:
+            obs, _, te, tr, info = env.step(_label(ex, env, False))
+            done = te or tr
+        return [_row(controller, level, seed, info["episode_metrics"], env.wind, final_x=env.s.x)]
+    from src.sim.dual_env import DualEnv, agent_view
+    from src.training.pair import load_pair_models
+    mA, mB = _CACHE.get("pair") or _CACHE.setdefault("pair", load_pair_models("pair_safe_final"))
+    env = DualEnv(level=level)
+    env.set_rules_stage(2)
+    obs, _ = env.reset(seed=seed)
+    done = False
+    while not done:
+        act = np.concatenate([mA.predict(agent_view(obs, 0), deterministic=True)[0], mB.predict(agent_view(obs, 1), deterministic=True)[0]])
+        obs, _, te, tr, info = env.step(act)
+        done = te or tr
+    joint = int(bool(info["episode_metrics"]["success"]))
+    return [_row(controller, level, seed, env.metrics[k], env.a.wind, lander="AB"[k], joint=joint, final_x=(env.a, env.b)[k].s.x) for k in (0, 1)]
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--episodes", type=int, default=300)
+    ap.add_argument("--levels", default="0,1,2,3")
+    ap.add_argument("--workers", type=int, default=10)
+    ap.add_argument("--controllers", default=",".join(CONTROLLERS))
+    ap.add_argument("--out", default=str(ROOT / "paper_assets" / "episodes.csv"))
+    a = ap.parse_args()
+    levels = [int(x) for x in a.levels.split(",")]
+    ctrls = a.controllers.split(",")
+    jobs = [(c, lv, s) for c in ctrls for lv in levels for s in range(a.episodes)]
+    t0 = time.time()
+    rows = []
+    with Pool(a.workers, initializer=_init) as pool:
+        for k, r in enumerate(pool.imap_unordered(run_one, jobs, chunksize=4), 1):
+            rows.extend(r)
+            if k % 200 == 0:
+                print(f"{k}/{len(jobs)} episodes, {time.time() - t0:.0f} s", flush=True)
+    order = {c: i for i, c in enumerate(ctrls)}
+    rows.sort(key=lambda r: (order[r["controller"]], r["level"], r["seed"], r["lander"]))
+    Path(a.out).parent.mkdir(parents=True, exist_ok=True)
+    with open(a.out, "w", newline="") as f:
+        w = csv.DictWriter(f, FIELDS)
+        w.writeheader()
+        w.writerows(rows)
+    print(f"wrote {a.out}: {len(rows)} rows from {len(jobs)} episodes in {time.time() - t0:.0f} s")
+
+
+if __name__ == "__main__":
+    main()

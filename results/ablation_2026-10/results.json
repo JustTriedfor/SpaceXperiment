@@ -1,0 +1,606 @@
+{
+ "job1": {
+  "L0": {
+   "n": 300,
+   "successes": 300,
+   "rate": 1.0,
+   "wilson_lower": 0.9873570287754538,
+   "wilson_upper": 0.9999999999999998
+  },
+  "L1": {
+   "n": 300,
+   "successes": 258,
+   "rate": 0.86,
+   "wilson_lower": 0.8161683876490509,
+   "wilson_upper": 0.8947286730692758
+  },
+  "L2": {
+   "n": 300,
+   "successes": 161,
+   "rate": 0.5366666666666666,
+   "wilson_lower": 0.4801320652390865,
+   "wilson_upper": 0.5922741168711132
+  },
+  "L3": {
+   "n": 300,
+   "successes": 95,
+   "rate": 0.31666666666666665,
+   "wilson_lower": 0.26662835068573615,
+   "wilson_upper": 0.37134073876326396
+  }
+ },
+ "job2": {
+  "expert_tuned_L0": {
+   "controller": "scripted expert",
+   "n": 300,
+   "successes": 300,
+   "failures": 0,
+   "too_fast": 0,
+   "off_pad": 0,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  },
+  "expert_tuned_L1": {
+   "controller": "scripted expert",
+   "n": 300,
+   "successes": 258,
+   "failures": 42,
+   "too_fast": 2,
+   "off_pad": 40,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  },
+  "expert_tuned_L2": {
+   "controller": "scripted expert",
+   "n": 300,
+   "successes": 161,
+   "failures": 139,
+   "too_fast": 68,
+   "off_pad": 71,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  },
+  "expert_tuned_L3": {
+   "controller": "scripted expert",
+   "n": 300,
+   "successes": 95,
+   "failures": 205,
+   "too_fast": 151,
+   "off_pad": 54,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  },
+  "rt1_final_L0": {
+   "controller": "trained controller",
+   "n": 300,
+   "successes": 300,
+   "failures": 0,
+   "too_fast": 0,
+   "off_pad": 0,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  },
+  "rt1_final_L1": {
+   "controller": "trained controller",
+   "n": 300,
+   "successes": 259,
+   "failures": 41,
+   "too_fast": 9,
+   "off_pad": 32,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  },
+  "rt1_final_L2": {
+   "controller": "trained controller",
+   "n": 300,
+   "successes": 161,
+   "failures": 139,
+   "too_fast": 75,
+   "off_pad": 64,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  },
+  "rt1_final_L3": {
+   "controller": "trained controller",
+   "n": 300,
+   "successes": 90,
+   "failures": 210,
+   "too_fast": 153,
+   "off_pad": 57,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  }
+ },
+ "job3": {
+  "noise0_L0": {
+   "noise_percent": 0,
+   "level": 0,
+   "n": 300,
+   "successes": 300,
+   "rate": 1.0,
+   "wilson_lower": 0.9873570287754538,
+   "wilson_upper": 0.9999999999999998
+  },
+  "noise0_L1": {
+   "noise_percent": 0,
+   "level": 1,
+   "n": 300,
+   "successes": 259,
+   "rate": 0.8633333333333333,
+   "wilson_lower": 0.8198445870022494,
+   "wilson_upper": 0.8976348539079136
+  },
+  "noise0_L2": {
+   "noise_percent": 0,
+   "level": 2,
+   "n": 300,
+   "successes": 161,
+   "rate": 0.5366666666666666,
+   "wilson_lower": 0.4801320652390865,
+   "wilson_upper": 0.5922741168711132
+  },
+  "noise0_L3": {
+   "noise_percent": 0,
+   "level": 3,
+   "n": 300,
+   "successes": 90,
+   "rate": 0.3,
+   "wilson_lower": 0.2509396637848768,
+   "wilson_upper": 0.35411752470494157
+  },
+  "noise1_L0": {
+   "noise_percent": 1,
+   "level": 0,
+   "n": 300,
+   "successes": 0,
+   "rate": 0.0,
+   "wilson_lower": 8.673617379884035e-19,
+   "wilson_upper": 0.012642971224546034
+  },
+  "noise1_L1": {
+   "noise_percent": 1,
+   "level": 1,
+   "n": 300,
+   "successes": 0,
+   "rate": 0.0,
+   "wilson_lower": 8.673617379884035e-19,
+   "wilson_upper": 0.012642971224546034
+  },
+  "noise1_L2": {
+   "noise_percent": 1,
+   "level": 2,
+   "n": 300,
+   "successes": 0,
+   "rate": 0.0,
+   "wilson_lower": 8.673617379884035e-19,
+   "wilson_upper": 0.012642971224546034
+  },
+  "noise1_L3": {
+   "noise_percent": 1,
+   "level": 3,
+   "n": 300,
+   "successes": 0,
+   "rate": 0.0,
+   "wilson_lower": 8.673617379884035e-19,
+   "wilson_upper": 0.012642971224546034
+  },
+  "noise2_L0": {
+   "noise_percent": 2,
+   "level": 0,
+   "n": 300,
+   "successes": 0,
+   "rate": 0.0,
+   "wilson_lower": 8.673617379884035e-19,
+   "wilson_upper": 0.012642971224546034
+  },
+  "noise2_L1": {
+   "noise_percent": 2,
+   "level": 1,
+   "n": 300,
+   "successes": 0,
+   "rate": 0.0,
+   "wilson_lower": 8.673617379884035e-19,
+   "wilson_upper": 0.012642971224546034
+  },
+  "noise2_L2": {
+   "noise_percent": 2,
+   "level": 2,
+   "n": 300,
+   "successes": 0,
+   "rate": 0.0,
+   "wilson_lower": 8.673617379884035e-19,
+   "wilson_upper": 0.012642971224546034
+  },
+  "noise2_L3": {
+   "noise_percent": 2,
+   "level": 3,
+   "n": 300,
+   "successes": 0,
+   "rate": 0.0,
+   "wilson_lower": 8.673617379884035e-19,
+   "wilson_upper": 0.012642971224546034
+  },
+  "noise5_L0": {
+   "noise_percent": 5,
+   "level": 0,
+   "n": 300,
+   "successes": 0,
+   "rate": 0.0,
+   "wilson_lower": 8.673617379884035e-19,
+   "wilson_upper": 0.012642971224546034
+  },
+  "noise5_L1": {
+   "noise_percent": 5,
+   "level": 1,
+   "n": 300,
+   "successes": 0,
+   "rate": 0.0,
+   "wilson_lower": 8.673617379884035e-19,
+   "wilson_upper": 0.012642971224546034
+  },
+  "noise5_L2": {
+   "noise_percent": 5,
+   "level": 2,
+   "n": 300,
+   "successes": 0,
+   "rate": 0.0,
+   "wilson_lower": 8.673617379884035e-19,
+   "wilson_upper": 0.012642971224546034
+  },
+  "noise5_L3": {
+   "noise_percent": 5,
+   "level": 3,
+   "n": 300,
+   "successes": 0,
+   "rate": 0.0,
+   "wilson_lower": 8.673617379884035e-19,
+   "wilson_upper": 0.012642971224546034
+  }
+ },
+ "job3_fine": {
+  "noise0.05_L0": {
+   "noise_percent": 0.05,
+   "level": 0,
+   "n": 300,
+   "successes": 300,
+   "rate": 1.0,
+   "wilson_lower": 0.9873570287754538,
+   "wilson_upper": 0.9999999999999998
+  },
+  "noise0.05_L1": {
+   "noise_percent": 0.05,
+   "level": 1,
+   "n": 300,
+   "successes": 257,
+   "rate": 0.8566666666666667,
+   "wilson_lower": 0.8124994228503402,
+   "wilson_upper": 0.8918152576761502
+  },
+  "noise0.05_L2": {
+   "noise_percent": 0.05,
+   "level": 2,
+   "n": 300,
+   "successes": 160,
+   "rate": 0.5333333333333333,
+   "wilson_lower": 0.4768149075854061,
+   "wilson_upper": 0.5890088943329576
+  },
+  "noise0.05_L3": {
+   "noise_percent": 0.05,
+   "level": 3,
+   "n": 300,
+   "successes": 90,
+   "rate": 0.3,
+   "wilson_lower": 0.2509396637848768,
+   "wilson_upper": 0.35411752470494157
+  },
+  "noise0.1_L0": {
+   "noise_percent": 0.1,
+   "level": 0,
+   "n": 300,
+   "successes": 292,
+   "rate": 0.9733333333333334,
+   "wilson_lower": 0.9482710570494102,
+   "wilson_upper": 0.9864269301913529
+  },
+  "noise0.1_L1": {
+   "noise_percent": 0.1,
+   "level": 1,
+   "n": 300,
+   "successes": 249,
+   "rate": 0.83,
+   "wilson_lower": 0.7833857374317239,
+   "wilson_upper": 0.8682699015600757
+  },
+  "noise0.1_L2": {
+   "noise_percent": 0.1,
+   "level": 2,
+   "n": 300,
+   "successes": 157,
+   "rate": 0.5233333333333333,
+   "wilson_lower": 0.466878323217167,
+   "wilson_upper": 0.5791983381256874
+  },
+  "noise0.1_L3": {
+   "noise_percent": 0.1,
+   "level": 3,
+   "n": 300,
+   "successes": 90,
+   "rate": 0.3,
+   "wilson_lower": 0.2509396637848768,
+   "wilson_upper": 0.35411752470494157
+  },
+  "noise0.25_L0": {
+   "noise_percent": 0.25,
+   "level": 0,
+   "n": 300,
+   "successes": 182,
+   "rate": 0.6066666666666667,
+   "wilson_lower": 0.5503752712846574,
+   "wilson_upper": 0.6602608948541061
+  },
+  "noise0.25_L1": {
+   "noise_percent": 0.25,
+   "level": 1,
+   "n": 300,
+   "successes": 154,
+   "rate": 0.5133333333333333,
+   "wilson_lower": 0.4569640167618392,
+   "wilson_upper": 0.5693655040055061
+  },
+  "noise0.25_L2": {
+   "noise_percent": 0.25,
+   "level": 2,
+   "n": 300,
+   "successes": 110,
+   "rate": 0.36666666666666664,
+   "wilson_lower": 0.3141415065082282,
+   "wilson_upper": 0.4225632858183173
+  },
+  "noise0.25_L3": {
+   "noise_percent": 0.25,
+   "level": 3,
+   "n": 300,
+   "successes": 57,
+   "rate": 0.19,
+   "wilson_lower": 0.14963485033440665,
+   "wilson_upper": 0.23820379182481183
+  },
+  "noise0.5_L0": {
+   "noise_percent": 0.5,
+   "level": 0,
+   "n": 300,
+   "successes": 29,
+   "rate": 0.09666666666666666,
+   "wilson_lower": 0.06815029481828931,
+   "wilson_upper": 0.13538170196951116
+  },
+  "noise0.5_L1": {
+   "noise_percent": 0.5,
+   "level": 1,
+   "n": 300,
+   "successes": 27,
+   "rate": 0.09,
+   "wilson_lower": 0.06259022560547936,
+   "wilson_upper": 0.12777701079864834
+  },
+  "noise0.5_L2": {
+   "noise_percent": 0.5,
+   "level": 2,
+   "n": 300,
+   "successes": 20,
+   "rate": 0.06666666666666667,
+   "wilson_lower": 0.043567515545158274,
+   "wilson_upper": 0.10072305951611496
+  },
+  "noise0.5_L3": {
+   "noise_percent": 0.5,
+   "level": 3,
+   "n": 300,
+   "successes": 6,
+   "rate": 0.02,
+   "wilson_lower": 0.009197631557703617,
+   "wilson_upper": 0.042939620817860576
+  }
+ },
+ "job4": {
+  "seed1": {
+   "successes": [
+    300,
+    259,
+    166,
+    94
+   ],
+   "rates": [
+    1.0,
+    0.8633333333333333,
+    0.5533333333333333,
+    0.31333333333333335
+   ],
+   "final_checkpoint": "abl_s1_dagger_2",
+   "validation_mean": 0.6475,
+   "validation_levels": {
+    "0": 1.0,
+    "1": 0.86,
+    "2": 0.495,
+    "3": 0.235
+   },
+   "train_seconds": 3194
+  },
+  "seed2": {
+   "successes": [
+    300,
+    256,
+    156,
+    94
+   ],
+   "rates": [
+    1.0,
+    0.8533333333333334,
+    0.52,
+    0.31333333333333335
+   ],
+   "final_checkpoint": "abl_s2_dagger_6",
+   "validation_mean": 0.6325000000000001,
+   "validation_levels": {
+    "0": 1.0,
+    "1": 0.825,
+    "2": 0.46,
+    "3": 0.245
+   },
+   "train_seconds": 2385
+  },
+  "seed3": {
+   "successes": [
+    300,
+    258,
+    159,
+    92
+   ],
+   "rates": [
+    1.0,
+    0.86,
+    0.53,
+    0.30666666666666664
+   ],
+   "final_checkpoint": "abl_s3_dagger_8",
+   "validation_mean": 0.635,
+   "validation_levels": {
+    "0": 1.0,
+    "1": 0.845,
+    "2": 0.475,
+    "3": 0.22
+   },
+   "train_seconds": 2398
+  },
+  "seed4": {
+   "successes": [
+    300,
+    260,
+    159,
+    93
+   ],
+   "rates": [
+    1.0,
+    0.8666666666666667,
+    0.53,
+    0.31
+   ],
+   "final_checkpoint": "abl_s4_dagger_7",
+   "validation_mean": 0.63625,
+   "validation_levels": {
+    "0": 1.0,
+    "1": 0.845,
+    "2": 0.475,
+    "3": 0.225
+   },
+   "train_seconds": 2772
+  },
+  "seed5": {
+   "successes": [
+    300,
+    260,
+    163,
+    94
+   ],
+   "rates": [
+    1.0,
+    0.8666666666666667,
+    0.5433333333333333,
+    0.31333333333333335
+   ],
+   "final_checkpoint": "abl_s5_dagger_5",
+   "validation_mean": 0.64625,
+   "validation_levels": {
+    "0": 1.0,
+    "1": 0.855,
+    "2": 0.495,
+    "3": 0.235
+   },
+   "train_seconds": 2120
+  }
+ },
+ "job4_stats": {
+  "L0": {
+   "mean": 1.0,
+   "sd": 0.0,
+   "min": 1.0,
+   "max": 1.0,
+   "n_seeds": 5
+  },
+  "L1": {
+   "mean": 0.862,
+   "sd": 0.00557773351022716,
+   "min": 0.8533333333333334,
+   "max": 0.8666666666666667,
+   "n_seeds": 5
+  },
+  "L2": {
+   "mean": 0.5353333333333333,
+   "sd": 0.01303840481040529,
+   "min": 0.52,
+   "max": 0.5533333333333333,
+   "n_seeds": 5
+  },
+  "L3": {
+   "mean": 0.31133333333333335,
+   "sd": 0.002981423969999739,
+   "min": 0.30666666666666664,
+   "max": 0.31333333333333335,
+   "n_seeds": 5
+  }
+ },
+ "flags_over_3pp": [
+  "job3 noise 1 % L0: 0.000 vs 1.000 clean (-100.0 pp)",
+  "job3 noise 1 % L1: 0.000 vs 0.863 clean (-86.3 pp)",
+  "job3 noise 1 % L2: 0.000 vs 0.537 clean (-53.7 pp)",
+  "job3 noise 1 % L3: 0.000 vs 0.300 clean (-30.0 pp)",
+  "job3 noise 2 % L0: 0.000 vs 1.000 clean (-100.0 pp)",
+  "job3 noise 2 % L1: 0.000 vs 0.863 clean (-86.3 pp)",
+  "job3 noise 2 % L2: 0.000 vs 0.537 clean (-53.7 pp)",
+  "job3 noise 2 % L3: 0.000 vs 0.300 clean (-30.0 pp)",
+  "job3 noise 5 % L0: 0.000 vs 1.000 clean (-100.0 pp)",
+  "job3 noise 5 % L1: 0.000 vs 0.863 clean (-86.3 pp)",
+  "job3 noise 5 % L2: 0.000 vs 0.537 clean (-53.7 pp)",
+  "job3 noise 5 % L3: 0.000 vs 0.300 clean (-30.0 pp)",
+  "job3 noise 0.1 % L1: 0.830 vs 0.863 clean (-3.3 pp)",
+  "job3 noise 0.25 % L0: 0.607 vs 1.000 clean (-39.3 pp)",
+  "job3 noise 0.25 % L1: 0.513 vs 0.863 clean (-35.0 pp)",
+  "job3 noise 0.25 % L2: 0.367 vs 0.537 clean (-17.0 pp)",
+  "job3 noise 0.25 % L3: 0.190 vs 0.300 clean (-11.0 pp)",
+  "job3 noise 0.5 % L0: 0.097 vs 1.000 clean (-90.3 pp)",
+  "job3 noise 0.5 % L1: 0.090 vs 0.863 clean (-77.3 pp)",
+  "job3 noise 0.5 % L2: 0.067 vs 0.537 clean (-47.0 pp)",
+  "job3 noise 0.5 % L3: 0.020 vs 0.300 clean (-28.0 pp)"
+ ],
+ "current_numbers_used": {
+  "trained": [
+   1.0,
+   0.8633333333333333,
+   0.5366666666666666,
+   0.3
+  ],
+  "expert": [
+   1.0,
+   0.86,
+   0.54,
+   0.32
+  ]
+ }
+}

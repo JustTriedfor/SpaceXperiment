@@ -1,0 +1,21 @@
+WIND LEVELS AS IMPLEMENTED (src/utils/config.py LEVELS, src/sim/spawn.py Wind)
+
+level  wind_power (m/s)  turbulence_power  entry angle range (deg)  speed fraction  x_offset (m)
+  L0     0.0               0.0               (72.0, 85.0)             0.35            50.0
+  L1     5.0               0.5               (62.0, 82.0)             0.6             120.0
+  L2     10.0              1.0               (52.0, 78.0)             0.8             220.0
+  L3     15.0              1.5               (42.0, 72.0)             1.0             350.0
+
+The wind is NOT a constant mean of 0 / 5 / 10 / 15 m/s. src/sim/spawn.py::Wind, per episode:
+    mean   = uniform(-1, 1) * 0.6 * wind_power        (a signed, random mean for the episode)
+    amp    = 0.4 * wind_power                           (gust amplitude, a sine with a random period of 6-14 s)
+    wind(t, h) = shear(h) * (mean + amp * sin(2*pi*t/period + phase)),   shear(h) = 0.4 + 0.6 * min(h / 1500 m, 1)
+so the wind_power values 0 / 5 / 10 / 15 are a SCALE: the episode mean is within +-0.6 * wind_power (up to 0 / 3 / 6 / 9 m/s), and the wind at a given moment
+can reach (0.6 + 0.4) * wind_power = 0 / 5 / 10 / 15 m/s at height. In episodes.csv: wind_mean_mps = this episode's signed mean (before the shear factor), wind_scale_mps = wind_power, wind_gust_amp_mps = amp.
+
+Realised in episodes.csv (expert_tuned rows, 1 row per seed):
+level  n    mean |wind_mean| (m/s)  max |wind_mean| (m/s)  theory mean |.| = 0.3*scale
+  L0   300  0.000                  0.000                 0.000
+  L1   300  1.494                  2.986                 1.500
+  L2   300  2.987                  5.972                 3.000
+  L3   300  4.481                  8.957                 4.500

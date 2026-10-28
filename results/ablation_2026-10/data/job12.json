@@ -1,0 +1,130 @@
+{
+ "job1": {
+  "L0": {
+   "n": 300,
+   "successes": 300,
+   "rate": 1.0,
+   "wilson_lower": 0.9873570287754538,
+   "wilson_upper": 0.9999999999999998
+  },
+  "L1": {
+   "n": 300,
+   "successes": 258,
+   "rate": 0.86,
+   "wilson_lower": 0.8161683876490509,
+   "wilson_upper": 0.8947286730692758
+  },
+  "L2": {
+   "n": 300,
+   "successes": 161,
+   "rate": 0.5366666666666666,
+   "wilson_lower": 0.4801320652390865,
+   "wilson_upper": 0.5922741168711132
+  },
+  "L3": {
+   "n": 300,
+   "successes": 95,
+   "rate": 0.31666666666666665,
+   "wilson_lower": 0.26662835068573615,
+   "wilson_upper": 0.37134073876326396
+  }
+ },
+ "job2": {
+  "expert_tuned_L0": {
+   "controller": "scripted expert",
+   "n": 300,
+   "successes": 300,
+   "failures": 0,
+   "too_fast": 0,
+   "off_pad": 0,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  },
+  "expert_tuned_L1": {
+   "controller": "scripted expert",
+   "n": 300,
+   "successes": 258,
+   "failures": 42,
+   "too_fast": 2,
+   "off_pad": 40,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  },
+  "expert_tuned_L2": {
+   "controller": "scripted expert",
+   "n": 300,
+   "successes": 161,
+   "failures": 139,
+   "too_fast": 68,
+   "off_pad": 71,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  },
+  "expert_tuned_L3": {
+   "controller": "scripted expert",
+   "n": 300,
+   "successes": 95,
+   "failures": 205,
+   "too_fast": 151,
+   "off_pad": 54,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  },
+  "rt1_final_L0": {
+   "controller": "trained controller",
+   "n": 300,
+   "successes": 300,
+   "failures": 0,
+   "too_fast": 0,
+   "off_pad": 0,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  },
+  "rt1_final_L1": {
+   "controller": "trained controller",
+   "n": 300,
+   "successes": 259,
+   "failures": 41,
+   "too_fast": 9,
+   "off_pad": 32,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  },
+  "rt1_final_L2": {
+   "controller": "trained controller",
+   "n": 300,
+   "successes": 161,
+   "failures": 139,
+   "too_fast": 75,
+   "off_pad": 64,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  },
+  "rt1_final_L3": {
+   "controller": "trained controller",
+   "n": 300,
+   "successes": 90,
+   "failures": 210,
+   "too_fast": 153,
+   "off_pad": 57,
+   "tilted": 0,
+   "out_of_fuel": 0,
+   "crashed_other": 0,
+   "sum_ok": true
+  }
+ }
+}

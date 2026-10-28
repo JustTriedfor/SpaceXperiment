@@ -1,0 +1,155 @@
+{
+ "config": {
+  "start": "sx_imitation_quiet",
+  "expert_episodes": 800,
+  "expert_levels": "0,1,1,2,2,3",
+  "expert_noise": 0.12,
+  "clone_epochs": 40,
+  "clone_lr": 0.001,
+  "rounds": 8,
+  "dagger_episodes": 180,
+  "dagger_levels": "0,1,1,2,2,3,3",
+  "dagger_noise": 0.1,
+  "dagger_epochs": 20,
+  "dagger_lr": 0.0005,
+  "final_lr": 0.0001,
+  "final_rounds": 2,
+  "batch": 1024,
+  "low_weight": 5.0,
+  "log_std": -1.6,
+  "val_episodes": 200,
+  "workers": 12,
+  "device": "cuda",
+  "net_arch": null,
+  "seed": 2
+ },
+ "rounds": [
+  {
+   "round": 0,
+   "checkpoint": "abl_s2_clone",
+   "val": {
+    "levels": {
+     "0": 0.355,
+     "1": 0.375,
+     "2": 0.26,
+     "3": 0.165
+    },
+    "mean": 0.28875
+   }
+  },
+  {
+   "round": 1,
+   "checkpoint": "abl_s2_dagger_1",
+   "lr": 0.0005,
+   "val": {
+    "levels": {
+     "0": 0.935,
+     "1": 0.765,
+     "2": 0.44,
+     "3": 0.195
+    },
+    "mean": 0.58375
+   }
+  },
+  {
+   "round": 2,
+   "checkpoint": "abl_s2_dagger_2",
+   "lr": 0.0005,
+   "val": {
+    "levels": {
+     "0": 0.995,
+     "1": 0.775,
+     "2": 0.43,
+     "3": 0.21
+    },
+    "mean": 0.6025
+   }
+  },
+  {
+   "round": 3,
+   "checkpoint": "abl_s2_dagger_3",
+   "lr": 0.0005,
+   "val": {
+    "levels": {
+     "0": 1.0,
+     "1": 0.83,
+     "2": 0.45,
+     "3": 0.215
+    },
+    "mean": 0.62375
+   }
+  },
+  {
+   "round": 4,
+   "checkpoint": "abl_s2_dagger_4",
+   "lr": 0.0005,
+   "val": {
+    "levels": {
+     "0": 1.0,
+     "1": 0.83,
+     "2": 0.445,
+     "3": 0.23
+    },
+    "mean": 0.62625
+   }
+  },
+  {
+   "round": 5,
+   "checkpoint": "abl_s2_dagger_5",
+   "lr": 0.0005,
+   "val": {
+    "levels": {
+     "0": 1.0,
+     "1": 0.835,
+     "2": 0.46,
+     "3": 0.235
+    },
+    "mean": 0.6325
+   }
+  },
+  {
+   "round": 6,
+   "checkpoint": "abl_s2_dagger_6",
+   "lr": 0.0005,
+   "val": {
+    "levels": {
+     "0": 1.0,
+     "1": 0.825,
+     "2": 0.46,
+     "3": 0.245
+    },
+    "mean": 0.6325000000000001
+   }
+  },
+  {
+   "round": 7,
+   "checkpoint": "abl_s2_dagger_7",
+   "lr": 0.0001,
+   "val": {
+    "levels": {
+     "0": 1.0,
+     "1": 0.835,
+     "2": 0.46,
+     "3": 0.23
+    },
+    "mean": 0.63125
+   }
+  },
+  {
+   "round": 8,
+   "checkpoint": "abl_s2_dagger_8",
+   "lr": 0.0001,
+   "val": {
+    "levels": {
+     "0": 1.0,
+     "1": 0.835,
+     "2": 0.46,
+     "3": 0.23
+    },
+    "mean": 0.63125
+   }
+  }
+ ],
+ "final": "abl_s2_dagger_6",
+ "seconds": 2385
+}

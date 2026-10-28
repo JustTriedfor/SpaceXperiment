@@ -1,0 +1,17 @@
+# SpaceXperiment: versions installed when the paper's results were made (Python 3.11.9, Windows 11).
+# Install with:  pip install -r requirements.txt
+# torch: this pin is the plain 2.10.0 release. The paper's machine used the CUDA build (2.10.0+cu128); the code also runs on CPU.
+numpy==2.4.3
+torch==2.10.0
+stable-baselines3==2.9.0
+gymnasium==1.4.0
+matplotlib==3.10.8
+pandas==3.0.5
+scipy==1.17.1
+Pillow==12.1.1
+psutil==7.2.2
+pytest==9.1.1
+
+# Optional (the code runs without them):
+#   tensorboard==2.21.0   training curves of PPO runs (src/training/pair.py uses it only if installed)
+#   playwright==1.64.0    only for the screenshot scripts in paper_assets/scripts/capture_ui.py and paper_assets/progress/scripts/

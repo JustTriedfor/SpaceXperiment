@@ -1,0 +1,51 @@
+SUCCESS RULES AS IMPLEMENTED (src/sim/env.py, SpaceXEnv._metrics; thresholds from src/utils/config.py)
+
+An episode counts as a SUCCESS when ALL FOUR hold:
+  1. touchdown speed  <= 3.0 m/s   (SUCCESS_MAX_SPEED_MPS; the speed of the FIRST foot contact, the magnitude of the velocity vector just before it)
+  2. tilt             <= 0.15 rad   (SUCCESS_MAX_TILT_RAD; the tilt where the lander ended up after settling, about 8.59 deg)
+  3. pad offset       <= 10.0 m      (SUCCESS_MAX_DIST_M; horizontal distance of the lander's centre from the pad centre, where it ended up)
+  4. it never ran out of propellant, and the episode ended 'at rest' (end == 'rest'), i.e. it survived the touchdown and settled upright:
+       - the first contact must not be a crash at once: vertical speed <= 5.0 m/s, sideways speed <= 3.0 m/s, tilt <= 0.45 rad (CONTACT_TILT_MAX);
+       - then it has SETTLE_S = 2.5 s to settle (the main engine is cut at touchdown, TOUCHDOWN_ENGINE_CUT = True); it ends early as 'rest' when upright (<= 0.15 rad)
+         and nearly still (< 0.5 m/s, spin < 0.05 rad/s) for 0.6 s; at the deadline it is 'rest' if tilt <= 0.2 rad and speed <= 1.5 m/s, else a crash;
+       - tipping past 0.62 rad at any time is a crash.
+
+The exact code of the success test:
+    ok = (td is not None and td["dist_m"] <= C.SUCCESS_MAX_DIST_M and td["speed_mps"] <= C.SUCCESS_MAX_SPEED_MPS and td["tilt_rad"] <= C.SUCCESS_MAX_TILT_RAD
+                  and not s.out_of_prop and end == "rest")
+
+The paper's statement 'touchdown speed at most 3 m/s' matches the code: SUCCESS_MAX_SPEED_MPS = 3.0.
+
+Other numbers that frame an episode:
+  propellant loaded (FUEL_BUDGET)         4500.0 kg;   fuel_remaining_kg in episodes.csv = FUEL_BUDGET - fuel used
+  spawn height (single lander)            3000.0 m above the pad, entry speed 250.0-320.0 m/s x the level's speed fraction [0.35, 0.6, 0.8, 1.0]
+  tilt limit at any time (episode ends)   75.0 deg;  stall rule: slower than 6.0 m/s above 100.0 m;  at most 3 ignitions
+
+failure_reason in episodes.csv (one label per failed episode, first match in this order; failure_flags lists every rule that was broken):
+  out_of_fuel    the propellant ran out
+  too_fast       first-contact speed > 3.0 m/s
+  tilted         tilt > 0.15 rad
+  off_pad        pad offset > 10.0 m
+  crashed_other  anything else that did not end at rest with all three limits met: no touchdown at all (tilt-out, stall, out of bounds, time out), or a fall over / failed settle
+  none           success
+
+Settle verdict code (src/sim/env.py::SpaceXEnv._settle_verdict):
+        def _settle_verdict(self, new_td):
+            """None while the lander is still settling after its first touch; 'rest' or 'crash' once it is decided."""
+            s, td = self.s, self.td
+            if new_td is not None:                                           # the instant of first contact
+                if (td["vspeed_mps"] > C.SURVIVE_MAX_VSPEED_MPS or td["hspeed_mps"] > C.SURVIVE_MAX_HSPEED_MPS or td["tilt_rad"] > C.CONTACT_TILT_MAX):
+                    return "crash"
+                if C.SETTLE_S <= 0:                                          # the old rule: judged at the instant of contact
+                    return "rest" if td["tilt_rad"] <= C.SURVIVE_MAX_TILT_RAD else "crash"
+            tilt = abs(tilt_from_vertical(s.th))
+            if tilt > C.TIP_OVER_RAD:                                        # it fell over
+                self._finish_td()
+                return "crash"
+            speed = math.hypot(s.vx, s.vy)
+            calm = tilt <= C.SUCCESS_MAX_TILT_RAD and speed <= C.SETTLE_REST_SPEED and abs(s.om) <= C.SETTLE_REST_SPIN
+            self.settled_steps = self.settled_steps + 1 if calm else 0
+            if self.settled_steps < int(round(C.SETTLE_HOLD_S * C.FPS)) and self.t < self.settle_end:
+                return None
+            self._finish_td()
+            return "rest" if (tilt <= C.SURVIVE_MAX_TILT_RAD and speed <= 3.0 * C.SETTLE_REST_SPEED) else "crash"

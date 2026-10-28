@@ -1,0 +1,66 @@
+# SpaceXperiment: what stays out of the repository
+
+# ---- Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+build/
+dist/
+
+# ---- virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# ---- secrets and keys (none are used by this project; this keeps it that way)
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+credentials*
+secrets*
+*token*.json
+.claude/
+.claude.json
+
+# ---- operating system and editors
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# ---- regenerable output of training runs (about 3 GB: 1.3 GB of raw episode dumps in data/, 1.8 GB of run logs in logs/)
+/data/
+/logs/
+*.out
+
+# ---- model files: only the four small checkpoints of the paper are kept (each about 0.6 MB)
+models/*
+!models/checkpoints/
+models/checkpoints/*
+!models/checkpoints/rt1_final.zip
+!models/checkpoints/sx_imitation_quiet.zip
+!models/checkpoints/pair_safe_final_A.zip
+!models/checkpoints/pair_safe_final_B.zip
+*.pth
+*.onnx
+*.h5
+*.ckpt
+*.npy
+*.npz
+
+# ---- personal hand-over note (written for another engineer / AI agent, not for readers of the repository)
+/HANDOFF.md
+
+# ---- temporary files
+*.tmp
+*.bak
+*~
