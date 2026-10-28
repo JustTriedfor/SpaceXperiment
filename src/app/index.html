@@ -188,6 +188,14 @@
   body.showcase .stage { justify-self:center; align-self:center; }
   body.showcase .judge { display:flex; flex-direction:column; gap:7px; height:100vh; padding:9px 11px; background:#0a0e1c; border-left:1px solid var(--line); overflow:hidden; font-size:clamp(11px, 1.5vh, 14.5px); line-height:1.4; color:var(--ink); }
   @media (max-width:900px) { body.showcase .screen { display:flex; } body.showcase .judge { display:none; } }
+  .jdock { padding:2px 9px; font-size:.88em; white-space:nowrap; } #dockSlot { display:none; }
+  /* docked: the picture takes the whole width and the data column sits to the right of the usual tabs, following you as you scroll */
+  body.showcase.docked .screen { display:flex; }
+  body.showcase.docked .lower { display:flex; justify-content:center; align-items:flex-start; gap:16px; padding:0 14px; }
+  body.showcase.docked .lower .below { flex:1 1 860px; min-width:0; max-width:860px; margin:0; }
+  body.showcase.docked #dockSlot { display:block; flex:0 0 clamp(340px, 28vw, 520px); position:sticky; top:10px; margin-top:14px; }
+  body.showcase.docked .judge { height:calc(100vh - 20px); border:1px solid var(--line); border-radius:12px; } body.showcase.docked .jhint { display:none; }
+  @media (max-width:900px) { body.showcase.docked #dockSlot { display:none; } }
   .jhead { display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:space-between; } .jhead .seg button { padding:3px 10px; font-size:.95em; }
   .jhead .seg { width:100%; } .jhead .seg button { flex:1 1 auto; padding:3px 6px; font-size:.88em; white-space:nowrap; }
   .jhint { flex:none; text-align:center; color:var(--mute); font-size:.9em; }
@@ -316,13 +324,14 @@
       </div>
     </div>
     <aside class="judge" id="judge">
-      <div class="jhead"><span class="brand"><span class="dot"></span>SpaceXperiment</span><span class="chip2" id="jchip">replay</span>
+      <div class="jhead"><span class="brand"><span class="dot"></span>SpaceXperiment</span><span class="chip2" id="jchip">replay</span><button class="jdock" id="jDock" title="Put this column to the right of the usual tabs under the picture, or back beside the picture">Move beside the tabs ↓</button>
         <div class="seg" id="judgeSeg" title="Interface"><button data-mode="simple">Simple</button><button data-mode="advanced">Advanced</button><button data-mode="showcase" class="on">Showcase</button><button data-mode="recorder">Showcase Recorder</button></div></div>
       <div class="jcard" id="jNow"></div>
       <div class="jcard jslides"><div class="jtabs" id="jTabs"></div><div class="jslide" id="jSlide"></div></div>
       <div class="jhint">↓ scroll down for the usual tabs and the interface switch</div>
     </aside>
 </div>
+<div class="lower" id="lower">
 <div class="below">
 <div class="grid">
   <div>
@@ -535,6 +544,8 @@
     </div>
   </div>
 </div>
+</div>
+<div id="dockSlot"></div>
 </div>
 <div class="recpage" id="recpage">
   <div class="recwrap">
@@ -3435,7 +3446,7 @@ function showcaseBelow(on) {                                              // the
   if (on) {
     if (!SHB.built) { SHB.built = true; buildForm(); pollTests(); }
     refreshInfo(); pollTrain(); refreshRunNames();
-    SHB.timers = [setInterval(refreshInfo, 4000), setInterval(pollTrain, 3000), setInterval(refreshTable, 250), setInterval(refreshRunNames, 5000)];
+    SHB.timers = [setInterval(refreshInfo, 4000), setInterval(pollTrain, 3000), setInterval(refreshTable, 250), setInterval(refreshRunNames, 5000), setInterval(() => judgeTick(performance.now()), 1000)];
   } else { SHB.timers.forEach(clearInterval); SHB.timers = []; }
 }
 if (SHOW) window.addEventListener('scroll', () => showcaseBelow(window.scrollY > window.innerHeight * 0.4), { passive: true });
@@ -3447,7 +3458,7 @@ function showcaseWatch(now) {                                            // a vi
 
 // ---- The Showcase data column: "this landing" (numbers measured on the recorded landing) and rotating slides built from replays/facts.json (results, touchdown, failures,
 // training curve, task and rules, method, limits). Everything is text and two small charts, redrawn only when a landing or a slide changes.
-const JC = { facts: null, compact: false, slide: 0, pinUntil: 0, nextRot: 0, ROT_MS: 18000, PIN_MS: 60000, names: ['Results', 'Touchdown', 'Failures', 'Training', 'Task', 'Vehicle', 'Network', 'Method', 'Limits'] };
+const JC = { facts: null, compact: false, inited: false, slide: 0, pinUntil: 0, nextRot: 0, ROT_MS: 18000, PIN_MS: 60000, names: ['Results', 'Touchdown', 'Failures', 'Training', 'Task', 'Vehicle', 'Network', 'Method', 'Limits'] };
 const JCOL = { sx_retrained: '#5b9bff', expert_tuned: '#9aa3c7', sx_imitation_quiet: '#f2c46b', pair_safe_final: '#c78bff' };
 const jf = (x, d = 1) => (x == null || !isFinite(x)) ? '–' : (+x).toLocaleString(undefined, { minimumFractionDigits: d, maximumFractionDigits: d });
 const jp = (x, d = 1) => x == null ? '–' : jf(100 * x, d);
@@ -3651,6 +3662,13 @@ function judgeTick(now) {                                                 // the
   if (!JC.nextRot) JC.nextRot = now + JC.ROT_MS;
   if (now >= JC.nextRot && now >= JC.pinUntil) { judgeSlide(JC.slide + 1); JC.nextRot = now + JC.ROT_MS; }
 }
+function showcaseDock(on, save = true) {                                   // the data column beside the picture (false) or beside the usual tabs (true)
+  document.body.classList.toggle('docked', on);
+  if (on) $('dockSlot').appendChild($('judge')); else document.querySelector('.screen').appendChild($('judge'));
+  $('jDock').textContent = on ? 'Back beside the picture \u2191' : 'Move beside the tabs \u2193';
+  if (save) { try { localStorage.setItem('spacexperiment.showdock', on ? '1' : '0'); } catch (e) { /* storage may be blocked */ } }
+  if (JC.inited) judgeSlide(JC.slide);
+}
 function judgeInit() {
   $('jTabs').innerHTML = JC.names.map((n, i) => `<button data-i="${i}">${n}</button>`).join('');
   $('jTabs').onclick = e => { const b = e.target.closest('button'); if (!b) return; judgeSlide(+b.dataset.i); JC.pinUntil = performance.now() + JC.PIN_MS; JC.nextRot = JC.pinUntil + JC.ROT_MS; };
@@ -3660,7 +3678,8 @@ function judgeInit() {
     try { localStorage.setItem('spacexperiment.mode', b.dataset.mode); } catch (err) { /* storage may be blocked */ }
     location.href = '/';
   };
-  judgeSlide(0);
+  $('jDock').onclick = () => showcaseDock(!document.body.classList.contains('docked'));
+  JC.inited = true; judgeSlide(0);
 }
 
 // ---- Showcase Recorder screen (?recorder=1): starts tools/record_replays.py on the server and follows its progress.
@@ -3714,6 +3733,10 @@ function recorderInit() {
 let camT = 0, cam2T = 0;
 const CAM_FPS = 12;                                                               // the landing cam is ray-traced: this many pictures a second (lower = lighter on the page)
 function loop(now) { if (SHOW) { if (document.hidden || window.scrollY >= window.innerHeight || now - SHC.lastDraw < 1000 / SHC.FPS - 2) { requestAnimationFrame(loop); return; } SHC.lastDraw = now; } const dt = Math.min(.05, (now - lastT) / 1000); lastT = now; update(dt); draw(); if (ADM.on) adminFrame(now); else { if (brainOn) drawBrain(); if (miniOpen) drawMini(); try { if (now - camT >= 1000 / CAM_FPS - 4) { camT = now; drawCam(); } if (now - cam2T >= 1000 / CAM2_FPS - 4) { cam2T = now; drawCamPartner(); } drawPhase(); drawGraphs(now); } catch (e) { /* never stop the animation loop */ } } requestAnimationFrame(loop); }
+if (SHOW) {
+  try { if (localStorage.getItem('spacexperiment.showdock') === '1') showcaseDock(true, false); else $('jDock').textContent = 'Move beside the tabs \u2193'; } catch (e) { /* storage may be blocked */ }
+  let rt = 0; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (JC.inited) judgeSlide(JC.slide); }, 200); });
+}
 if (RECP) recorderInit();                                                       // the recorder screen draws no landing: the stage loop below is not started
 else if (SHOW) { mkSlots(1); miniOpen = false; showcaseInit(); }                       // showcase: one lander, no polling of the server, no training controls
 else {

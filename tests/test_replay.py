@@ -351,3 +351,15 @@ def test_showcase_slides_are_filled_and_the_landing_card_keeps_its_height():
     assert "derived" in vehicle and "Not validated against flight data" in vehicle                                # computed numbers are labelled as such
     network = PAGE[PAGE.index("  Network() {"):PAGE.index("  Method() {")]
     assert "IN_NAMES.slice(0, C.inputs)" in network and "signed square roots" in network
+
+
+def test_showcase_column_can_be_docked_beside_the_usual_tabs_and_back():
+    assert '<div class="lower" id="lower">\n<div class="below">' in PAGE and '<div id="dockSlot"></div>' in PAGE and 'id="jDock"' in PAGE
+    fn = PAGE[PAGE.index("function showcaseDock("):PAGE.index("function judgeInit()")]
+    assert "$('dockSlot').appendChild($('judge'))" in fn and "document.querySelector('.screen').appendChild($('judge'))" in fn      # the same column moves, it is not built twice
+    assert "spacexperiment.showdock" in fn and "if (JC.inited) judgeSlide(JC.slide)" in fn                                  # remembered, and the slide is fitted to its new height
+    assert "Move beside the tabs" in fn and "Back beside the picture" in fn
+    css = PAGE[:PAGE.index("</style>")]
+    assert "body.showcase.docked .lower .below" in css and "position:sticky" in css and "body.showcase.docked .screen { display:flex; }" in css
+    assert "setInterval(() => judgeTick(performance.now()), 1000)" in PAGE[PAGE.index("function showcaseBelow(on)"):PAGE.index("function showcaseWatch(now)")]      # the slides keep turning while you read them down there
+    assert "localStorage.getItem('spacexperiment.showdock') === '1') showcaseDock(true, false)" in PAGE                         # a docked showcase starts docked
