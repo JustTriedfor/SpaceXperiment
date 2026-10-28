@@ -2,7 +2,7 @@
 
 A 2D rocket-landing simulator for a Falcon 9-class booster, built from scratch in Python, together with two controllers that fly it: a hand-written **scripted expert** and a **neural-network controller** that learned from the expert by behaviour cloning and DAgger (PPO from scratch was tried and did not learn to land). The simulator uses its own rigid-body physics (engine, gimbal, grid fins, gas thrusters, drag, wind, burning fuel), and the project measures how often each controller lands safely at four wind levels. The measured landing success rates feed a Monte Carlo model of CO2e emissions per launch.
 
-The project belongs to the paper **"REBOUND: Reusability Estimation from Booster landing Outcomes Under Natural Disturbances. Linking Rocket Landing Reliability to Life-Cycle Emissions per Launch"** by Firdaus Haryo Baskoro (SMA Semesta Semarang, Environmental category, GENIUS Olympiad).
+The project belongs to the paper **"Down to Earth: How Landing Success Probability Determines Expected Reflights and Life-Cycle CO2e per Launch of a Falcon 9-Class Booster"** by Firdaus Haryo Baskoro (SMA Semesta Semarang, Environmental category, GENIUS Olympiad).
 
 This is a student project. It is **not affiliated with SpaceX**. SpaceX uses its own guidance software; nothing here is SpaceX code or SpaceX data, and the vehicle numbers are approximate public figures or my own estimates.
 
@@ -127,7 +127,7 @@ More commands, with the exact seeds and settings behind each paper result, are i
 
 ## How to cite
 
-Baskoro, F. H. (2026). *REBOUND: Reusability Estimation from Booster landing Outcomes Under Natural Disturbances. Linking Rocket Landing Reliability to Life-Cycle Emissions per Launch.* SMA Semesta Semarang (GENIUS Olympiad, Environmental category). Code: SpaceXperiment.
+Baskoro, F. H. (2026). *Down to Earth: How Landing Success Probability Determines Expected Reflights and Life-Cycle CO2e per Launch of a Falcon 9-Class Booster.* SMA Semesta Semarang (GENIUS Olympiad, Environmental category). Code: SpaceXperiment.
 
 ## License
 
