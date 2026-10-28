@@ -1,0 +1,745 @@
+{
+ "version": 2,
+ "checkpoint": "rt1_final",
+ "rules_stage": 2,
+ "recorded": "2026-10-28 17:53",
+ "episodes": [
+  {
+   "file": "ep_01_L1_s122.json",
+   "frames": 471,
+   "seconds": 23.6,
+   "level": 1,
+   "seed": 122,
+   "checkpoint": "rt1_final",
+   "wind_scale_mps": 5.0,
+   "wind_mean_mps": 1.95,
+   "success": true,
+   "end": "rest",
+   "reason": "none",
+   "speed": 2.088,
+   "offset_m": 0.738,
+   "featured": true,
+   "stats": {
+    "start": {
+     "height_m": 2993.0,
+     "speed_mps": 159.0,
+     "angle_deg": 78.5,
+     "x_offset_m": 346.0,
+     "tilt_deg": 8.4
+    },
+    "burn": {
+     "start_s": 11.7,
+     "start_alt_m": 952.0,
+     "duration_s": 11.0,
+     "ignitions": 1
+    },
+    "max_q_kpa": 19.3,
+    "max_q_alt_m": 952.0,
+    "peak_load_g": 3.3,
+    "touchdown": {
+     "t_s": 22.6,
+     "speed_mps": 2.09,
+     "vertical_mps": 2.0,
+     "horizontal_mps": 0.62,
+     "tilt_deg": 0.31,
+     "tilt_rad": 0.0054,
+     "offset_m": 0.74,
+     "settle_s": 0.95
+    },
+    "flight_time_s": 23.6,
+    "fuel": {
+     "used_kg": 2387.0,
+     "left_kg": 2113.0,
+     "left_pct": 47.0
+    },
+    "quality": {
+     "merit": 74.7,
+     "in_envelope_pct": 60.0,
+     "brake_peak_pct": 82.0
+    },
+    "wind": {
+     "scale_mps": 5.0,
+     "mean_mps": 1.95,
+     "gust_amp_mps": 2.0
+    },
+    "rank": {
+     "n": 300,
+     "slower_than_pct": 25.0,
+     "level_median_speed_mps": 1.74,
+     "level_median_offset_m": 2.15,
+     "level_success_pct": 86.3
+    }
+   }
+  },
+  {
+   "file": "ep_02_L0_s109.json",
+   "frames": 529,
+   "seconds": 26.5,
+   "level": 0,
+   "seed": 109,
+   "checkpoint": "rt1_final",
+   "wind_scale_mps": 0.0,
+   "wind_mean_mps": 0.0,
+   "success": true,
+   "end": "rest",
+   "reason": "none",
+   "speed": 1.614,
+   "offset_m": 0.974,
+   "featured": false,
+   "stats": {
+    "start": {
+     "height_m": 2997.0,
+     "speed_mps": 96.0,
+     "angle_deg": 79.8,
+     "x_offset_m": 253.0,
+     "tilt_deg": 12.3
+    },
+    "burn": {
+     "start_s": 15.4,
+     "start_alt_m": 832.0,
+     "duration_s": 10.2,
+     "ignitions": 1
+    },
+    "max_q_kpa": 16.4,
+    "max_q_alt_m": 832.0,
+    "peak_load_g": 3.1,
+    "touchdown": {
+     "t_s": 25.7,
+     "speed_mps": 1.61,
+     "vertical_mps": 1.49,
+     "horizontal_mps": 0.61,
+     "tilt_deg": 0.02,
+     "tilt_rad": 0.0003,
+     "offset_m": 0.97,
+     "settle_s": 0.8
+    },
+    "flight_time_s": 26.4,
+    "fuel": {
+     "used_kg": 2242.0,
+     "left_kg": 2258.0,
+     "left_pct": 50.0
+    },
+    "quality": {
+     "merit": 78.9,
+     "in_envelope_pct": 69.0,
+     "brake_peak_pct": 80.0
+    },
+    "wind": {
+     "scale_mps": 0.0,
+     "mean_mps": 0.0,
+     "gust_amp_mps": 0.0
+    },
+    "rank": {
+     "n": 300,
+     "slower_than_pct": 50.0,
+     "level_median_speed_mps": 1.62,
+     "level_median_offset_m": 0.93,
+     "level_success_pct": 100.0
+    }
+   }
+  },
+  {
+   "file": "ep_03_L2_s98.json",
+   "frames": 504,
+   "seconds": 25.2,
+   "level": 2,
+   "seed": 98,
+   "checkpoint": "rt1_final",
+   "wind_scale_mps": 10.0,
+   "wind_mean_mps": 5.32,
+   "success": false,
+   "end": "rest",
+   "reason": "too_fast",
+   "speed": 3.461,
+   "offset_m": 41.13,
+   "featured": false,
+   "stats": {
+    "start": {
+     "height_m": 2993.0,
+     "speed_mps": 216.2,
+     "angle_deg": 54.3,
+     "x_offset_m": 1468.0,
+     "tilt_deg": 40.3
+    },
+    "burn": {
+     "start_s": 11.2,
+     "start_alt_m": 951.0,
+     "duration_s": 11.1,
+     "ignitions": 2
+    },
+    "max_q_kpa": 22.2,
+    "max_q_alt_m": 951.0,
+    "peak_load_g": 3.4,
+    "touchdown": {
+     "t_s": 22.7,
+     "speed_mps": 3.46,
+     "vertical_mps": 3.07,
+     "horizontal_mps": 1.59,
+     "tilt_deg": 0.58,
+     "tilt_rad": 0.0101,
+     "offset_m": 41.13,
+     "settle_s": 2.5
+    },
+    "flight_time_s": 25.2,
+    "fuel": {
+     "used_kg": 2419.0,
+     "left_kg": 2081.0,
+     "left_pct": 46.0
+    },
+    "quality": {
+     "merit": 33.9,
+     "in_envelope_pct": 47.0,
+     "brake_peak_pct": 83.0
+    },
+    "wind": {
+     "scale_mps": 10.0,
+     "mean_mps": 5.32,
+     "gust_amp_mps": 4.0
+    },
+    "rank": {
+     "n": 300,
+     "slower_than_pct": 20.0,
+     "level_median_speed_mps": 1.88,
+     "level_median_offset_m": 8.06,
+     "level_success_pct": 53.7
+    }
+   }
+  },
+  {
+   "file": "ep_04_L2_s125.json",
+   "frames": 469,
+   "seconds": 23.5,
+   "level": 2,
+   "seed": 125,
+   "checkpoint": "rt1_final",
+   "wind_scale_mps": 10.0,
+   "wind_mean_mps": 4.22,
+   "success": true,
+   "end": "rest",
+   "reason": "none",
+   "speed": 1.71,
+   "offset_m": 2.571,
+   "featured": false,
+   "stats": {
+    "start": {
+     "height_m": 2994.0,
+     "speed_mps": 210.0,
+     "angle_deg": 54.7,
+     "x_offset_m": 1273.0,
+     "tilt_deg": 29.5
+    },
+    "burn": {
+     "start_s": 11.3,
+     "start_alt_m": 945.0,
+     "duration_s": 11.0,
+     "ignitions": 1
+    },
+    "max_q_kpa": 21.8,
+    "max_q_alt_m": 954.0,
+    "peak_load_g": 3.3,
+    "touchdown": {
+     "t_s": 22.3,
+     "speed_mps": 1.71,
+     "vertical_mps": 1.44,
+     "horizontal_mps": 0.93,
+     "tilt_deg": 0.25,
+     "tilt_rad": 0.0043,
+     "offset_m": 2.57,
+     "settle_s": 1.15
+    },
+    "flight_time_s": 23.4,
+    "fuel": {
+     "used_kg": 2463.0,
+     "left_kg": 2037.0,
+     "left_pct": 45.0
+    },
+    "quality": {
+     "merit": 74.2,
+     "in_envelope_pct": 53.0,
+     "brake_peak_pct": 83.0
+    },
+    "wind": {
+     "scale_mps": 10.0,
+     "mean_mps": 4.22,
+     "gust_amp_mps": 4.0
+    },
+    "rank": {
+     "n": 300,
+     "slower_than_pct": 66.0,
+     "level_median_speed_mps": 1.88,
+     "level_median_offset_m": 8.06,
+     "level_success_pct": 53.7
+    }
+   }
+  },
+  {
+   "file": "ep_05_L3_s208.json",
+   "frames": 416,
+   "seconds": 20.8,
+   "level": 3,
+   "seed": 208,
+   "checkpoint": "rt1_final",
+   "wind_scale_mps": 15.0,
+   "wind_mean_mps": 8.18,
+   "success": true,
+   "end": "rest",
+   "reason": "none",
+   "speed": 1.666,
+   "offset_m": 4.467,
+   "featured": false,
+   "stats": {
+    "start": {
+     "height_m": 2989.0,
+     "speed_mps": 287.9,
+     "angle_deg": 69.7,
+     "x_offset_m": 932.0,
+     "tilt_deg": 30.8
+    },
+    "burn": {
+     "start_s": 6.4,
+     "start_alt_m": 1374.0,
+     "duration_s": 12.9,
+     "ignitions": 1
+    },
+    "max_q_kpa": 34.4,
+    "max_q_alt_m": 2989.0,
+    "peak_load_g": 3.7,
+    "touchdown": {
+     "t_s": 19.3,
+     "speed_mps": 1.67,
+     "vertical_mps": 1.65,
+     "horizontal_mps": 0.22,
+     "tilt_deg": 0.43,
+     "tilt_rad": 0.0075,
+     "offset_m": 4.47,
+     "settle_s": 1.5
+    },
+    "flight_time_s": 20.8,
+    "fuel": {
+     "used_kg": 2811.0,
+     "left_kg": 1689.0,
+     "left_pct": 38.0
+    },
+    "quality": {
+     "merit": 69.9,
+     "in_envelope_pct": 5.0,
+     "brake_peak_pct": 90.0
+    },
+    "wind": {
+     "scale_mps": 15.0,
+     "mean_mps": 8.18,
+     "gust_amp_mps": 6.0
+    },
+    "rank": {
+     "n": 300,
+     "slower_than_pct": 80.0,
+     "level_median_speed_mps": 3.07,
+     "level_median_offset_m": 35.86,
+     "level_success_pct": 30.0
+    }
+   }
+  },
+  {
+   "file": "ep_06_L3_s167.json",
+   "frames": 397,
+   "seconds": 19.9,
+   "level": 3,
+   "seed": 167,
+   "checkpoint": "rt1_final",
+   "wind_scale_mps": 15.0,
+   "wind_mean_mps": -6.92,
+   "success": false,
+   "end": "crash",
+   "reason": "too_fast",
+   "speed": 7.085,
+   "offset_m": 78.644,
+   "featured": false,
+   "stats": {
+    "start": {
+     "height_m": 2990.0,
+     "speed_mps": 260.7,
+     "angle_deg": 65.9,
+     "x_offset_m": 1111.0,
+     "tilt_deg": 20.4
+    },
+    "burn": {
+     "start_s": 7.9,
+     "start_alt_m": 1195.0,
+     "duration_s": 11.9,
+     "ignitions": 1
+    },
+    "max_q_kpa": 30.0,
+    "max_q_alt_m": 2990.0,
+    "peak_load_g": 3.9,
+    "touchdown": {
+     "t_s": 19.9,
+     "speed_mps": 7.08,
+     "vertical_mps": 2.6,
+     "horizontal_mps": 6.59,
+     "tilt_deg": 12.77,
+     "tilt_rad": 0.2228,
+     "offset_m": 78.64,
+     "settle_s": null
+    },
+    "flight_time_s": 19.9,
+    "fuel": {
+     "used_kg": 2581.0,
+     "left_kg": 1919.0,
+     "left_pct": 43.0
+    },
+    "quality": {
+     "merit": 0.0,
+     "in_envelope_pct": 26.0,
+     "brake_peak_pct": 87.0
+    },
+    "wind": {
+     "scale_mps": 15.0,
+     "mean_mps": -6.92,
+     "gust_amp_mps": 6.0
+    },
+    "rank": {
+     "n": 300,
+     "slower_than_pct": 35.0,
+     "level_median_speed_mps": 3.07,
+     "level_median_offset_m": 35.86,
+     "level_success_pct": 30.0
+    }
+   }
+  },
+  {
+   "file": "ep_07_L0_s258.json",
+   "frames": 537,
+   "seconds": 26.9,
+   "level": 0,
+   "seed": 258,
+   "checkpoint": "rt1_final",
+   "wind_scale_mps": 0.0,
+   "wind_mean_mps": 0.0,
+   "success": true,
+   "end": "rest",
+   "reason": "none",
+   "speed": 1.604,
+   "offset_m": 1.005,
+   "featured": false,
+   "stats": {
+    "start": {
+     "height_m": 2997.0,
+     "speed_mps": 90.7,
+     "angle_deg": 79.2,
+     "x_offset_m": 261.0,
+     "tilt_deg": 10.2
+    },
+    "burn": {
+     "start_s": 15.7,
+     "start_alt_m": 827.0,
+     "duration_s": 10.2,
+     "ignitions": 1
+    },
+    "max_q_kpa": 16.2,
+    "max_q_alt_m": 827.0,
+    "peak_load_g": 3.1,
+    "touchdown": {
+     "t_s": 26.0,
+     "speed_mps": 1.6,
+     "vertical_mps": 1.49,
+     "horizontal_mps": 0.6,
+     "tilt_deg": 0.02,
+     "tilt_rad": 0.0004,
+     "offset_m": 1.0,
+     "settle_s": 0.85
+    },
+    "flight_time_s": 26.9,
+    "fuel": {
+     "used_kg": 2235.0,
+     "left_kg": 2265.0,
+     "left_pct": 50.0
+    },
+    "quality": {
+     "merit": 79.0,
+     "in_envelope_pct": 70.0,
+     "brake_peak_pct": 79.0
+    },
+    "wind": {
+     "scale_mps": 0.0,
+     "mean_mps": 0.0,
+     "gust_amp_mps": 0.0
+    },
+    "rank": {
+     "n": 300,
+     "slower_than_pct": 51.0,
+     "level_median_speed_mps": 1.62,
+     "level_median_offset_m": 0.93,
+     "level_success_pct": 100.0
+    }
+   }
+  },
+  {
+   "file": "ep_08_L2_s39.json",
+   "frames": 443,
+   "seconds": 22.2,
+   "level": 2,
+   "seed": 39,
+   "checkpoint": "rt1_final",
+   "wind_scale_mps": 10.0,
+   "wind_mean_mps": 0.02,
+   "success": true,
+   "end": "rest",
+   "reason": "none",
+   "speed": 1.735,
+   "offset_m": 2.682,
+   "featured": false,
+   "stats": {
+    "start": {
+     "height_m": 2992.0,
+     "speed_mps": 217.1,
+     "angle_deg": 67.1,
+     "x_offset_m": 846.0,
+     "tilt_deg": 30.0
+    },
+    "burn": {
+     "start_s": 9.6,
+     "start_alt_m": 1067.0,
+     "duration_s": 11.7,
+     "ignitions": 1
+    },
+    "max_q_kpa": 23.3,
+    "max_q_alt_m": 1067.0,
+    "peak_load_g": 3.4,
+    "touchdown": {
+     "t_s": 21.2,
+     "speed_mps": 1.73,
+     "vertical_mps": 1.56,
+     "horizontal_mps": 0.76,
+     "tilt_deg": 0.1,
+     "tilt_rad": 0.0017,
+     "offset_m": 2.68,
+     "settle_s": 0.95
+    },
+    "flight_time_s": 22.1,
+    "fuel": {
+     "used_kg": 2545.0,
+     "left_kg": 1955.0,
+     "left_pct": 43.0
+    },
+    "quality": {
+     "merit": 73.7,
+     "in_envelope_pct": 48.0,
+     "brake_peak_pct": 84.0
+    },
+    "wind": {
+     "scale_mps": 10.0,
+     "mean_mps": 0.02,
+     "gust_amp_mps": 4.0
+    },
+    "rank": {
+     "n": 300,
+     "slower_than_pct": 62.0,
+     "level_median_speed_mps": 1.88,
+     "level_median_offset_m": 8.06,
+     "level_success_pct": 53.7
+    }
+   }
+  },
+  {
+   "file": "ep_09_L1_s186.json",
+   "frames": 476,
+   "seconds": 23.8,
+   "level": 1,
+   "seed": 186,
+   "checkpoint": "rt1_final",
+   "wind_scale_mps": 5.0,
+   "wind_mean_mps": 0.28,
+   "success": false,
+   "end": "rest",
+   "reason": "off_pad",
+   "speed": 2.386,
+   "offset_m": 20.236,
+   "featured": false,
+   "stats": {
+    "start": {
+     "height_m": 2993.0,
+     "speed_mps": 180.4,
+     "angle_deg": 74.2,
+     "x_offset_m": 686.0,
+     "tilt_deg": 12.9
+    },
+    "burn": {
+     "start_s": 10.7,
+     "start_alt_m": 1004.0,
+     "duration_s": 11.4,
+     "ignitions": 3
+    },
+    "max_q_kpa": 20.7,
+    "max_q_alt_m": 1004.0,
+    "peak_load_g": 3.2,
+    "touchdown": {
+     "t_s": 22.2,
+     "speed_mps": 2.39,
+     "vertical_mps": 2.34,
+     "horizontal_mps": 0.44,
+     "tilt_deg": 0.57,
+     "tilt_rad": 0.01,
+     "offset_m": 20.24,
+     "settle_s": 1.55
+    },
+    "flight_time_s": 23.8,
+    "fuel": {
+     "used_kg": 2438.0,
+     "left_kg": 2062.0,
+     "left_pct": 46.0
+    },
+    "quality": {
+     "merit": 38.3,
+     "in_envelope_pct": 50.0,
+     "brake_peak_pct": 82.0
+    },
+    "wind": {
+     "scale_mps": 5.0,
+     "mean_mps": 0.28,
+     "gust_amp_mps": 2.0
+    },
+    "rank": {
+     "n": 300,
+     "slower_than_pct": 14.0,
+     "level_median_speed_mps": 1.74,
+     "level_median_offset_m": 2.15,
+     "level_success_pct": 86.3
+    }
+   }
+  },
+  {
+   "file": "ep_10_L1_s34.json",
+   "frames": 467,
+   "seconds": 23.4,
+   "level": 1,
+   "seed": 34,
+   "checkpoint": "rt1_final",
+   "wind_scale_mps": 5.0,
+   "wind_mean_mps": -2.98,
+   "success": true,
+   "end": "rest",
+   "reason": "none",
+   "speed": 1.712,
+   "offset_m": 1.776,
+   "featured": false,
+   "stats": {
+    "start": {
+     "height_m": 2993.0,
+     "speed_mps": 177.5,
+     "angle_deg": 71.7,
+     "x_offset_m": 678.0,
+     "tilt_deg": 13.6
+    },
+    "burn": {
+     "start_s": 11.1,
+     "start_alt_m": 976.0,
+     "duration_s": 11.1,
+     "ignitions": 1
+    },
+    "max_q_kpa": 20.4,
+    "max_q_alt_m": 976.0,
+    "peak_load_g": 3.3,
+    "touchdown": {
+     "t_s": 22.2,
+     "speed_mps": 1.71,
+     "vertical_mps": 1.57,
+     "horizontal_mps": 0.69,
+     "tilt_deg": 0.29,
+     "tilt_rad": 0.005,
+     "offset_m": 1.78,
+     "settle_s": 1.15
+    },
+    "flight_time_s": 23.4,
+    "fuel": {
+     "used_kg": 2430.0,
+     "left_kg": 2070.0,
+     "left_pct": 46.0
+    },
+    "quality": {
+     "merit": 75.9,
+     "in_envelope_pct": 54.0,
+     "brake_peak_pct": 82.0
+    },
+    "wind": {
+     "scale_mps": 5.0,
+     "mean_mps": -2.98,
+     "gust_amp_mps": 2.0
+    },
+    "rank": {
+     "n": 300,
+     "slower_than_pct": 54.0,
+     "level_median_speed_mps": 1.74,
+     "level_median_offset_m": 2.15,
+     "level_success_pct": 86.3
+    }
+   }
+  },
+  {
+   "file": "ep_11_L3_s179.json",
+   "frames": 434,
+   "seconds": 21.7,
+   "level": 3,
+   "seed": 179,
+   "checkpoint": "rt1_final",
+   "wind_scale_mps": 15.0,
+   "wind_mean_mps": 7.53,
+   "success": true,
+   "end": "rest",
+   "reason": "none",
+   "speed": 1.617,
+   "offset_m": 4.297,
+   "featured": false,
+   "stats": {
+    "start": {
+     "height_m": 2991.0,
+     "speed_mps": 258.7,
+     "angle_deg": 64.1,
+     "x_offset_m": 1034.0,
+     "tilt_deg": 31.2
+    },
+    "burn": {
+     "start_s": 8.2,
+     "start_alt_m": 1172.0,
+     "duration_s": 12.1,
+     "ignitions": 1
+    },
+    "max_q_kpa": 29.3,
+    "max_q_alt_m": 2991.0,
+    "peak_load_g": 3.5,
+    "touchdown": {
+     "t_s": 20.3,
+     "speed_mps": 1.62,
+     "vertical_mps": 1.62,
+     "horizontal_mps": 0.03,
+     "tilt_deg": 0.44,
+     "tilt_rad": 0.0078,
+     "offset_m": 4.3,
+     "settle_s": 1.4
+    },
+    "flight_time_s": 21.7,
+    "fuel": {
+     "used_kg": 2638.0,
+     "left_kg": 1862.0,
+     "left_pct": 41.0
+    },
+    "quality": {
+     "merit": 71.1,
+     "in_envelope_pct": 29.0,
+     "brake_peak_pct": 87.0
+    },
+    "wind": {
+     "scale_mps": 15.0,
+     "mean_mps": 7.53,
+     "gust_amp_mps": 6.0
+    },
+    "rank": {
+     "n": 300,
+     "slower_than_pct": 82.0,
+     "level_median_speed_mps": 3.07,
+     "level_median_offset_m": 35.86,
+     "level_success_pct": 30.0
+    }
+   }
+  }
+ ]
+}

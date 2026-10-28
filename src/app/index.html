@@ -171,6 +171,37 @@
   pre.plog { max-height:240px; overflow:auto; font:11px ui-monospace,Consolas,monospace; background:#080b16; border:1px solid var(--line); border-radius:6px; padding:8px; white-space:pre-wrap; }
   .chip2 { display:inline-block; padding:2px 8px; border-radius:20px; background:#182042; color:var(--mute); font-size:12px; }
   .chip2.run { background:#123524; color:var(--good); } .chip2.ext { background:#3a3012; color:var(--warn); }
+  /* Showcase / Replay mode (?showcase=1): only the picture, its panels and a caption; the training controls below are removed */
+  .showcap { display:none; position:absolute; left:50%; top:2.2%; transform:translateX(-50%); z-index:7; text-align:center; pointer-events:none; line-height:1.45; background:rgba(5,9,20,.7); border:1px solid var(--line); border-radius:10px; padding:calc(7px * var(--zf, 1)) calc(20px * var(--zf, 1)); font-size:calc(16px * var(--zf, 1)); color:var(--ink); text-shadow:0 0 3px #000; }
+  .showcap .star { color:var(--warn); } .showcap .sub { font-size:.8em; }
+  /* the Showcase Recorder screen (?recorder=1): a plain page, no picture, nothing polled except the recording's own progress */
+  .recpage { display:none; } body.recorder .screen, body.recorder .below { display:none; } body.recorder .recpage { display:block; }
+  .recwrap { max-width:900px; margin:0 auto; padding:18px 18px 56px; display:flex; flex-direction:column; gap:12px; }
+  .rechead { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; } .recwrap h1 { font-size:20px; margin:4px 0 0; }
+  .rectable td, .rectable th { padding:2px 6px; text-align:right; } .rectable th { color:var(--mute); font-weight:500; } .rectable td:first-child, .rectable th:first-child { text-align:left; } .rectable td { border-top:1px solid #151c36; }
+  .rectable .ok { color:var(--good); } .rectable .no { color:var(--bad); } .recopts { display:grid; grid-template-columns:auto 1fr; gap:6px 12px; align-items:center; max-width:560px; margin:8px 0; } .recopts label { color:var(--mute); }
+  pre.reclog { margin:8px 0 0; max-height:220px; overflow:auto; font:11.5px ui-monospace,Consolas,monospace; background:#080b16; border:1px solid var(--line); border-radius:6px; padding:8px; white-space:pre-wrap; }
+  body.showcase .below, body.showcase #mini, body.showcase #cam2Box, body.showcase .hudbar { display:none; }                /* (the partner cam is for pairs only) */
+  /* the Showcase interface: the picture on the left, the data a reader asks for on the right (a column of text and two small charts, rebuilt only when a landing or a slide changes) */
+  .judge { display:none; }
+  body.showcase .screen { display:grid; grid-template-columns:minmax(0, 1fr) clamp(340px, 28vw, 480px); }
+  body.showcase .stage { justify-self:center; align-self:center; }
+  body.showcase .judge { display:flex; flex-direction:column; gap:7px; height:100vh; padding:9px 11px; background:#0a0e1c; border-left:1px solid var(--line); overflow:hidden; font-size:clamp(11px, 1.5vh, 14.5px); line-height:1.4; color:var(--ink); }
+  @media (max-width:900px) { body.showcase .screen { display:flex; } body.showcase .judge { display:none; } }
+  .jhead { display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:space-between; } .jhead .seg button { padding:3px 10px; font-size:.95em; }
+  .jhead .seg { width:100%; } .jhead .seg button { flex:1 1 auto; padding:3px 6px; font-size:.88em; white-space:nowrap; }
+  .screen.idle .jhead .seg { opacity:.0; } .jhead .seg { transition:opacity .4s; }
+  .jcard { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:.55em .75em; }
+  .jnow-h { display:flex; justify-content:space-between; align-items:baseline; gap:8px; font-weight:700; font-size:1.08em; } .jnow-h .badge { padding:1px 9px; border-radius:20px; font-size:.85em; font-weight:700; }
+  .badge.ok { background:#123524; color:var(--good); } .badge.no { background:#3a1620; color:var(--bad); } .badge.fly { background:#182042; color:var(--mute); }
+  .jkv { display:grid; grid-template-columns:auto 1fr; gap:1px .7em; margin-top:.35em; } .jkv .k { color:var(--mute); white-space:nowrap; } .jkv .v { font-variant-numeric:tabular-nums; } .jkv .v small, .jsub { color:var(--mute); font-size:.9em; }
+  .jrules { display:flex; flex-wrap:wrap; gap:3px 5px; margin-top:.45em; } .jrules span { padding:0 7px; border-radius:6px; background:#0d1428; border:1px solid var(--line); font-size:.88em; } .jrules .ok { color:var(--good); border-color:#1f5a3f; } .jrules .no { color:var(--bad); border-color:#6a2a35; }
+  .jslides { flex:1 1 auto; min-height:0; display:flex; flex-direction:column; gap:.4em; overflow:hidden; }
+  .jtabs { display:flex; flex-wrap:wrap; gap:3px; } .jtabs button { flex:1 1 auto; padding:2px 4px; font-size:.88em; background:transparent; border:1px solid var(--line); color:var(--mute); border-radius:7px; cursor:pointer; } .jtabs button.on { background:#182042; color:var(--ink); border-color:#33407a; }
+  .jslide { flex:1 1 auto; min-height:0; overflow:hidden; } .jslide h3 { margin:.1em 0 .3em; font-size:1.02em; } .jslide p, .jslide li { margin:.15em 0; } .jslide ul { margin:.2em 0; padding-left:1.15em; } .jslide .mute { color:var(--mute); }
+  .jslide canvas { width:100%; height:auto; display:block; } .jslide table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; } .jslide th { color:var(--mute); font-weight:500; text-align:right; padding:1px 3px; } .jslide td { text-align:right; padding:1px 3px; border-top:1px solid #151c36; } .jslide th:first-child, .jslide td:first-child { text-align:left; }
+  .jslide td small { display:block; color:var(--mute); font-size:.82em; line-height:1.15; } .jslide tr.cur td { background:#131b36; } .jslide .sw2 { display:inline-block; width:.7em; height:.7em; border-radius:2px; margin-right:.35em; vertical-align:baseline; }
+  .jbar { display:flex; height:.85em; border-radius:3px; overflow:hidden; background:#10162b; } .jbar i { display:block; height:100%; }
 </style>
 </head>
 <body>
@@ -183,6 +214,7 @@
         <span class="hud" id="hud">no run selected</span>
         <span class="sub" id="status"></span>
       </div>
+      <div class="showcap" id="showcap"></div>
       <div class="toast" id="toast"></div>
       <div class="speedtag" id="speedtag"></div>
       <div class="tele" id="tele">
@@ -283,6 +315,12 @@
       </div>
       </div>
     </div>
+    <aside class="judge" id="judge">
+      <div class="jhead"><span class="brand"><span class="dot"></span>SpaceXperiment</span><span class="chip2" id="jchip">replay</span>
+        <div class="seg" id="judgeSeg" title="Interface"><button data-mode="simple">Simple</button><button data-mode="advanced">Advanced</button><button data-mode="showcase" class="on">Showcase</button><button data-mode="recorder">Showcase Recorder</button></div></div>
+      <div class="jcard" id="jNow"></div>
+      <div class="jcard jslides"><div class="jtabs" id="jTabs"></div><div class="jslide" id="jSlide"></div></div>
+    </aside>
 </div>
 <div class="below">
 <div class="grid">
@@ -318,8 +356,8 @@
       <pre id="log" style="display:none"></pre>
       <div class="err" id="err"></div>
     </div>
-    <div class="modebar"><span class="sub">Interface</span><div class="seg" id="modeseg"><button data-mode="simple">Simple</button><button data-mode="advanced">Advanced</button></div>
-      <span class="sub simple-only">Sliders and menus only, limited to safe values.</span><span class="sub adv-only">Every setting and every tab.</span></div>
+    <div class="modebar"><span class="sub">Interface</span><div class="seg" id="modeseg"><button data-mode="simple">Simple</button><button data-mode="advanced">Advanced</button><button data-mode="showcase" title="Replays saved landings forever with the results behind them; nothing is simulated or trained (for a public display)">Showcase</button><button data-mode="recorder" title="Records the landings the Showcase replays, from the browser (instead of the command line)">Showcase Recorder</button></div>
+      <span class="sub simple-only">Sliders and menus only, limited to safe values.</span><span class="sub adv-only">Every setting and every tab.</span><span class="sub">Showcase: a replay of saved landings with the data behind them. Showcase Recorder: makes those recordings.</span></div>
     <div class="tabs">
       <button class="on" data-pane="live">Live</button><button data-pane="startup">Startup</button><button class="adv-only" data-pane="brain">Brain</button><button data-pane="params"><span class="adv-only">Parameters</span><span class="simple-only">Settings</span></button><button class="adv-only" data-pane="pipeline">Pipeline</button><button data-pane="ckpt"><span class="adv-only">Checkpoints</span><span class="simple-only">Models</span></button><button class="adv-only" data-pane="data">Data</button><button class="adv-only" data-pane="tests">Tests</button>
     </div>
@@ -497,7 +535,34 @@
   </div>
 </div>
 </div>
+<div class="recpage" id="recpage">
+  <div class="recwrap">
+    <div class="rechead"><span class="brand"><span class="dot"></span>SpaceXperiment</span>
+      <div class="seg" id="recSeg" title="Interface"><button data-mode="simple">Simple</button><button data-mode="advanced">Advanced</button><button data-mode="showcase">Showcase</button><button data-mode="recorder" class="on">Showcase Recorder</button></div></div>
+    <h1>Showcase Recorder</h1>
+    <div class="dnote">Records the landings that the <b>Showcase</b> replays, and the numbers shown beside them. It does what <code>python tools\record_replays.py</code> does, without the command line. Nothing is simulated while the Showcase plays; the simulator only runs here, for about 15 seconds.</div>
+    <div class="card"><h2>Saved library</h2><div id="recLib" class="dnote">loading&hellip;</div>
+      <div class="row" style="margin-top:8px"><button class="primary" id="recOpen">Open the Showcase</button></div></div>
+    <div class="card"><h2>Record a new library</h2>
+      <div class="recopts">
+        <label for="recPer">Successes per wind level</label><select id="recPer"><option>1</option><option selected>2</option><option>3</option><option>4</option></select>
+        <label for="recFail">Failures to include</label><select id="recFail"><option>0</option><option>1</option><option>2</option><option selected>3</option></select>
+        <label>Network</label><span><b>rt1_final</b> <span class="sub">(the retrained single-lander network the evaluation table was made with)</span></span>
+      </div>
+      <div class="row"><button class="primary big" id="recGo">Record landings</button><button id="recFacts" title="Re-read the results files and rewrite only the numbers beside the landings (a few seconds)">Refresh the numbers only</button><button class="danger" id="recStop" disabled>Cancel</button></div>
+      <div class="progress"><i id="recBar"></i></div>
+      <div id="recMsg" class="sub">Ready.</div>
+      <div class="err" id="recErr"></div>
+      <pre class="reclog" id="recLog" style="display:none"></pre>
+      <div class="dnote" style="margin-top:8px">The saved library is replaced only when the new one is complete: a failed or cancelled recording leaves it as it was. Each landing is flown again with the paper's seeds and checked against the evaluation table (touchdown speed within 5 mm/s). The mix is the paper's featured landing (level 1, seed 122), typical successes at each wind level (the ones closest to that level's median) and typical failures at levels 1-3, never two in a row.</div></div>
+  </div>
+</div>
 <script>
+const SHOW = new URLSearchParams(location.search).has('showcase');          // Showcase / Replay mode (?showcase=1): only draws saved landings from replays/, nothing is simulated or polled (see the end of this script)
+if (SHOW) document.body.classList.add('showcase');
+const RECP = new URLSearchParams(location.search).has('recorder');          // Showcase Recorder screen (?recorder=1): records the replay library from the browser, nothing else runs
+if (RECP) document.body.classList.add('recorder');
+const LITE = SHOW || RECP;
 const cv = document.getElementById('view'), g = cv.getContext('2d');
 let W = cv.width, H = cv.height;
 const S_MIN = 1e-9, S_MAX = 5000;           // zoom limits: effectively unlimited zoom-out (a pixel can be a million km) and a view of a few millimetres
@@ -579,7 +644,7 @@ function mkSlots(n) {
 }
 
 let liveIds = {};
-setInterval(async () => { try { liveIds = await (await fetch('/api/live_ids')).json(); } catch (e) { /* server busy */ } }, 400);
+if (!LITE) setInterval(async () => { try { liveIds = await (await fetch('/api/live_ids')).json(); } catch (e) { /* server busy */ } }, 400);
 async function load(s) {                       // one fetch per new episode (a single small poll above tells us when)
   if (s.loading) return; s.loading = true;
   try {
@@ -684,8 +749,9 @@ function dualVerdict(s) {                                                       
 }
 function update(dt) {
   const now = performance.now(), sp = +$('speed').value * holdBoost;
+  if (SHOW) showcaseWatch(now);
   for (const s of slots) {
-    if (s.state === 'wait') { if ((liveIds[s.k] || 0) !== s.lastId) load(s); continue; }
+    if (s.state === 'wait') { if (SHOW) showcaseNext(s, now); else if ((liveIds[s.k] || 0) !== s.lastId) load(s); continue; }
     if (s.state === 'play' && !paused && s.ep) {
       const f = s.ep.frames;
       s.fi += dt / FDT * sp;
@@ -693,7 +759,7 @@ function update(dt) {
       for (let i = s.last + 1; i <= idx; i++) { onFrame(s, f[i], i); if (f[i].b && s.sb) onFrame(s.sb, f[i].b, i); }
       s.last = idx;
       if (idx >= f.length - 1) {
-        s.state = 'hold'; s.until = now + 1500; landPush(s); if (s.k === brainSel) termResult(s); dualVerdict(s);
+        s.state = 'hold'; s.until = now + (SHOW ? SHC.HOLD_MS : 1500); landPush(s); if (s.k === brainSel) termResult(s); dualVerdict(s); if (SHOW) showcaseCaption('done');
         const r = s.ep.result, c = r.success ? 'var(--good)' : (r.end === 'rest' || r.end === 'timeout') ? 'var(--warn)' : 'var(--bad)';
         const t = document.createElement('i'); t.className = 'tile'; t.style.background = c;
         t.title = `#${s.ep.id} · env ${s.k + 1} · ${(s.ep.step/1000).toFixed(1)}k steps · ${r.end} · ${r.speed ?? '–'} m/s · ${r.dist} m · merit ${r.merit ?? 0}`;
@@ -702,7 +768,7 @@ function update(dt) {
     } else if (s.state === 'hold' && s.ep) {
       const crashed = s.ep.result.end === 'crash' || s.ep.result.end === 'oob';
       s.fade = crashed ? Math.max(0, (s.until - now) / 1500) : 1;
-      if (now > s.until) { s.state = 'wait'; s.ep = null; }
+      if (now > s.until) { s.state = 'wait'; s.ep = null; if (SHOW) { SHC.gapUntil = now + SHC.GAP_MS; showcaseCaption('next'); } }
     }
   }
   const sdt = paused ? 0 : dt * sp;                                                  // simulated seconds this frame
@@ -1255,7 +1321,7 @@ function updateRunName() {                                  // the run a Start p
 }
 async function refreshRunNames() { try { runNames = (await (await fetch('/api/runs')).json()).runs || []; } catch (e) { /* server busy */ } updateRunName(); }
 document.addEventListener('input', e => { if (e.target.id && e.target.id.startsWith('f_')) updateRunName(); });
-setInterval(refreshRunNames, 5000); setTimeout(refreshRunNames, 800);
+if (!LITE) { setInterval(refreshRunNames, 5000); setTimeout(refreshRunNames, 800); }
 $('start').onclick = async () => {
   showErr([]); $('start').disabled = true;
   const r = await fetch('/api/train/start', post(formValues())), j = await r.json();
@@ -1455,7 +1521,7 @@ function updateBrainText() {
     '<h3>What it decided</h3><table class="now">' + rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('') +
     `<tr><td>its own estimate of how well it is doing</td><td>${n.v.toFixed(1)}</td></tr></table>`;
 }
-setInterval(updateBrainText, 150);
+if (!LITE) setInterval(updateBrainText, 150);
 
 // ---- mini brain: a compact copy of the network inside the scene, driven by the same selection
 const mc = document.getElementById('minibrain'), mg = mc.getContext('2d'), MW = mc.width, MH = mc.height;
@@ -1531,7 +1597,7 @@ function termWatch(s, f, fi) {                         // called for every frame
     if (sel) { const r = s.ep.result; termAppend(`&gt;&gt; <span class="tt">T+${((fi + 1) * FDT).toFixed(2)}s</span> <span class="soft">Touchdown</span> <span class="ex">${r.speed ?? '?'} m/s \u00b7 ${r.dist} m off centre</span>`); termLast = null; }
   }
 }
-function termNewEpisode(s) { termPrompt(s.k, `episode ${s.ep.id}   # ${(s.ep.step / 1000).toFixed(0)}k steps`); }
+function termNewEpisode(s) { termPrompt(s.k, SHOW ? `replay ${s.ep.id}   # recorded landing` : `episode ${s.ep.id}   # ${(s.ep.step / 1000).toFixed(0)}k steps`); }
 function termResult(s) {
   const r = s.ep.result, bad = { crash: 'VEHICLE LOST (crash)', tilt: 'TILT LIMIT EXCEEDED', stall: 'STALLED IN FLIGHT', timeout: 'TIME LIMIT', oob: 'OUT OF BOUNDS' };
   const head = r.end === 'rest' ? `<span class="ok">LANDED${r.success ? ' \u2713 success' : ''}</span>` : `<span class="bad">${bad[r.end] || r.end}</span>`;
@@ -1624,7 +1690,7 @@ function updateTele() {
 }
 function thrustFullAt(h) { return VEH.thrust_vac - (VEH.thrust_vac - VEH.thrust_sl) * Math.exp(-Math.max(h, 0) / 7200); }
 $('teleHead').onclick = () => { teleOpen = !teleOpen; $('teleToggle').innerHTML = teleOpen ? '&#9662;' : '&#9656;'; if (!teleOpen) $('teleBody').innerHTML = ''; else updateTele(); };
-setInterval(() => { try { updateTele(); } catch (e) { /* keep the loop alive */ } }, 100);
+setInterval(() => { if (RECP || (SHOW && document.hidden)) return; try { updateTele(); } catch (e) { /* keep the loop alive */ } }, SHOW ? 200 : 100);
 
 // ---- landing cam: a camera fixed to the lower part of the stage (a "GoPro" 30 m above the engine bells, on the upper part of the stage, 1.5 m off the skin), looking down the stage toward the engines.
 // It is a real 3-D view of the scene: the sea and the drone ships are ray-traced from the camera's position and attitude, so the lander's TILT swings the world across the picture
@@ -1949,7 +2015,7 @@ function drawPartnerView(s, c, f, th, om) {
 function drawCamPartner() {                                                                                 // its own panel: switched off with the Partner cam chip (nothing is drawn then), only shown for a pair
   const b = slots[brainSel], pair = !!(b && b.eps && b.eps.length === 2 && b.ep && b.last >= 0);
   cam2.style.display = cam2Open ? '' : 'none';
-  if (!VIS.cam2) return;                                                                                       // unloaded: the panel is hidden (applyVis) and nothing is drawn
+  if (!VIS.cam2 || SHOW) return;                                                                                 // unloaded: the panel is hidden (applyVis) and nothing is drawn
   setPending('cam2Box', !pair, 'PAIR ONLY');                                                                  // like the other panels: always there to move and resize, with a badge when it has nothing to show
   if (!pair) { cam2g.fillStyle = 'rgba(5,9,20,.7)'; cam2g.fillRect(0, 0, cam2.width, cam2.height); return; }
   if (!cam2Open) return;
@@ -2417,6 +2483,8 @@ document.querySelector('.tabs button[data-pane=params]').addEventListener('click
 
 // ---- the Simple / Advanced switch
 function setMode(m) {
+  if (m === 'showcase') { location.search = '?showcase=1'; return; }
+  if (m === 'recorder') { location.search = '?recorder=1'; return; }                    // a page of its own: it polls nothing and shows only the saved landings
   const simple = m !== 'advanced';
   document.body.classList.toggle('simple', simple);
   try { localStorage.setItem('spacexperiment.mode', simple ? 'simple' : 'advanced'); } catch (e) { /* storage may be blocked */ }
@@ -3300,12 +3368,289 @@ document.addEventListener('keydown', e => {
   sc.addEventListener('pointermove', wake); sc.addEventListener('pointerdown', wake); wake();
 })();
 
+// ---- Showcase / Replay mode (?showcase=1). Plays the landings saved in replays/ (written by tools/record_replays.py) one after the other, forever: no simulator, no network and
+// no training run, nothing is polled, and the drawing is capped at SHC.FPS. It reuses the normal slot, lander, drone ship, flare, smoke and landing-cam code on one slot.
+const SHC = { FPS: 30, HOLD_MS: 3500, GAP_MS: 1800, PAUSE_MAX_MS: 30000, list: [], ckpt: '', i: -1, next: null, loading: false, retryAt: 0, gapUntil: 0, pausedAt: 0, lastDraw: 0 };
+async function showcaseInit() {
+  $('chip').textContent = 'replay'; $('hud').innerHTML = '<b>SHOWCASE</b>'; $('status').textContent = '';
+  try {
+    const idx = await (await fetch('/api/replay/index')).json();
+    SHC.list = idx.episodes || []; SHC.ckpt = idx.checkpoint || '';
+  } catch (e) { SHC.list = []; }
+  if (!SHC.list.length) {
+    $('showcap').innerHTML = 'No saved landings yet.<br><span class="sub">Record them with:  python tools/record_replays.py</span>'; $('showcap').style.display = 'block';
+    setTimeout(showcaseInit, 5000); return;                          // try again: the library may be recorded while this page is open
+  }
+  try { JC.facts = await (await fetch('/api/replay/facts')).json(); } catch (e) { JC.facts = null; }
+  judgeInit(); showcaseCaption('next'); showcasePrefetch();
+}
+async function showcasePrefetch() {                                      // fetch the next landing while the current one flies (at most two are in memory)
+  if (SHC.loading || SHC.next || !SHC.list.length || performance.now() < SHC.retryAt) return;
+  SHC.loading = true;
+  try {
+    const i = (SHC.i + 1) % SHC.list.length, e = await (await fetch('/api/replay/episode?file=' + encodeURIComponent(SHC.list[i].file))).json();
+    if (!e.frames || !e.frames.length) throw new Error('bad episode');
+    e.step = 0; SHC.next = e;
+  } catch (err) { SHC.retryAt = performance.now() + 3000; }
+  finally { SHC.loading = false; }
+}
+function showcaseNext(s, now) {                                          // the slot is idle: start the next landing once the gap is over
+  if (!SHC.list.length || now < SHC.gapUntil) return;
+  const e = SHC.next; if (!e) { showcasePrefetch(); return; }
+  SHC.next = null; SHC.i = (SHC.i + 1) % SHC.list.length;
+  parts.forEach(p => { if (p.s === s.k && p.dying === undefined) p.dying = 0; });            // the old smoke dissipates, as in the live view
+  s.acc = s.dacc = 0; s.ep = e; s.lastId = e.id; s.fi = 0; s.last = -1; s.pts = 0; s.fade = 1; s.state = 'play';
+  if (e.dt) { FDT = e.dt; TL.dt = e.dt; } if (e.veh) setVeh(e.veh); if (e.pad) PAD = e.pad; setupDual(s, e);
+  s.tm = { main: false, side: 0, down: false, ign: 0 }; termNewEpisode(s); level = e.level;
+  if (!camAuto || camFollow) { setCamFollow(false); setCamAuto(true); } $('speed').value = '1'; holdBoost = 1;      // a visitor's pan, zoom or fast-forward does not stay
+  showcaseCaption('fly'); showcasePrefetch();
+}
+function showcaseCaption(phase) {                                        // phase: 'next' (between landings), 'fly', 'done'
+  const n = SHC.list.length, i = phase === 'next' ? (SHC.i + 1) % n : SHC.i, m = SHC.list[i], el = $('showcap');
+  const wind = m.wind_scale_mps > 0 ? `wind ${m.wind_scale_mps} m/s` : 'no wind';
+  const why = { too_fast: 'too fast', off_pad: 'missed the pad' }[m.reason] || m.reason;
+  let line = '', cls = '';
+  if (phase === 'next') line = 'up next';
+  else if (phase === 'fly') line = 'landing…';
+  else if (m.success) { line = `landed ✓ ${(+m.speed).toFixed(1)} m/s · ${(+m.offset_m).toFixed(1)} m from the centre`; cls = 'ok'; }
+  else { line = `${why}: ${(+m.speed).toFixed(1)} m/s · ${(+m.offset_m).toFixed(1)} m from the centre`; cls = 'no'; }
+  el.innerHTML = `<b>Level ${m.level}</b> · ${wind}${m.featured ? ' · <span class="star">featured landing</span>' : ''}<br><span class="${cls}">${esc(line)}</span><br><span class="sub">recorded replay · ${i + 1} / ${n} · ${esc(m.checkpoint)}</span>`;
+  el.title = `level ${m.level}, seed ${m.seed}, wind scale ${m.wind_scale_mps} m/s (this episode averages ${m.wind_mean_mps} m/s), checkpoint ${m.checkpoint}`;
+  el.style.display = 'block';
+  judgeNow(phase); if (phase !== 'done') judgeSlide(JC.slide);                  // the slides mark the level of the landing on screen
+}
+function showcaseWatch(now) {                                            // a visitor who pauses the picture does not leave the showcase frozen
+  judgeTick(now);
+  if (!paused) { SHC.pausedAt = 0; return; }
+  if (!SHC.pausedAt) SHC.pausedAt = now; else if (now - SHC.pausedAt > SHC.PAUSE_MAX_MS) { togglePause(false); SHC.pausedAt = 0; }
+}
+
+// ---- The Showcase data column: "this landing" (numbers measured on the recorded landing) and rotating slides built from replays/facts.json (results, touchdown, failures,
+// training curve, task and rules, method, limits). Everything is text and two small charts, redrawn only when a landing or a slide changes.
+const JC = { facts: null, slide: 0, pinUntil: 0, nextRot: 0, ROT_MS: 18000, PIN_MS: 60000, names: ['Results', 'Touchdown', 'Failures', 'Training', 'Task', 'Method', 'Limits'] };
+const JCOL = { sx_retrained: '#5b9bff', expert_tuned: '#9aa3c7', sx_imitation_quiet: '#f2c46b', pair_safe_final: '#c78bff' };
+const jf = (x, d = 1) => (x == null || !isFinite(x)) ? '–' : (+x).toLocaleString(undefined, { minimumFractionDigits: d, maximumFractionDigits: d });
+const jp = (x, d = 1) => x == null ? '–' : jf(100 * x, d);
+const jsg = v => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(1);
+const jLevel = () => { const m = SHC.list[SHC.i < 0 ? 0 : SHC.i]; return m ? m.level : -1; };
+const jRes = k => JC.facts && JC.facts.results && JC.facts.results[k];
+const jNeedFacts = () => '<p class="mute">No results file yet. Run <b>python tools/record_replays.py --facts-only</b>.</p>';
+
+function judgeNow(phase) {                                                // phase: 'next' (between landings), 'fly', 'done'
+  const n = SHC.list.length, i = phase === 'next' ? (SHC.i + 1) % n : SHC.i, m = SHC.list[i], st = m.stats, done = phase === 'done';
+  const R = (JC.facts && JC.facts.rules) || { speed_mps: 3, tilt_rad: 0.15, offset_m: 10 };
+  const badge = done ? (m.success ? ['ok', 'landed ✓'] : ['no', 'failed']) : phase === 'next' ? ['fly', 'up next'] : ['fly', 'in flight'];
+  let h = `<div class="jnow-h"><span>Landing ${i + 1} / ${n} · level ${m.level} · seed ${m.seed}${m.featured ? ' · <span style="color:var(--warn)">featured</span>' : ''}</span><span class="badge ${badge[0]}">${badge[1]}</span></div>`;
+  if (!st) { $('jNow').innerHTML = h; return; }
+  const td = st.touchdown, b = st.burn, f = st.fuel, q = st.quality, w = st.wind, s0 = st.start;
+  const rows = [
+    ['Wind', `${jf(w.scale_mps, 0)} m/s scale · mean ${jsg(w.mean_mps)} m/s · gusts ±${jf(w.gust_amp_mps)} m/s`],
+    ['Start', `${jf(s0.height_m / 1000, 2)} km up · ${jf(s0.speed_mps, 0)} m/s at ${jf(s0.angle_deg, 0)}° below horizontal · ${jf(s0.x_offset_m, 0)} m off the pad`],
+    ['Burn', b ? `ignites T+${jf(b.start_s)} s at ${jf(b.start_alt_m, 0)} m · burns ${jf(b.duration_s)} s · ${b.ignitions} ignition${b.ignitions === 1 ? '' : 's'}` : 'engine never fired'],
+    ['Loads', `max-Q ${jf(st.max_q_kpa)} kPa at ${jf(st.max_q_alt_m, 0)} m · peak load ${jf(st.peak_load_g)} g`],
+    ['Touchdown', `T+${jf(td.t_s)} s · ${jf(td.speed_mps, 2)} m/s <small>(vertical ${jf(td.vertical_mps, 2)}, sideways ${jf(td.horizontal_mps, 2)})</small>`],
+    ['At rest', `tilt ${jf(td.tilt_deg, 2)}° · ${jf(td.offset_m, 2)} m from the pad centre · settled in ${jf(td.settle_s, 2)} s`],
+    ['Propellant', `${jf(f.used_kg, 0)} kg used · ${jf(f.left_kg, 0)} kg left <small>(${jf(f.left_pct, 0)} % of ${jf(((JC.facts || {}).rules || {}).fuel_kg || 4500, 0)} kg)</small>`],
+    ['Quality', `merit ${jf(q.merit)} / 100 · ${jf(q.in_envelope_pct, 0)} % of the descent inside the safe-speed envelope · peak braking ${jf(q.brake_peak_pct, 0)} % of capability`],
+  ];
+  if (done) { const r = st.rank; rows.push(['Rank', `gentler than ${jf(r.slower_than_pct, 0)} % of the ${r.n} evaluated landings at this level <small>(median ${jf(r.level_median_speed_mps, 2)} m/s, level success ${jf(r.level_success_pct)} %)</small>`]); }
+  h += '<div class="jkv">' + rows.map(r => `<span class="k">${r[0]}</span><span class="v">${r[1]}</span>`).join('') + '</div>';
+  if (done) {
+    const chip = (ok, t) => `<span class="${ok ? 'ok' : 'no'}">${ok ? '✓' : '✗'} ${t}</span>`;
+    h += '<div class="jrules">' + chip(td.speed_mps != null && td.speed_mps <= R.speed_mps, `speed ${jf(td.speed_mps, 2)} ≤ ${R.speed_mps} m/s`) + chip(td.tilt_rad != null && td.tilt_rad <= R.tilt_rad, `tilt ${jf(td.tilt_rad, 3)} ≤ ${R.tilt_rad} rad`) +
+      chip(td.offset_m != null && td.offset_m <= R.offset_m, `offset ${jf(td.offset_m, 2)} ≤ ${R.offset_m} m`) + chip(f.left_kg > 0, 'propellant left') + chip(m.end === 'rest', m.end === 'rest' ? 'ended at rest' : 'ended: ' + esc(m.end)) + '</div>';
+  }
+  $('jNow').innerHTML = h;
+}
+
+// ---- the slides
+function jTable(head, rows) { return '<table><tr>' + head.map(x => `<th>${x}</th>`).join('') + '</tr>' + rows.map(r => `<tr${r.cur ? ' class="cur"' : ''}>` + r.cells.map(c => `<td>${c}</td>`).join('') + '</tr>').join('') + '</table>'; }
+const jSw = k => `<span class="sw2" style="background:${JCOL[k]}"></span>`;
+const jCell = d => `${jp(d.rate)} %<small>${jp(d.lo, 0)}–${jp(d.hi, 0)}</small>`;
+const JS_ = {
+  Results() {
+    const ks = ['sx_retrained', 'expert_tuned', 'sx_imitation_quiet', 'pair_safe_final'].filter(jRes); if (!jRes('sx_retrained')) return jNeedFacts();
+    return `<h3>Success rate on unseen test seeds</h3><canvas id="jc" width="840" height="300"></canvas>` +
+      jTable(['95 % interval', 'L0', 'L1', 'L2', 'L3'], ks.map(k => ({ cells: [jSw(k) + jRes(k).label, ...jRes(k).levels.map(jCell)] }))) +
+      `<p class="jsub">300 seeds per level (the pair: 600 landers that share wind). Success needs all four rules: speed ≤ 3 m/s, tilt ≤ 0.15 rad, within 10 m of the pad centre, propellant left and ended at rest. The deterministic network, no noise. Highlighted column = the landing now.</p>`;
+  },
+  Touchdown() {
+    const r = jRes('sx_retrained'); if (!r) return jNeedFacts();
+    const ks = ['sx_retrained', 'expert_tuned', 'sx_imitation_quiet'].filter(jRes), cur = jLevel();
+    const metric = (title, f, d) => `<h3>${title}</h3>` + jTable(['', 'L0', 'L1', 'L2', 'L3'], ks.map(k => ({ cells: [jSw(k) + jRes(k).label, ...jRes(k).levels.map(L => jf(f(L), d))] })));
+    return metric('Median touchdown speed, m/s (all 300 seeds, failures included)', L => L.speed_median, 2) + metric('Mean touchdown speed, m/s', L => L.speed_mean, 2) + metric('Mean distance from the pad centre, m', L => L.offset_mean, 1) +
+      `<h3>Retrained network: mean tilt and propellant left</h3>` + jTable(['', 'L0', 'L1', 'L2', 'L3'], [{ cells: ['tilt at touchdown, °', ...r.levels.map(L => jf(L.tilt_mean * 180 / Math.PI, 2))] }, { cells: ['propellant left, kg', ...r.levels.map(L => jf(L.fuel_left_kg, 0))] }]) +
+      `<p class="jsub">A landing counts at ≤ 3 m/s and ≤ 10 m. Level ${cur} is the one on screen.</p>`;
+  },
+  Failures() {
+    const ks = ['sx_retrained', 'expert_tuned', 'sx_imitation_quiet'].filter(jRes); if (!jRes('sx_retrained')) return jNeedFacts();
+    const seg = [['too_fast', '#f2c46b', 'too fast'], ['off_pad', '#f08a8a', 'off the pad'], ['tilted', '#c78bff', 'tilted'], ['out_of_fuel', '#6fd6ff', 'no propellant'], ['other', '#9aa3c7', 'other']];
+    let rows = '';
+    ks.forEach(k => jRes(k).levels.filter(L => L.level > 0).forEach(L => {
+      const f = L.fails, bar = `<i style="width:${100 * L.successes / L.n}%;background:#2e7d5b"></i>` + seg.map(s => `<i style="width:${100 * f[s[0]] / L.n}%;background:${s[1]}"></i>`).join('');
+      rows += `<div style="display:grid;grid-template-columns:7.6em 1fr 5.6em;gap:.5em;align-items:center;margin:.12em 0"><span>${jSw(k)}${k === 'sx_retrained' ? 'Retrained' : k === 'expert_tuned' ? 'Expert' : 'Earlier'} L${L.level}</span><div class="jbar">${bar}</div><span class="jsub">${f.too_fast} fast · ${f.off_pad} off</span></div>`;
+    }));
+    const sum = (k, key, from = 0) => jRes(k) ? jRes(k).levels.filter(L => L.level >= from).reduce((a, L) => a + L.fails[key], 0) : 0, n = jRes('sx_retrained').levels.reduce((a, L) => a + L.n, 0);
+    return `<h3>Why landings fail (each bar = 300 seeds)</h3>${rows}<div class="jsub" style="margin:.3em 0">${[['#2e7d5b', 'landed'], ...seg.map(s => [s[1], s[2]])].map(s => `<span class="sw2" style="background:${s[0]}"></span>${s[1]} `).join('')}</div>` +
+      `<ul><li>Retrained network, all ${jf(n, 0)} test episodes: <b>${sum('sx_retrained', 'tilted')}</b> tilt failures, <b>${sum('sx_retrained', 'out_of_fuel')}</b> out-of-propellant, <b>${sum('sx_retrained', 'other')}</b> other; the failures are speed (${sum('sx_retrained', 'too_fast')}) and pad misses (${sum('sx_retrained', 'off_pad')}).</li>` +
+      (jRes('sx_imitation_quiet') ? `<li>Retraining moved the errors: levels 1–3, too-fast landings ${sum('sx_imitation_quiet', 'too_fast', 1)} → ${sum('sx_retrained', 'too_fast', 1)}, pad misses ${sum('sx_imitation_quiet', 'off_pad', 1)} → ${sum('sx_retrained', 'off_pad', 1)}.</li>` : '') +
+      `<li>Propellant is never the limit: the mean left over is at least ${jf(Math.min(...jRes('sx_retrained').levels.map(L => L.fuel_left_kg)), 0)} kg of ${jf(((JC.facts || {}).rules || {}).fuel_kg || 4500, 0)} kg.</li></ul>`;
+  },
+  Training() {
+    const c = JC.facts && JC.facts.training_curve; if (!c || !c.length) return jNeedFacts();
+    const r = JC.facts.recipe || {}, ev = JC.facts.expert_validation || [], evm = ev.length ? ev.reduce((a, b) => a + b, 0) / ev.length : null, ch = c.find(x => x.chosen), d1 = c.find(x => x.name === 'rt1_dagger_1'), cl = c[0];
+    return `<h3>Validation success while training (200 unseen seeds per level)</h3><canvas id="jc" width="840" height="300"></canvas>` +
+      `<ul><li>Cloning alone: <b>${jp(cl.mean, 0)} %</b> mean success. After one DAgger round: <b>${d1 ? jp(d1.mean, 0) : '–'} %</b>. Chosen round ${r.chosen_round}: <b>${ch ? jp(ch.mean, 1) : '–'} %</b>${evm ? `, the scripted expert scores ${jp(evm, 1)} %` : ''}.</li>` +
+      `<li>Behaviour cloning of ${r.demonstrations} expert landings (${r.demonstrations_kept} kept), ${r.clone_epochs} epochs; then ${r.dagger_rounds} DAgger rounds: the network flies, the expert labels the states it reached, ${r.dagger_episodes} landings per round on levels ${r.dagger_levels}.</li>` +
+      `<li>Rounds 4–8 differ by less than the validation noise (about 3 points); the best validation round was kept, the test seeds were not looked at. Training took ${jf(r.train_seconds, 0)} s.</li></ul>`;
+  },
+  Task() {
+    const L = JC.facts && JC.facts.levels, R = JC.facts && JC.facts.rules; if (!L) return jNeedFacts();
+    const cur = jLevel();
+    return `<h3>Four wind levels, same rules</h3>` + jTable(['', 'wind scale', 'gusts', 'mean |wind|', 'entry angle', 'speed ×', 'start x'], L.map(l => ({ cur: l.level === cur,
+      cells: ['L' + l.level, jf(l.wind_scale_mps, 0) + ' m/s', '±' + jf(l.gust_amp_mps) + ' m/s', jf(l.mean_abs_wind_mps) + ' m/s', l.entry_deg[0] + '–' + l.entry_deg[1] + '°', jf(l.speed_fraction, 2), jf(l.x_offset_m, 0) + ' m'] }))) +
+      `<ul><li>Start: ${jf(R.spawn_height_m, 0)} m above a ${jf(2 * R.pad_half_width_m, 0)} m wide drone-ship deck, falling in from the side at 250–320 m/s × the level's speed fraction, like a re-entry.</li>` +
+      `<li>The wind is a scale: each episode draws a signed mean within ±0.6 × scale plus a gust of 0.4 × scale, stronger with height. Higher levels also start farther off, faster and flatter, so level 3 is harder for more reasons than wind.</li>` +
+      `<li><b>Success</b> = touchdown speed ≤ ${R.speed_mps} m/s, tilt ≤ ${R.tilt_rad} rad (8.6°), within ${R.offset_m} m of the pad centre, propellant left, and the stage ends upright at rest.</li>` +
+      `<li>At most ${R.max_ignitions} engine ignitions; the episode ends if the tilt passes ${R.tilt_limit_deg}°. Propellant: ${jf(R.fuel_kg, 0)} kg.</li></ul>`;
+  },
+  Method() {
+    const C = JC.facts && JC.facts.controller, v = JC.facts && JC.facts.vehicle; if (!C) return jNeedFacts();
+    const r = JC.facts.recipe || {};
+    return `<h3>How it is built</h3><ul>` +
+      `<li><b>Simulator</b>: our own 2-D rigid-body model of a Falcon-9-class first stage${v ? ` (${jf(v.dry / 1000, 1)} t dry, ${jf(v.thrust_sl / 1000, 0)} kN at sea level, throttle ${jf(100 * v.throttle_min, 0)}–100 %, gimbal ±${jf(v.gimbal_max * 180 / Math.PI, 0)}°, grid fins, two cold-gas thruster rings)` : ''}, with drag, wind and gusts. Physics step ${C.physics_dt_s} s, one decision every ${jf(1000 / C.decisions_hz, 0)} ms. The vehicle numbers are public approximations, some estimates.</li>` +
+      `<li><b>Controller</b>: a neural network, ${C.inputs} inputs → ${C.hidden.join(' → ')} → ${C.outputs} outputs, ${jf(C.parameters, 0)} parameters (actor and critic). It senses position, height, speeds, tilt, spin, propellant, engine state, fin and gimbal angle, thruster gas, ignitions and air pressure; it commands throttle, gimbal, fins and two thruster rings.</li>` +
+      `<li><b>Teacher</b>: a hand-written guidance controller (the scripted expert). The network learns to copy it: behaviour cloning, then DAgger (${r.dagger_rounds} rounds).</li>` +
+      `<li><b>Not reinforcement learning</b>: PPO from scratch never learned to land here, and PPO fine-tuning of the clone made it worse. The result is imitation learning.</li>` +
+      `<li><b>Test</b>: seeds 0–299 at every level, never used for training or for choosing the round (validation seeds ${JC.facts.validation_seeds[0]}–${JC.facts.validation_seeds[1]}). The network runs without noise.</li>` +
+      `<li><b>This display</b>: a replay. The landings were flown again by the same code and seeds and checked against the test table (touchdown speed within 5 mm/s), then saved. Nothing is simulated while you watch.</li>` +
+      `<li class="jsub">Checkpoint ${esc(C.file)} · SHA-256 ${esc(C.sha256.slice(0, 12))}…${esc(C.sha256.slice(-6))}</li></ul>`;
+  },
+  Limits() {
+    const r = jRes('sx_retrained'), e = jRes('expert_tuned'); if (!r) return jNeedFacts();
+    const rate = l => r.levels[l].rate, gap = Math.max(...r.levels.map((L, i) => Math.abs(L.rate - (e ? e.levels[i].rate : L.rate)))), mean = r.levels.reduce((a, L) => a + L.rate, 0) / r.levels.length;
+    const shown = SHC.list.filter(m => m.success).length;
+    return `<h3>What this does not show</h3><ul>` +
+      `<li><b>Wind still wins</b>: success is ${jp(rate(0), 0)} % without wind and falls to ${jp(rate(1), 0)} %, ${jp(rate(2), 0)} % and ${jp(rate(3), 0)} % at levels 1–3.</li>` +
+      `<li><b>It matches its teacher, it does not beat it</b>: within ${jf(100 * gap, 1)} points of the scripted expert at every level, with overlapping intervals.</li>` +
+      `<li><b>Simulation only</b>: 2-D, flat ground, no Earth rotation, no sensor noise or delay, no engine or fin failures, approximate vehicle constants. No claim about a real landing.</li>` +
+      `<li><b>Reliability is not proven</b>: a 99 % claim at 95 % confidence needs 299 clean trials in a row; only level 0 comes close (${r.levels[0].successes} of ${r.levels[0].n}, lower bound ${jp(r.levels[0].lo)} %).</li>` +
+      `<li><b>These ${SHC.list.length} landings are picked</b>: typical successes at each level plus ${SHC.list.length - shown} typical failures, so ${shown} of ${SHC.list.length} succeed here against ${jp(mean, 0)} % averaged over the four levels of the test.</li>` +
+      `<li><b>Associations, not proofs</b>: the expert's failures grow with the start offset; no controlled experiment was run on the cause.</li></ul>`;
+  },
+};
+function jDrawResults() {
+  const c = $('jc'), F = JC.facts && JC.facts.results; if (!c || !F) return;
+  const x = c.getContext('2d'), WD = 420, HT = 150, L = 28, B = 132, T = 10, gw = (WD - L - 6) / 4, ks = ['sx_retrained', 'expert_tuned', 'sx_imitation_quiet'].filter(k => F[k]), bw = gw * 0.25, Y = r => B - (B - T) * r, cur = jLevel();
+  x.setTransform(2, 0, 0, 2, 0, 0); x.clearRect(0, 0, WD, HT); x.font = '9px system-ui'; x.textAlign = 'right';
+  if (cur >= 0) { x.fillStyle = 'rgba(91,155,255,.12)'; x.fillRect(L + cur * gw, T - 4, gw, B - T + 18); }
+  [0, 0.25, 0.5, 0.75, 1].forEach(v => { x.strokeStyle = '#1d2540'; x.beginPath(); x.moveTo(L, Y(v)); x.lineTo(WD - 6, Y(v)); x.stroke(); x.fillStyle = '#7a84a8'; x.fillText(Math.round(100 * v) + '%', L - 3, Y(v) + 3); });
+  for (let l = 0; l < 4; l++) {
+    x.textAlign = 'center'; x.fillStyle = '#a9b3d8'; x.fillText('L' + l + ' · ' + (JC.facts.levels ? JC.facts.levels[l].wind_scale_mps : '') + ' m/s', L + l * gw + gw / 2, B + 12);
+    ks.forEach((k, j) => {
+      const d = F[k].levels[l]; if (!d) return; const bx = L + l * gw + gw * 0.12 + j * bw * 1.12, cx = bx + bw / 2;
+      x.fillStyle = JCOL[k]; x.fillRect(bx, Y(d.rate), bw, B - Y(d.rate));
+      x.strokeStyle = '#eef1ff'; x.lineWidth = 1; x.beginPath(); x.moveTo(cx, Y(d.lo)); x.lineTo(cx, Y(d.hi)); x.moveTo(cx - 2, Y(d.lo)); x.lineTo(cx + 2, Y(d.lo)); x.moveTo(cx - 2, Y(d.hi)); x.lineTo(cx + 2, Y(d.hi)); x.stroke();
+      if (j === 0) { x.fillStyle = '#eef1ff'; x.fillText(Math.round(100 * d.rate), cx, Math.max(8, Y(d.hi) - 3)); }
+    });
+  }
+}
+function jDrawTraining() {
+  const c = $('jc'), cv2 = JC.facts && JC.facts.training_curve; if (!c || !cv2 || !cv2.length) return;
+  const x = c.getContext('2d'), WD = 420, HT = 150, L = 28, B = 132, T = 10, n = cv2.length, X = i => L + (WD - L - 10) * i / (n - 1), Y = v => B - (B - T) * v, ev = JC.facts.expert_validation || [];
+  x.setTransform(2, 0, 0, 2, 0, 0); x.clearRect(0, 0, WD, HT); x.font = '9px system-ui'; x.textAlign = 'right';
+  [0, 0.25, 0.5, 0.75, 1].forEach(v => { x.strokeStyle = '#1d2540'; x.beginPath(); x.moveTo(L, Y(v)); x.lineTo(WD - 6, Y(v)); x.stroke(); x.fillStyle = '#7a84a8'; x.fillText(Math.round(100 * v) + '%', L - 3, Y(v) + 3); });
+  x.textAlign = 'center'; cv2.forEach((p, i) => { x.fillStyle = '#7a84a8'; x.fillText(i ? 'D' + i : 'clone', X(i), B + 12); });
+  const line = (vals, col, w, dash) => { x.strokeStyle = col; x.lineWidth = w; x.setLineDash(dash || []); x.beginPath(); vals.forEach((v, i) => i ? x.lineTo(X(i), Y(v)) : x.moveTo(X(i), Y(v))); x.stroke(); x.setLineDash([]); };
+  const lc = ['#6ee7a8', '#6fd6ff', '#f2c46b', '#f08a8a'];
+  for (let l = 0; l < 4; l++) line(cv2.map(p => p.levels[l]), lc[l], 1, null);
+  if (ev.length) { const m = ev.reduce((a, b) => a + b, 0) / ev.length; line(cv2.map(() => m), '#9aa3c7', 1.2, [4, 3]); }
+  line(cv2.map(p => p.mean), '#5b9bff', 2.4, null);
+  cv2.forEach((p, i) => { if (p.chosen) { x.fillStyle = '#fff'; x.beginPath(); x.arc(X(i), Y(p.mean), 3.5, 0, 7); x.fill(); } });
+  x.textAlign = 'left'; x.fillStyle = '#5b9bff'; x.fillText('mean', L + 4, T + 6); x.fillStyle = '#9aa3c7'; x.fillText('- - expert mean', L + 36, T + 6); lc.forEach((col, l) => { x.fillStyle = col; x.fillText('L' + l, L + 112 + l * 22, T + 6); });
+}
+function judgeSlide(k) {
+  JC.slide = (k + JC.names.length) % JC.names.length;
+  const nm = JC.names[JC.slide], slide = $('jSlide'); slide.innerHTML = '<div id="jIn">' + JS_[nm]() + '</div>';
+  const inn = $('jIn'), over = inn.scrollHeight - slide.clientHeight;
+  if (over > 0 && slide.clientHeight > 60) inn.style.zoom = Math.max(0.7, slide.clientHeight / inn.scrollHeight).toFixed(3);              // a long slide shrinks to fit the column
+  document.querySelectorAll('#jTabs button').forEach((b, i) => b.classList.toggle('on', i === JC.slide));
+  if (nm === 'Results') jDrawResults(); else if (nm === 'Training') jDrawTraining();
+}
+function judgeTick(now) {                                                 // the slides turn by themselves; a click on a tab holds the slide for a minute
+  if (!JC.nextRot) JC.nextRot = now + JC.ROT_MS;
+  if (now >= JC.nextRot && now >= JC.pinUntil) { judgeSlide(JC.slide + 1); JC.nextRot = now + JC.ROT_MS; }
+}
+function judgeInit() {
+  $('jTabs').innerHTML = JC.names.map((n, i) => `<button data-i="${i}">${n}</button>`).join('');
+  $('jTabs').onclick = e => { const b = e.target.closest('button'); if (!b) return; judgeSlide(+b.dataset.i); JC.pinUntil = performance.now() + JC.PIN_MS; JC.nextRot = JC.pinUntil + JC.ROT_MS; };
+  $('judgeSeg').onclick = e => {                                          // the same switch as under the picture: Simple and Advanced leave the showcase
+    const b = e.target.closest('button'); if (!b || b.dataset.mode === 'showcase') return;
+    if (b.dataset.mode === 'recorder') { location.href = '/?recorder=1'; return; }
+    try { localStorage.setItem('spacexperiment.mode', b.dataset.mode); } catch (err) { /* storage may be blocked */ }
+    location.href = '/';
+  };
+  judgeSlide(0);
+}
+
+// ---- Showcase Recorder screen (?recorder=1): starts tools/record_replays.py on the server and follows its progress.
+const RC = { timer: null, was: '' };
+async function recorderLibrary() {
+  let idx = { episodes: [] };
+  try { idx = await (await fetch('/api/replay/index')).json(); } catch (e) { /* the server is busy */ }
+  const eps = idx.episodes || [], box = $('recLib');
+  if (!eps.length) { box.innerHTML = 'No saved landings yet. Press <b>Record landings</b>.'; return; }
+  const ok = eps.filter(e => e.success).length;
+  box.innerHTML = `<div>${eps.length} landings (${ok} successes, ${eps.length - ok} failures) · network ${esc(idx.checkpoint || '?')}${idx.recorded ? ' · recorded ' + esc(idx.recorded) : ''}</div>` +
+    '<table class="rectable"><tr><th>#</th><th>level</th><th>wind</th><th>seed</th><th>outcome</th><th>touchdown, m/s</th><th>from centre, m</th><th>length, s</th></tr>' +
+    eps.map((e, i) => `<tr><td>${i + 1}${e.featured ? ' ★' : ''}</td><td>L${e.level}</td><td>${e.wind_scale_mps} m/s</td><td>${e.seed}</td><td class="${e.success ? 'ok' : 'no'}">${e.success ? 'landed' : esc(String(e.reason || e.end).replace('_', ' '))}</td><td>${(+e.speed).toFixed(2)}</td><td>${(+e.offset_m).toFixed(2)}</td><td>${e.seconds}</td></tr>`).join('') + '</table>' +
+    '<div class="dnote">★ = the featured landing of the paper.</div>';
+}
+async function recorderStart(factsOnly) {
+  $('recErr').style.display = 'none';
+  const r = await fetch('/api/replay/record/start', post(factsOnly ? { facts_only: true } : { per_level: +$('recPer').value, failures: +$('recFail').value }));
+  const j = await r.json();
+  if (!r.ok) { $('recErr').textContent = (j.errors || ['could not start']).join(' '); $('recErr').style.display = 'block'; return; }
+  recorderPoll();
+}
+async function recorderStop() { try { await fetch('/api/replay/record/stop', post()); } catch (e) { /* the next poll shows the state */ } recorderPoll(); }
+async function recorderPoll() {
+  clearTimeout(RC.timer);
+  let j; try { j = await (await fetch('/api/replay/record/status')).json(); } catch (e) { RC.timer = setTimeout(recorderPoll, 3000); return; }
+  const run = j.state === 'running', facts = (j.args || []).includes('--facts-only');
+  $('recGo').disabled = $('recFacts').disabled = run; $('recStop').disabled = !run;
+  $('recBar').style.width = (run ? (j.total ? Math.max(4, 100 * j.done / j.total) : 4) : j.state === 'done' ? 100 : 0) + '%';
+  const msg = { idle: 'Ready.', running: facts ? `Rewriting the numbers… ${j.elapsed} s` : `Loading the network and flying the landings… ${j.done} of ${j.total || '?'} · ${j.elapsed} s`,
+    done: facts ? `Done in ${j.elapsed} s: the numbers beside the landings were rewritten (refresh a Showcase that is already open).` : `Done in ${j.elapsed} s: the saved library was replaced. Open the Showcase to see it (refresh a Showcase that is already open).`, stopped: 'Cancelled. The saved library was not changed.',
+    error: 'The recording failed (exit code ' + j.code + '). The saved library was not changed. See the log below.' }[j.state] || j.state;
+  $('recMsg').textContent = msg; $('recMsg').style.color = j.state === 'error' ? 'var(--bad)' : j.state === 'done' ? 'var(--good)' : '';
+  const lg = $('recLog'); lg.style.display = j.log && j.log.length ? 'block' : 'none'; lg.textContent = (j.log || []).join('\n'); lg.scrollTop = lg.scrollHeight;
+  if (run) RC.timer = setTimeout(recorderPoll, 700);
+  else if (RC.was === 'running') recorderLibrary();
+  RC.was = j.state;
+}
+function recorderInit() {
+  $('recSeg').onclick = e => {
+    const b = e.target.closest('button'); if (!b || b.dataset.mode === 'recorder') return;
+    if (b.dataset.mode === 'showcase') { location.href = '/?showcase=1'; return; }
+    try { localStorage.setItem('spacexperiment.mode', b.dataset.mode); } catch (err) { /* storage may be blocked */ }
+    location.href = '/';
+  };
+  $('recGo').onclick = () => recorderStart(false); $('recFacts').onclick = () => recorderStart(true); $('recStop').onclick = recorderStop;
+  $('recOpen').onclick = () => { location.href = '/?showcase=1'; };
+  recorderLibrary(); recorderPoll();
+}
+
 let camT = 0, cam2T = 0;
-const CAM_FPS = 12;                                                                // the landing cam is ray-traced: this many pictures a second (lower = lighter on the page)
-function loop(now) { const dt = Math.min(.05, (now - lastT) / 1000); lastT = now; update(dt); draw(); if (ADM.on) adminFrame(now); else { if (brainOn) drawBrain(); if (miniOpen) drawMini(); try { if (now - camT >= 1000 / CAM_FPS - 4) { camT = now; drawCam(); } if (now - cam2T >= 1000 / CAM2_FPS - 4) { cam2T = now; drawCamPartner(); } drawPhase(); drawGraphs(now); } catch (e) { /* never stop the animation loop */ } } requestAnimationFrame(loop); }
-mkSlots(8); buildForm(); refreshInfo(); pollTrain(); pollTests();
-setInterval(refreshInfo, 4000); setInterval(pollTrain, 3000); setInterval(refreshTable, 250);
-requestAnimationFrame(loop);
+const CAM_FPS = 12;                                                               // the landing cam is ray-traced: this many pictures a second (lower = lighter on the page)
+function loop(now) { if (SHOW) { if (document.hidden || now - SHC.lastDraw < 1000 / SHC.FPS - 2) { requestAnimationFrame(loop); return; } SHC.lastDraw = now; } const dt = Math.min(.05, (now - lastT) / 1000); lastT = now; update(dt); draw(); if (ADM.on) adminFrame(now); else { if (brainOn) drawBrain(); if (miniOpen) drawMini(); try { if (now - camT >= 1000 / CAM_FPS - 4) { camT = now; drawCam(); } if (now - cam2T >= 1000 / CAM2_FPS - 4) { cam2T = now; drawCamPartner(); } drawPhase(); drawGraphs(now); } catch (e) { /* never stop the animation loop */ } } requestAnimationFrame(loop); }
+if (RECP) recorderInit();                                                       // the recorder screen draws no landing: the stage loop below is not started
+else if (SHOW) { mkSlots(1); miniOpen = false; showcaseInit(); }                       // showcase: one lander, no polling of the server, no training controls
+else {
+  mkSlots(8); buildForm(); refreshInfo(); pollTrain(); pollTests();
+  setInterval(refreshInfo, 4000); setInterval(pollTrain, 3000); setInterval(refreshTable, 250);
+}
+if (!RECP) requestAnimationFrame(loop);
 </script>
 </body>
 </html>

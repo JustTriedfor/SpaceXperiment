@@ -482,6 +482,37 @@ def live_episode(run: str, env: int, after: int, want_act: bool = False, ep_id: 
     return {"wait": True, "latest": latest}
 
 
+REPLAY_DIR = ROOT / "replays"            # the showcase library written by tools/record_replays.py (index.json + one file per landing)
+
+
+def replay_index() -> dict:
+    """The showcase library's index; empty list when nothing has been recorded yet."""
+    try:
+        idx = json.loads((REPLAY_DIR / "index.json").read_text())
+    except (OSError, ValueError):
+        return {"episodes": []}
+    return idx if isinstance(idx.get("episodes"), list) else {"episodes": []}
+
+
+def replay_facts() -> dict:
+    """The aggregate numbers and notes the showcase interface shows (replays/facts.json); empty when it has not been recorded."""
+    try:
+        f = json.loads((REPLAY_DIR / "facts.json").read_text())
+    except (OSError, ValueError):
+        return {}
+    return f if isinstance(f, dict) else {}
+
+
+def replay_episode(name: str) -> bytes | None:
+    """One recorded landing as the raw JSON bytes. Only files listed in the index are served (no paths from the URL)."""
+    if name not in {e.get("file") for e in replay_index()["episodes"]}:
+        return None
+    try:
+        return (REPLAY_DIR / name).read_bytes()
+    except OSError:
+        return None
+
+
 NB = len(C.ALT_BANDS_M) + 1
 
 
@@ -675,6 +706,15 @@ class Handler(BaseHTTPRequestHandler):
                 self.send(live_episode(run, env, after, want_act, ep_id) if run else {"wait": True, "latest": 0})
             elif u.path == "/api/live_ids":
                 self.send(live_ids(STATE["run"]) if STATE["run"] else {})
+            elif u.path == "/api/replay/index":                                  # showcase mode: the saved landings (nothing is simulated)
+                self.send(replay_index())
+            elif u.path == "/api/replay/record/status":                          # the Showcase Recorder screen: progress of tools/record_replays.py
+                self.send(jobs.replay_record_status())
+            elif u.path == "/api/replay/facts":
+                self.send(replay_facts())
+            elif u.path == "/api/replay/episode":
+                data = replay_episode(q.get("file", [""])[0])
+                self.send(data, "application/json") if data is not None else self.send_error(404)
             elif u.path == "/api/train/status":
                 self.send(train_status())
             elif u.path == "/api/data/overview":
@@ -753,6 +793,11 @@ class Handler(BaseHTTPRequestHandler):
             elif self.path == "/api/ckpt/evaluate":
                 code, res = jobs.ckpt_eval_start(body)
                 self.send(res, code=code)
+            elif self.path == "/api/replay/record/start":
+                code, res = jobs.replay_record_start(body)
+                self.send(res, code=code)
+            elif self.path == "/api/replay/record/stop":
+                self.send(jobs.replay_record_stop())
             elif self.path == "/api/tests/run":
                 run_tests()
                 self.send({"ok": True})

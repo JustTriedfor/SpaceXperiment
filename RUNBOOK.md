@@ -9,7 +9,7 @@ Everything below is PowerShell unless noted.
 
 ## 0. Simple / Advanced and the Startup tab (read this first)
 
-**The switch.** Under the Training card there is an **Interface: Simple | Advanced** switch (remembered in your browser; the page opens in Simple unless you chose Advanced before).
+**The switch.** Under the Training card there is an **Interface: Simple | Advanced | Showcase | Showcase Recorder** switch (Simple and Advanced are remembered in your browser; the page opens in Simple unless you chose Advanced before). **Showcase** opens the replay display for a public stand (section 6b); it is never remembered, so the normal page always opens as before. **Showcase Recorder** opens the screen that makes the Showcase's recordings (also section 6b); it is a plain page that shows no picture and is not remembered either.
 - **Simple**: only four tabs: **Live**, **Startup**, **Settings** and **Models**. Everything is a slider or a drop-down menu, every slider stops at a safe value, and menus only offer things that exist and fit (for example only brains of the right kind). Free-typed numbers and names are gone: new models are named for you. Switching to Simple pulls any unsafe value you had typed in Advanced back into the safe range (learning speed at most 3 x 10^-4, at most 8 worlds, at most 5 M steps, sweep off, ...).
 - **Advanced**: every tab and every setting, exactly as before (Brain, Parameters, Pipeline, Checkpoints, Data, Tests, all the chips and panels), plus Startup.
 Both modes edit the same underlying settings, so you can switch whenever you like.
@@ -269,6 +269,48 @@ They are described in the `XP` list in index.html (one entry each, plus a draw f
 **Brain tab**: the selected lander's network (18 inputs, 256 + 256 neurons, 5 outputs: main engine, gimbal, fins, RCS A, RCS B) lit up frame by frame, what it senses, what it decided, and its own estimate of how well it is doing. Needs a run started after neural-data logging was added (older runs say so).
 
 **Descent progress graph** (under Training progress): per 25k-step bin: in safe-speed envelope, braking headroom, touchdown softness, landing accuracy, merit. They move before the first landing does.
+
+---------------------------------------------------------------------------------------------------
+
+## 6b. Showcase interface (for a public display, almost no load on the laptop)
+
+The third interface next to Simple and Advanced (the Showcase Recorder button beside it makes its recordings). It loops through **saved landings** forever and shows the data behind each one for a reader who wants numbers. It runs no simulator, no neural network and no training, and polls nothing: the page only draws recorded frames (the same lander, drone ship, flares, smoke and landing cam as the live view) at up to 30 pictures a second.
+
+**1. Record the library once, from the browser.** Press **Showcase Recorder** in the *Interface* switch (or open `http://127.0.0.1:8767/?recorder=1`). The screen shows the saved library (a table of its landings and when it was recorded) and a **Record a new library** card:
+- **Successes per wind level** (1-4, default 2) and **Failures to include** (0-3, default 3). The network is fixed to `rt1_final`, the one the evaluation table in `paper_assets\retrain\` was made with.
+- **Record landings** starts it; the bar and the line under it say "flying the landings... 4 of 11" with the seconds so far, and the last lines of its log are shown. It takes about 12-15 s. **Cancel** stops it.
+- **Refresh the numbers only** rewrites just the numbers beside the landings (a few seconds), for when you changed the results files in `paper_assets\retrain\`.
+- The saved library is replaced only when the new one is complete (it is built in `replays.tmp\` first and moved over `replays\` at the end), so a failed or cancelled recording leaves the old one as it was; a failure shows the exit code and the log. Only one recording runs at a time. You can leave the page: it picks the state up again when you come back. Pressing **Open the Showcase** shows the result; a Showcase that was already open needs a refresh.
+- The screen runs nothing else: no live view, no polling except its own progress while a recording runs.
+
+The button runs exactly this command, which still works from a terminal (`--per-level`, `--failures`, `--facts-only`, `--checkpoint`, `--out` are its options):
+
+```powershell
+python tools\record_replays.py
+```
+
+It flies `rt1_final` again with the paper's seeds and the same deterministic policy (rules stage 2) and stops if a recorded touchdown speed differs from the evaluation table. It writes into `replays\` (about 2 MB, committed to the repository so a fresh clone can show the showcase without recording):
+- `ep_NN_L<level>_s<seed>.json`, one per landing: 11 by default: the paper's featured one (level 1, seed 122, touchdown 2.09 m/s), two typical successes at every wind level and three typical failures (levels 1-3, never two in a row, never first). Options: `--per-level N`, `--failures 0..3`, `--checkpoint <name>`, `--out <folder>`.
+- `index.json`: per landing the outcome and its measured numbers (start state, ignition altitude and burn time, max-Q, peak load, touchdown speed split into vertical and sideways, tilt, pad offset, propellant, merit, wind, and its rank among the 300 evaluated seeds of its level).
+- `facts.json`: the numbers for the slides, read from `paper_assets\retrain\summary.csv` and `attempts.md`, `src\utils\config.py` and the checkpoint (success rates with 95 % Wilson intervals for the retrained network, the scripted expert, the earlier network and the pair, failure reasons, the DAgger validation curve, the level table, rules, checkpoint SHA-256 and parameter count). `python tools\record_replays.py --facts-only` rewrites only this file after those source files change.
+
+**2. Start it.** Start the app as usual (`python src\app\server.py --port 8767`, or `run_app.bat`; restart a server that was started before this feature existed) and either press **Showcase** in the *Interface* switch under the picture, or open
+
+```
+http://127.0.0.1:8767/?showcase=1
+```
+
+(bookmark it for a stand). Press **F** for full screen. Nothing needs to be clicked afterwards. In the showcase the same switch sits at the top of the right-hand column (it fades out when the pointer rests): **Simple** or **Advanced** there returns to the normal page, **Showcase Recorder** opens the recorder.
+
+**What is on the screen.** Left: the picture with its usual panels (telemetry, phase portrait, flight terminal, landing cam; they follow your Chips settings) and a caption. Right, a column:
+- **This landing** (always): wind (scale, this episode's mean, gusts), start (height, speed, entry angle, offset), ignition time and altitude, burn length, max-Q and peak load, touchdown speed (vertical and sideways), tilt, distance from the pad centre, propellant used and left, merit, share of the descent inside the safe-speed envelope, peak braking demand; after touchdown also its rank among the 300 evaluated landings of that level and a tick or cross for each of the five success rules.
+- **Slides** that turn every 18 s (a click on a tab holds the slide for a minute): **Results** (bar chart and table, 95 % intervals, four controllers), **Touchdown** (median and mean speed, pad offset, tilt, propellant per level), **Failures** (what broke, per level and controller), **Training** (validation success after cloning and after each DAgger round), **Task** (the four wind levels and the success rules), **Method** (simulator, network, teacher, evaluation protocol, checkpoint hash) and **Limits** (what is not shown or not proven). On a screen shorter than about 700 px a long slide is shrunk to fit.
+
+**Timing.** Each landing plays at normal speed, stays on screen for 3.5 s, then a 1.8 s "up next" caption, then the next one; after the last it starts again. Every new landing resets the camera and the speed, and a picture a visitor paused resumes after 30 s. The training controls, the Network panel (it needs recorded activations) and the partner cam (pairs only) are hidden. Below 900 px of window width the data column is left out.
+
+**Why it is cheap.** The drawing stops when the tab is hidden or minimised; frames are capped at 30 a second; only the current and the next landing are in memory (about 0.2 MB each as text); every list that grows during a long run (smoke particles, terminal lines, landing-cam textures) already has a cap; the data column is rebuilt only when a landing or a slide changes. The server does almost nothing while it plays: one small request per landing (every 20-30 s). Measured on this laptop (20 logical cores) with the first version of this mode (picture only): the server used 0 % CPU (about 495 MB of memory, mostly the Python libraries it loads) and the page's drawing code about 9 % of one core (roughly 0.5 % of the whole machine) at about 30 pictures a second. The data column adds a little text work per landing and per slide and was not measured separately; the browser's own rendering and graphics-card work is not included in any of these figures. Stop any training and leave other tabs closed for the lightest result.
+
+**Troubleshooting.** "No saved landings yet" on the picture: run step 1; the page checks again every 5 s. After re-recording while the page is open, refresh it. If a slide says there is no results file, run `python tools\record_replays.py --facts-only`. The server must be a copy started after this feature was added (section 9, "An option is missing"), otherwise `/api/replay/...` does not exist.
 
 ---------------------------------------------------------------------------------------------------
 

@@ -321,3 +321,53 @@ def ckpt_eval_status() -> dict:
     if not running and EVAL["proc"].returncode == 0:
         res["eval"] = _eval_summary(EVAL["name"])
     return res
+
+
+# ------------------------------------------------------------------ showcase recorder (the "Showcase Recorder" screen)
+REPLAY_SCRIPT = ROOT / "tools" / "record_replays.py"
+REC = dict(proc=None, started=None, args=None, stopped=False)
+REC_OUT = C.LOG_DIR / "record_replays.out"
+REC_PLAN_RE = re.compile(r"^plan: (\d+) landings")
+REC_STEP_RE = re.compile(r"^\s*(\d+)/(\d+)\s+level")
+
+
+def replay_record_start(body: dict) -> tuple:
+    """Starts tools/record_replays.py in the background (the same command a person would type). One run at a time."""
+    if _running(REC):
+        return 409, dict(errors=["A recording is already running."])
+    facts_only = bool(body.get("facts_only", False))
+    argv = [sys.executable, str(REPLAY_SCRIPT)]
+    if facts_only:
+        argv.append("--facts-only")
+    else:
+        argv += ["--per-level", str(_num(body, "per_level", 1, 4, 2, True)), "--failures", str(_num(body, "failures", 0, 3, 3, True))]
+    REC.update(proc=_popen(argv, REC_OUT), started=time.time(), args=argv[2:], stopped=False)
+    return 200, dict(args=REC["args"])
+
+
+def replay_record_status() -> dict:
+    if REC["proc"] is None:
+        return dict(state="idle")
+    running = _running(REC)
+    try:
+        lines = [l.rstrip() for l in REC_OUT.read_text(errors="ignore").splitlines() if l.strip() and "Warning" not in l and "warnings.warn" not in l]
+    except OSError:
+        lines = []
+    done = total = 0
+    for l in lines:
+        m = REC_PLAN_RE.match(l)
+        if m:
+            total = int(m.group(1))
+        m = REC_STEP_RE.match(l)
+        if m:
+            done, total = int(m.group(1)), int(m.group(2))
+    code = None if running else REC["proc"].returncode
+    state = "running" if running else "stopped" if REC["stopped"] else "done" if code == 0 else "error"
+    return dict(state=state, args=REC["args"], log=lines[-14:], done=done, total=total, elapsed=int(time.time() - REC["started"]), code=code)
+
+
+def replay_record_stop() -> dict:
+    if _running(REC):
+        REC["stopped"] = True
+        _kill_tree(REC["proc"])
+    return replay_record_status()

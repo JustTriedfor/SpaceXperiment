@@ -1,0 +1,65 @@
+start  obj 0.4707  crash L0/L1/L2 = 0.000/0.000/0.145  soft 1.00/0.84/0.51
+it   5 NEW obj 0.4573  crash 0.000/0.000/0.145  soft 1.00/0.84/0.56  TILT_MAX 0.700 ALIGN_RAMP 2500  (12s)
+it  13 NEW obj 0.4533  crash 0.000/0.000/0.155  soft 1.00/0.85/0.56  TILT_MAX 0.700 ALIGN_RAMP 2240  (26s)
+it  16 NEW obj 0.4380  crash 0.000/0.000/0.155  soft 1.00/0.86/0.56  TILT_MAX 0.700 ALIGN_RAMP 2240  (31s)
+it  20 NEW obj 0.4253  crash 0.000/0.000/0.145  soft 1.00/0.87/0.56  TILT_MAX 0.700 ALIGN_RAMP 2240  (38s)
+it  24 (no better yet, 44s)
+it  49 (no better yet, 86s)
+it  56 NEW obj 0.4247  crash 0.000/0.000/0.140  soft 1.00/0.86/0.56  TILT_MAX 0.717 ALIGN_RAMP 2240  (98s)
+it  74 (no better yet, 137s)
+it  78 NEW obj 0.4227  crash 0.000/0.000/0.140  soft 1.00/0.86/0.56  TILT_MAX 0.717 ALIGN_RAMP 2098  (146s)
+it  99 (no better yet, 191s)
+it 112 NEW obj 0.4193  crash 0.000/0.000/0.140  soft 1.00/0.87/0.56  TILT_MAX 0.717 ALIGN_RAMP 2098  (221s)
+it 118 NEW obj 0.4120  crash 0.000/0.000/0.125  soft 1.00/0.86/0.57  TILT_MAX 0.717 ALIGN_RAMP 2098  (235s)
+it 124 (no better yet, 247s)
+it 128 NEW obj 0.4113  crash 0.000/0.000/0.120  soft 1.00/0.86/0.57  TILT_MAX 0.717 ALIGN_RAMP 1720  (256s)
+it 137 NEW obj 0.4060  crash 0.000/0.000/0.120  soft 1.00/0.86/0.57  TILT_MAX 0.717 ALIGN_RAMP 1832  (276s)
+it 149 (no better yet, 304s)
+it 164 NEW obj 0.4053  crash 0.000/0.000/0.115  soft 1.00/0.86/0.57  TILT_MAX 0.717 ALIGN_RAMP 1832  (337s)
+it 174 (no better yet, 358s)
+it 184 NEW obj 0.4020  crash 0.000/0.000/0.115  soft 1.00/0.86/0.57  TILT_MAX 0.717 ALIGN_RAMP 1832  (378s)
+it 199 (no better yet, 411s)
+it 206 NEW obj 0.3987  crash 0.000/0.000/0.115  soft 1.00/0.86/0.57  TILT_MAX 0.757 ALIGN_RAMP 1832  (426s)
+it 224 (no better yet, 465s)
+it 243 NEW obj 0.3947  crash 0.000/0.000/0.145  soft 1.00/0.88/0.59  TILT_MAX 0.757 ALIGN_RAMP 1832  (506s)
+it 248 NEW obj 0.3887  crash 0.000/0.000/0.140  soft 1.00/0.89/0.57  TILT_MAX 0.757 ALIGN_RAMP 2347  (517s)
+it 249 (no better yet, 520s)
+it 268 NEW obj 0.3867  crash 0.000/0.000/0.140  soft 1.00/0.89/0.58  TILT_MAX 0.757 ALIGN_RAMP 2347  (563s)
+it 274 (no better yet, 576s)
+it 299 (no better yet, 630s)
+# Tuning again with the two edge limits widened (new run; the expert in src/ is unchanged)
+
+Iterations: 300; same objective, seeds and steps as `tools/expert_tuning/tune_expert.py`; start = the expert as it is now. Widened: LATERAL_TILT_MAX up to 1.2 rad (was 0.7), ALIGN_RAMP_M up to 6000 m (was 2500).
+
+| constant | start (current expert) | best found |
+|---|---|---|
+| A_PLAN_FRACTION | 0.6364 | 0.53981 |
+| LATERAL_TILT_MAX | 0.7 | 0.75657 |
+| LATERAL_TILT_GROUND | 0.16518 | 0.18692 |
+| LATERAL_TILT_PER_M | 0.0095481 | 0.012 |
+| LATERAL_VX_GAIN | 3.6486 | 3.6486 |
+| LATERAL_TGO_SCALE | 0.38003 | 0.57734 |
+| LATERAL_TGO_MIN | 3.4092 | 3.4092 |
+| LATERAL_X_FADE_M | 269.94 | 238.46 |
+| LATERAL_LEAD_S | 1.2756 | 1.2831 |
+| ALIGN_RAMP_M | 2500 | 2347.3 |
+| ATT_WN_MAX | 0.79443 | 0.77766 |
+| V_TOUCH | 1.775 | 1.2794 |
+
+## Tuner objective (lower is better) and results on the tuner's own seeds 10,000+
+
+start 0.4707, best 0.3867.
+
+## Fresh seeds 500,000+ (the tuner's validation set): crash rate L0/L1/L2 and soft-landing rate
+
+| | crash L0/L1/L2 | soft L0/L1/L2 |
+|---|---|---|
+| start | 0.000/0.000/0.165 | 1.000/0.773/0.520 |
+| best | 0.000/0.000/0.175 | 1.000/0.813/0.595 |
+
+## Paper test seeds 0-299 (looked at once, after the search; paper success rule), successes of 300 and median miss of the failures
+
+| | L0 | L1 | L2 | L3 |
+|---|---|---|---|---|
+| start | 300 (miss 0.0 m) | 258 (miss 18.0 m) | 161 (miss 39.2 m) | 95 (miss 83.3 m) |
+| best | 300 (miss 0.0 m) | 267 (miss 18.2 m) | 180 (miss 42.3 m) | 121 (miss 94.5 m) |

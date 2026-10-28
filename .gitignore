@@ -64,3 +64,6 @@ models/checkpoints/*
 *.tmp
 *.bak
 *~
+
+# the showcase recorder builds its library here before moving it to replays/
+/replays.tmp/

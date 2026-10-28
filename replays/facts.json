@@ -1,0 +1,583 @@
+{
+ "version": 1,
+ "controller": {
+  "name": "rt1_final",
+  "file": "rt1_final.zip",
+  "sha256": "d8bc33ec2c4260080949f1d55f4077b7d40f812eb2c7bfba2bac7cba0fc98e86",
+  "parameters": 142859,
+  "hidden": [
+   256,
+   256
+  ],
+  "inputs": 18,
+  "outputs": 5,
+  "decisions_hz": 20,
+  "physics_dt_s": 0.01
+ },
+ "rules": {
+  "speed_mps": 3.0,
+  "tilt_rad": 0.15,
+  "offset_m": 10.0,
+  "tilt_limit_deg": 75.0,
+  "max_ignitions": 3,
+  "fuel_kg": 4500.0,
+  "spawn_height_m": 3000.0,
+  "pad_half_width_m": 45.0
+ },
+ "levels": [
+  {
+   "level": 0,
+   "wind_scale_mps": 0.0,
+   "gust_amp_mps": 0.0,
+   "mean_abs_wind_mps": 0.0,
+   "speed_fraction": 0.35,
+   "entry_deg": [
+    72.0,
+    85.0
+   ],
+   "x_offset_m": 50.0
+  },
+  {
+   "level": 1,
+   "wind_scale_mps": 5.0,
+   "gust_amp_mps": 2.0,
+   "mean_abs_wind_mps": 1.5,
+   "speed_fraction": 0.6,
+   "entry_deg": [
+    62.0,
+    82.0
+   ],
+   "x_offset_m": 120.0
+  },
+  {
+   "level": 2,
+   "wind_scale_mps": 10.0,
+   "gust_amp_mps": 4.0,
+   "mean_abs_wind_mps": 3.0,
+   "speed_fraction": 0.8,
+   "entry_deg": [
+    52.0,
+    78.0
+   ],
+   "x_offset_m": 220.0
+  },
+  {
+   "level": 3,
+   "wind_scale_mps": 15.0,
+   "gust_amp_mps": 6.0,
+   "mean_abs_wind_mps": 4.5,
+   "speed_fraction": 1.0,
+   "entry_deg": [
+    42.0,
+    72.0
+   ],
+   "x_offset_m": 350.0
+  }
+ ],
+ "vehicle": {
+  "dry": 22200.0,
+  "length": 41.2,
+  "diameter": 3.66,
+  "cg": 14.0,
+  "foot": 1.0,
+  "span": 18.0,
+  "fin_arm": 24.0,
+  "rcs_a": 21.0,
+  "rcs_b": -11.0,
+  "gimbal_max": 0.08726646259971647,
+  "fin_max": 0.4363323129985824,
+  "thrust_sl": 845000.0,
+  "thrust_vac": 914000.0,
+  "throttle_min": 0.4,
+  "mdot": 299.68508638643937,
+  "rcs_force": 5000.0,
+  "g": 9.81,
+  "leg_down": 15.0,
+  "pad": [
+   -45.0,
+   45.0,
+   0.0
+  ],
+  "brake_max": 23.0,
+  "budget": 4500.0,
+  "zone": 10.0,
+  "soft_speed": 3.0,
+  "env_decel": 14.0,
+  "env_floor": 3.0,
+  "tilt_limit_deg": 75.0,
+  "fps": 20
+ },
+ "results": {
+  "sx_retrained": {
+   "label": "Retrained network (this one)",
+   "note": "rt1_final, test seeds 0-299",
+   "levels": [
+    {
+     "level": 0,
+     "n": 300,
+     "successes": 300,
+     "rate": 1.0,
+     "lo": 0.9873570287754538,
+     "hi": 0.9999999999999998,
+     "speed_median": 1.6158943001967319,
+     "speed_mean": 1.7168467743899014,
+     "offset_mean": 1.0523607605828194,
+     "tilt_mean": 0.004726968668082773,
+     "fuel_left_kg": 2248.7491246193026,
+     "fails": {
+      "too_fast": 0,
+      "off_pad": 0,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 0
+     }
+    },
+    {
+     "level": 1,
+     "n": 300,
+     "successes": 259,
+     "rate": 0.8633333333333333,
+     "lo": 0.8198445870022494,
+     "hi": 0.8976348539079136,
+     "speed_median": 1.7369838130035848,
+     "speed_mean": 1.8516468844867373,
+     "offset_mean": 4.965758445259105,
+     "tilt_mean": 0.004655805101106647,
+     "fuel_left_kg": 2081.330854487345,
+     "fails": {
+      "too_fast": 9,
+      "off_pad": 32,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 0
+     }
+    },
+    {
+     "level": 2,
+     "n": 300,
+     "successes": 161,
+     "rate": 0.5366666666666666,
+     "lo": 0.4801320652390865,
+     "hi": 0.5922741168711132,
+     "speed_median": 1.876818733005572,
+     "speed_mean": 3.2047273687473354,
+     "offset_mean": 26.91872022550341,
+     "tilt_mean": 0.04380624610850629,
+     "fuel_left_kg": 1958.393231778632,
+     "fails": {
+      "too_fast": 75,
+      "off_pad": 64,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 0
+     }
+    },
+    {
+     "level": 3,
+     "n": 300,
+     "successes": 90,
+     "rate": 0.3,
+     "lo": 0.2509396637848768,
+     "hi": 0.35411752470494157,
+     "speed_median": 3.0677567435224784,
+     "speed_mean": 7.008709033699426,
+     "offset_mean": 76.95643296647386,
+     "tilt_mean": 0.09146466034476347,
+     "fuel_left_kg": 1885.1900932912283,
+     "fails": {
+      "too_fast": 153,
+      "off_pad": 57,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 0
+     }
+    }
+   ]
+  },
+  "expert_tuned": {
+   "label": "Scripted expert",
+   "note": "the teacher; hand-written controller",
+   "levels": [
+    {
+     "level": 0,
+     "n": 300,
+     "successes": 300,
+     "rate": 1.0,
+     "lo": 0.9873570287754538,
+     "hi": 0.9999999999999998,
+     "speed_median": 2.013445935027557,
+     "speed_mean": 2.0369184215768934,
+     "offset_mean": 1.0964645996027822,
+     "tilt_mean": 0.004813403549035417,
+     "fuel_left_kg": 2260.431410491866,
+     "fails": {
+      "too_fast": 0,
+      "off_pad": 0,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 0
+     }
+    },
+    {
+     "level": 1,
+     "n": 300,
+     "successes": 258,
+     "rate": 0.86,
+     "lo": 0.8161683876490509,
+     "hi": 0.8947286730692758,
+     "speed_median": 2.1174850756348986,
+     "speed_mean": 2.1782827684332022,
+     "offset_mean": 4.8249867177194945,
+     "tilt_mean": 0.005608089327903017,
+     "fuel_left_kg": 2098.0838809947218,
+     "fails": {
+      "too_fast": 2,
+      "off_pad": 40,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 0
+     }
+    },
+    {
+     "level": 2,
+     "n": 300,
+     "successes": 161,
+     "rate": 0.5366666666666666,
+     "lo": 0.4801320652390865,
+     "hi": 0.5922741168711132,
+     "speed_median": 2.2708573356147665,
+     "speed_mean": 3.41754305821656,
+     "offset_mean": 26.451726788083384,
+     "tilt_mean": 0.05029538121638007,
+     "fuel_left_kg": 1975.9016897910717,
+     "fails": {
+      "too_fast": 68,
+      "off_pad": 71,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 0
+     }
+    },
+    {
+     "level": 3,
+     "n": 300,
+     "successes": 95,
+     "rate": 0.31666666666666665,
+     "lo": 0.26662835068573615,
+     "hi": 0.37134073876326396,
+     "speed_median": 3.046719759366532,
+     "speed_mean": 7.1366219726653055,
+     "offset_mean": 75.82778414625614,
+     "tilt_mean": 0.09452912705135567,
+     "fuel_left_kg": 1901.021150051778,
+     "fails": {
+      "too_fast": 151,
+      "off_pad": 54,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 0
+     }
+    }
+   ]
+  },
+  "sx_imitation_quiet": {
+   "label": "Earlier network",
+   "note": "before retraining",
+   "levels": [
+    {
+     "level": 0,
+     "n": 300,
+     "successes": 298,
+     "rate": 0.9933333333333333,
+     "lo": 0.9760224167496929,
+     "hi": 0.998169851642088,
+     "speed_median": 2.456187481601575,
+     "speed_mean": 2.4215675196406283,
+     "offset_mean": 1.943591010416158,
+     "tilt_mean": 0.005098619728620743,
+     "fuel_left_kg": 2375.7539785732197,
+     "fails": {
+      "too_fast": 2,
+      "off_pad": 0,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 0
+     }
+    },
+    {
+     "level": 1,
+     "n": 300,
+     "successes": 204,
+     "rate": 0.68,
+     "lo": 0.6252238889196531,
+     "hi": 0.7302246414395104,
+     "speed_median": 2.5335004675493735,
+     "speed_mean": 4.2682604402627256,
+     "offset_mean": 5.669164397175707,
+     "tilt_mean": 0.03599482291213514,
+     "fuel_left_kg": 2237.264611274428,
+     "fails": {
+      "too_fast": 96,
+      "off_pad": 0,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 0
+     }
+    },
+    {
+     "level": 2,
+     "n": 300,
+     "successes": 113,
+     "rate": 0.37666666666666665,
+     "lo": 0.3237203650702255,
+     "hi": 0.4327315678318291,
+     "speed_median": 7.225861211529434,
+     "speed_mean": 9.113651270407216,
+     "offset_mean": 29.365891537590212,
+     "tilt_mean": 0.06369697194533207,
+     "fuel_left_kg": 2128.5407251579745,
+     "fails": {
+      "too_fast": 186,
+      "off_pad": 0,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 1
+     }
+    },
+    {
+     "level": 3,
+     "n": 300,
+     "successes": 43,
+     "rate": 0.14333333333333334,
+     "lo": 0.1081847423238497,
+     "hi": 0.18750057714965976,
+     "speed_median": 14.700174413571201,
+     "speed_mean": 14.964063388388455,
+     "offset_mean": 88.39638434686982,
+     "tilt_mean": 0.11795795825031505,
+     "fuel_left_kg": 2071.047250564177,
+     "fails": {
+      "too_fast": 255,
+      "off_pad": 0,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 2
+     }
+    }
+   ]
+  },
+  "pair_safe_final": {
+   "label": "Pair controller",
+   "note": "per lander; the two landers share wind",
+   "levels": [
+    {
+     "level": 0,
+     "n": 600,
+     "successes": 599,
+     "rate": 0.9983333333333333,
+     "lo": 0.9906204395238613,
+     "hi": 0.9997057317991506,
+     "speed_median": 1.979223590676117,
+     "speed_mean": 2.034303550845729,
+     "offset_mean": 1.1557326384851687,
+     "tilt_mean": 0.004093795004022626,
+     "fuel_left_kg": 2137.285312459464,
+     "fails": {
+      "too_fast": 1,
+      "off_pad": 0,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 0
+     }
+    },
+    {
+     "level": 1,
+     "n": 600,
+     "successes": 525,
+     "rate": 0.875,
+     "lo": 0.8461284731132862,
+     "hi": 0.8991002511264382,
+     "speed_median": 2.0856553552411334,
+     "speed_mean": 2.1518024671721485,
+     "offset_mean": 4.132995169684752,
+     "tilt_mean": 0.004611408301756258,
+     "fuel_left_kg": 2025.5443236383157,
+     "fails": {
+      "too_fast": 9,
+      "off_pad": 66,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 0
+     }
+    },
+    {
+     "level": 2,
+     "n": 600,
+     "successes": 353,
+     "rate": 0.5883333333333334,
+     "lo": 0.5485145097653442,
+     "hi": 0.6270282563889021,
+     "speed_median": 2.205119467842293,
+     "speed_mean": 2.9733030152166378,
+     "offset_mean": 21.083720164428808,
+     "tilt_mean": 0.03597138443267894,
+     "fuel_left_kg": 1941.0465752515577,
+     "fails": {
+      "too_fast": 105,
+      "off_pad": 142,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 0
+     }
+    },
+    {
+     "level": 3,
+     "n": 600,
+     "successes": 210,
+     "rate": 0.35,
+     "lo": 0.3128990638700219,
+     "hi": 0.38900944643408836,
+     "speed_median": 2.6700771397286998,
+     "speed_mean": 5.981770094537732,
+     "offset_mean": 62.73369016593643,
+     "tilt_mean": 0.08452739654185513,
+     "fuel_left_kg": 1885.5182938775047,
+     "fails": {
+      "too_fast": 270,
+      "off_pad": 120,
+      "tilted": 0,
+      "out_of_fuel": 0,
+      "other": 0
+     }
+    }
+   ]
+  }
+ },
+ "training_curve": [
+  {
+   "name": "rt1_clone",
+   "levels": [
+    0.4,
+    0.255,
+    0.18,
+    0.09
+   ],
+   "mean": 0.231,
+   "chosen": false
+  },
+  {
+   "name": "rt1_dagger_1",
+   "levels": [
+    0.915,
+    0.645,
+    0.36,
+    0.18
+   ],
+   "mean": 0.525,
+   "chosen": false
+  },
+  {
+   "name": "rt1_dagger_2",
+   "levels": [
+    0.98,
+    0.805,
+    0.455,
+    0.215
+   ],
+   "mean": 0.614,
+   "chosen": false
+  },
+  {
+   "name": "rt1_dagger_3",
+   "levels": [
+    0.99,
+    0.815,
+    0.475,
+    0.225
+   ],
+   "mean": 0.626,
+   "chosen": false
+  },
+  {
+   "name": "rt1_dagger_4",
+   "levels": [
+    1.0,
+    0.84,
+    0.485,
+    0.225
+   ],
+   "mean": 0.638,
+   "chosen": true
+  },
+  {
+   "name": "rt1_dagger_5",
+   "levels": [
+    1.0,
+    0.84,
+    0.48,
+    0.22
+   ],
+   "mean": 0.635,
+   "chosen": false
+  },
+  {
+   "name": "rt1_dagger_6",
+   "levels": [
+    1.0,
+    0.84,
+    0.47,
+    0.235
+   ],
+   "mean": 0.636,
+   "chosen": false
+  },
+  {
+   "name": "rt1_dagger_7",
+   "levels": [
+    1.0,
+    0.84,
+    0.47,
+    0.22
+   ],
+   "mean": 0.633,
+   "chosen": false
+  },
+  {
+   "name": "rt1_dagger_8",
+   "levels": [
+    1.0,
+    0.845,
+    0.47,
+    0.225
+   ],
+   "mean": 0.635,
+   "chosen": false
+  }
+ ],
+ "expert_validation": [
+  1.0,
+  0.84,
+  0.465,
+  0.235
+ ],
+ "test_seeds": [
+  0,
+  299
+ ],
+ "validation_seeds": [
+  100000,
+  100199
+ ],
+ "recipe": {
+  "source": "paper_assets/retrain/README.md and attempts.md",
+  "demonstrations": 800,
+  "demonstrations_kept": 734,
+  "clone_epochs": 40,
+  "dagger_rounds": 8,
+  "dagger_episodes": 180,
+  "dagger_levels": "0,1,1,2,2,3,3",
+  "chosen_round": 4,
+  "train_seconds": 1015
+ },
+ "generated": "2026-10-28"
+}
